@@ -100,9 +100,9 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
   return (
     <div className="w-full space-y-4 mb-4">
       {/* Top Segmented Mode Bar with Watermelon UI / Motion Dev Sliding Pill */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-2.5 rounded-2xl bg-[#090b10] border border-zinc-800/90 shadow-xl">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-2.5 rounded-2xl bg-[#090c14]/70 border border-white/10 backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
         {/* Daily vs Practice Switcher */}
-        <div className="relative flex items-center bg-black/70 p-1 rounded-xl border border-zinc-800/80">
+        <div className="relative flex items-center bg-black/60 p-1 rounded-xl border border-white/10 backdrop-blur-md">
           <button
             onClick={() => onSelectGameMode("daily")}
             className={`relative z-10 flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors select-none ${
@@ -175,8 +175,8 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className={`relative flex flex-col p-3 rounded-2xl border text-left transition-all ${
                 isSelected
-                  ? "bg-zinc-900/90 border-red-600 shadow-lg shadow-red-950/30 ring-1 ring-red-600/50"
-                  : "bg-zinc-950/60 border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/40 text-zinc-400"
+                  ? "bg-[#141a29]/80 border-red-500 shadow-[0_8px_30px_rgba(225,6,0,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] ring-1 ring-red-500/50 backdrop-blur-xl"
+                  : "bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10 text-zinc-300 backdrop-blur-md"
               }`}
             >
               <div className="flex items-center justify-between w-full mb-1">
@@ -210,7 +210,7 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.25 }}
-          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 rounded-2xl bg-black/40 border border-zinc-800/80"
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 rounded-2xl bg-[#090c14]/70 border border-white/10 backdrop-blur-2xl shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
         >
           <span className="text-xs font-mono text-zinc-400 pl-1">
             Tyre Compound / Tolerance:

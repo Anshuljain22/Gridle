@@ -35,7 +35,7 @@ export function AnimatedTabs<T extends string = string>({
   return (
     <div
       className={cn(
-        "relative flex items-center p-1 rounded-2xl bg-[#0b0e14] border border-zinc-800/90 shadow-lg",
+        "relative flex items-center p-1 rounded-2xl bg-[#090c14]/75 border border-white/10 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)]",
         className
       )}
     >

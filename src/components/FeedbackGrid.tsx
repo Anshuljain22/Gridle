@@ -24,11 +24,11 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
 }) => {
   if (comparisons.length === 0) {
     return (
-      <div className="w-full p-8 rounded-2xl bg-[#090b10] border border-dashed border-zinc-800 text-center my-4">
+      <div className="w-full p-8 rounded-2xl bg-[#090c14]/65 border border-dashed border-white/10 backdrop-blur-xl text-center my-4">
         <h4 className="font-bold text-sm text-zinc-300 font-mono mb-1">
           Telemetry Screen Awaiting Data
         </h4>
-        <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+        <p className="text-xs text-zinc-400 max-w-sm mx-auto">
           Submit your first guess using the command input above to generate attribute comparisons and unlock progressive sector telemetry.
         </p>
       </div>
@@ -36,11 +36,11 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
   }
 
   return (
-    <div className="w-full my-4 rounded-2xl bg-[#090b10] border border-zinc-800 p-3 sm:p-4 shadow-xl">
+    <div className="w-full my-4 rounded-2xl bg-[#090c14]/70 border border-white/10 p-3 sm:p-4 shadow-[0_12px_36px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl">
       <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-zinc-800">
         <div className="min-w-[660px]">
           {/* Table Headers */}
-          <div className="grid grid-cols-7 gap-2 pb-2 text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-800 text-center">
+          <div className="grid grid-cols-7 gap-2 pb-2 text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-400 border-b border-white/10 text-center">
             {category === "driver" && (
               <>
                 <div className="text-left pl-2">Driver</div>
@@ -98,7 +98,7 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
                       damping: 24,
                     }}
                     whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-2 p-2 rounded-xl bg-zinc-950 border border-zinc-800 min-h-[54px] shadow-sm"
+                    className="flex items-center gap-2 p-2 rounded-xl bg-white/5 border border-white/10 min-h-[54px] shadow-sm backdrop-blur-md"
                   >
                     <span className="text-base shrink-0">
                       {category === "driver"
@@ -265,10 +265,10 @@ function renderNumericCell(
 function getStatusStyles(status: string): string {
   switch (status) {
     case "exact":
-      return "bg-emerald-950/70 border-emerald-600/80 text-emerald-200 shadow-sm shadow-emerald-950";
+      return "bg-emerald-950/60 border-emerald-500/80 text-emerald-100 shadow-[0_4px_16px_rgba(16,185,129,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] backdrop-blur-md";
     case "close":
-      return "bg-amber-950/70 border-amber-600/80 text-amber-200 shadow-sm shadow-amber-950";
+      return "bg-amber-950/60 border-amber-500/80 text-amber-100 shadow-[0_4px_16px_rgba(245,158,11,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] backdrop-blur-md";
     default:
-      return "bg-zinc-950 border-zinc-800 text-zinc-400";
+      return "bg-black/45 border-white/10 text-zinc-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md";
   }
 }

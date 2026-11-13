@@ -42,7 +42,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="w-full border-b border-zinc-800/80 bg-black/85 backdrop-blur-md sticky top-0 z-40">
+    <header className="w-full border-b border-white/10 bg-[#06080e]/60 backdrop-blur-2xl sticky top-0 z-40 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
       <div className="max-w-6xl mx-auto px-4 h-14 sm:h-16 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-3">
@@ -60,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="font-black italic tracking-wide text-base sm:text-lg text-white">
                 GRID<span className="text-red-500">LE</span>
               </span>
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-300 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10 backdrop-blur-md">
                 {gameMode === "daily" ? "Daily" : "Practice"}
               </span>
             </div>
@@ -71,12 +71,12 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Daily Streak Pill */}
           <div
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-mono font-bold text-amber-400 shadow-sm"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md text-xs font-mono font-bold text-amber-400 shadow-sm"
             title="Current Daily Grand Prix Streak"
           >
             <Flame className="w-3.5 h-3.5 text-amber-500" />
             <span className="tabular-nums">{streakCount}</span>
-            <span className="text-[10px] text-zinc-500 font-normal uppercase hidden sm:inline">
+            <span className="text-[10px] text-zinc-400 font-normal uppercase hidden sm:inline">
               Streak
             </span>
           </div>
@@ -84,7 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Sound Toggle */}
           <button
             onClick={toggleSound}
-            className="p-2 rounded-xl bg-zinc-950 border border-zinc-850 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+            className="p-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md text-zinc-400 hover:text-white hover:border-white/20 transition-all hover:scale-105 active:scale-95"
             title={soundOn ? "Mute Radio & Effects" : "Enable Radio & Effects"}
             aria-label="Toggle Sound"
           >
@@ -98,7 +98,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Help Button */}
           <button
             onClick={onOpenHelp}
-            className="p-2 rounded-xl bg-zinc-950 border border-zinc-850 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+            className="p-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md text-zinc-400 hover:text-white hover:border-white/20 transition-all hover:scale-105 active:scale-95"
             title="Race Regulations & How to Play"
             aria-label="How to play"
           >
@@ -108,9 +108,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Statistics Button */}
           <button
             onClick={onOpenStats}
-            className="p-2 rounded-xl bg-zinc-950 border border-zinc-850 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
-            title="Driver Career Records"
-            aria-label="Career Records"
+            className="p-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md text-zinc-400 hover:text-white hover:border-white/20 transition-all hover:scale-105 active:scale-95"
+            title="View Race Records & Trophies"
+            aria-label="View Race Records"
           >
             <Trophy className="w-4 h-4 text-amber-400" />
           </button>

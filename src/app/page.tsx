@@ -43,6 +43,7 @@ import { GameStatsModal } from "@/components/GameStatsModal";
 
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { RetroGrid } from "@/components/magicui/RetroGrid";
+import { GarageBackground } from "@/components/f1/GarageBackground";
 import { AnimatedTabs, TabOption } from "@/components/watermelon/AnimatedTabs";
 import { MotionButton } from "@/components/watermelon/MotionButton";
 import { Flag, AlertTriangle, RotateCcw, Compass, BookOpen, Trophy } from "lucide-react";
@@ -296,7 +297,9 @@ export default function F1WordleApp() {
 
   return (
     <div className="relative min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white bg-[#050608] overflow-x-hidden">
-      {/* 0. 3D Racetrack Perspective Grid (Magic UI) */}
+      {/* 0. Active F1 Pit Garage & Moving Mechanical Telemetry Dynamics */}
+      <GarageBackground />
+      {/* 3D Racetrack Perspective Grid (Magic UI) */}
       <RetroGrid className="opacity-15 fixed inset-0 z-0 pointer-events-none" />
 
       {/* Main Content Area */}

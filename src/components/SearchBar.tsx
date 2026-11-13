@@ -147,12 +147,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             onFocus={() => setIsOpen(true)}
             onKeyDown={handleKeyDown}
             placeholder={placeholderText}
-            className={`w-full bg-[#090b10] text-white placeholder-zinc-500 text-sm font-medium rounded-2xl pl-11 pr-28 py-3.5 border transition-all shadow-xl outline-none ${
+            className={`w-full bg-[#0a0d16]/70 backdrop-blur-2xl text-white placeholder-zinc-400 text-sm font-medium rounded-2xl pl-11 pr-28 py-3.5 border transition-all shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] outline-none ${
               disabled
-                ? "opacity-50 cursor-not-allowed border-zinc-800"
+                ? "opacity-50 cursor-not-allowed border-white/5"
                 : errorMsg
-                ? "border-red-500 ring-2 ring-red-500/20"
-                : "border-zinc-800 focus:border-red-600 focus:ring-2 focus:ring-red-600/20"
+                ? "border-red-500 ring-2 ring-red-500/30"
+                : "border-white/10 focus:border-red-500/80 focus:ring-2 focus:ring-red-500/25"
             }`}
           />
 
@@ -199,7 +199,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         {isOpen && query.trim().length > 0 && (
           <div
             ref={listRef}
-            className="absolute left-0 right-0 mt-2 max-h-72 overflow-y-auto rounded-2xl bg-[#090b10] border border-zinc-800 shadow-2xl backdrop-blur-xl divide-y divide-zinc-900 z-50"
+            className="absolute left-0 right-0 mt-2 max-h-72 overflow-y-auto rounded-2xl bg-[#090c14]/85 border border-white/10 shadow-2xl backdrop-blur-2xl divide-y divide-white/5 z-50"
           >
             {availableMatches.length > 0 ? (
               availableMatches.map((item, idx) => {
@@ -293,7 +293,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       {/* Quick Paddock Filter Chips */}
       {!disabled && (
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs font-mono text-zinc-400 scrollbar-none">
-          <span className="text-zinc-500 text-[10px] uppercase shrink-0">
+          <span className="text-zinc-400 text-[10px] uppercase shrink-0">
             Quick Picks:
           </span>
           {sampleSuggestions.map((suggestion) => (
@@ -304,7 +304,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 setQuery(suggestion);
                 inputRef.current?.focus();
               }}
-              className="px-2.5 py-0.5 rounded-lg bg-zinc-900 hover:bg-zinc-850 hover:text-white border border-zinc-800 text-[11px] shrink-0 transition-colors"
+              className="px-2.5 py-0.5 rounded-lg bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 backdrop-blur-md text-[11px] shrink-0 transition-all hover:scale-105"
             >
               {suggestion}
             </button>

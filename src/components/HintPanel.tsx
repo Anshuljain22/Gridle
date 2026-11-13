@@ -46,9 +46,9 @@ export const HintPanel: React.FC<HintPanelProps> = ({
   const unlockedCount = Math.min(6, Math.max(0, attemptsCount));
 
   return (
-    <div className="w-full p-4 rounded-2xl bg-[#090b10] border border-zinc-800 shadow-xl my-4">
+    <div className="w-full p-4 rounded-2xl bg-[#090c14]/70 border border-white/10 backdrop-blur-2xl shadow-[0_12px_36px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] my-4">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 mb-3 border-b border-zinc-800">
+      <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
         <h3 className="font-bold text-sm text-white font-mono tracking-tight flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
           Sector Telemetry Hints
@@ -58,7 +58,7 @@ export const HintPanel: React.FC<HintPanelProps> = ({
           initial={{ scale: 1.2, color: "#ef4444" }}
           animate={{ scale: 1, color: "#a1a1aa" }}
           transition={{ duration: 0.3 }}
-          className="text-xs font-mono tabular-nums bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800 font-bold"
+          className="text-xs font-mono tabular-nums bg-white/5 px-2 py-0.5 rounded-lg border border-white/10 font-bold backdrop-blur-md"
         >
           {unlockedCount}/6 Unlocked
         </motion.span>
@@ -76,14 +76,14 @@ export const HintPanel: React.FC<HintPanelProps> = ({
               key={hint.id}
               initial={false}
               animate={{
-                borderColor: isUnlocked ? "rgba(82, 82, 91, 0.8)" : "rgba(39, 39, 42, 0.6)",
+                borderColor: isUnlocked ? "rgba(255, 255, 255, 0.18)" : "rgba(255, 255, 255, 0.05)",
               }}
               whileHover={{ scale: 1.015 }}
               transition={{ type: "spring", stiffness: 400, damping: 28 }}
-              className={`p-3 rounded-xl border min-h-[76px] flex flex-col justify-between overflow-hidden relative ${
+              className={`p-3 rounded-xl border min-h-[76px] flex flex-col justify-between overflow-hidden relative backdrop-blur-md ${
                 isUnlocked
-                  ? "bg-zinc-950 border-zinc-700/80 shadow-sm"
-                  : "bg-black/30 border-zinc-850 text-zinc-600"
+                  ? "bg-white/5 border-white/15 shadow-sm"
+                  : "bg-black/40 border-white/5 text-zinc-500"
               }`}
             >
               <AnimatePresence mode="wait">

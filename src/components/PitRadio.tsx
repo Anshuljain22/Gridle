@@ -61,13 +61,13 @@ export const PitRadio: React.FC<PitRadioProps> = ({
 
   return (
     <div className="w-full mb-3">
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 p-2.5 rounded-2xl bg-[#090b10] border border-zinc-800 shadow-md">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 p-2.5 rounded-2xl bg-[#090c14]/70 border border-white/10 backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
         {/* Left: Radio Trigger */}
         <div className="flex items-center gap-2">
           <button
             onClick={requestRadioClue}
             disabled={isBroadcasting}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-950 border border-zinc-750 hover:border-red-500 text-zinc-200 hover:text-white font-mono text-xs font-bold transition-all shadow-sm active:scale-95 group shrink-0"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-red-500/80 text-zinc-200 hover:text-white font-mono text-xs font-bold transition-all shadow-sm active:scale-95 group shrink-0 backdrop-blur-md"
           >
             <div className="w-2 h-2 rounded-full bg-red-600 group-hover:animate-ping" />
             <Radio className="w-3.5 h-3.5 text-red-500" />

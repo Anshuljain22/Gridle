@@ -29,7 +29,7 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
   const remainingLaps = Math.max(0, maxLaps - currentLap);
 
   return (
-    <div className="w-full bg-[#080a0f] border-2 border-zinc-800 rounded-3xl p-3 sm:p-4 shadow-2xl relative overflow-hidden select-none">
+    <div className="w-full bg-[#080a12]/70 border border-white/10 backdrop-blur-2xl rounded-3xl p-3 sm:p-4 shadow-[0_12px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)] relative overflow-hidden select-none">
       {/* Carbon edge visual strip */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-zinc-400 to-red-600 opacity-80" />
 
@@ -37,7 +37,7 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
       <BorderBeam size={240} duration={8} colorFrom="#E10600" colorTo="#FF8000" />
 
       {/* 1. Authentic 15-LED Shift Light Bar (F1 Wheel Top Cluster) */}
-      <div className="flex items-center justify-between gap-1 sm:gap-2 px-2 sm:px-6 py-1.5 bg-black/80 rounded-2xl border border-zinc-850 mb-3 shadow-inner">
+      <div className="flex items-center justify-between gap-1 sm:gap-2 px-2 sm:px-6 py-1.5 bg-black/60 backdrop-blur-md rounded-2xl border border-white/10 mb-3 shadow-inner">
         {/* 5 Green LEDs (Turns 1-5) */}
         <div className="flex items-center gap-1 sm:gap-1.5">
           {[1, 2, 3, 4, 5].map((idx) => {
@@ -96,10 +96,10 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
       </div>
 
       {/* 2. Steering Wheel Digital Telemetry Screen */}
-      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 bg-black rounded-2xl p-3 border border-zinc-800 text-center font-mono">
+      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 bg-black/60 backdrop-blur-md rounded-2xl p-3 border border-white/10 text-center font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
         {/* Gear / Lap Position */}
-        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-zinc-950 border border-zinc-850">
-          <span className="text-[9px] uppercase tracking-wider text-zinc-500 font-bold">
+        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10">
+          <span className="text-[9px] uppercase tracking-wider text-zinc-400 font-bold">
             GEAR / LAP
           </span>
           <span className="text-2xl sm:text-3xl font-black italic tracking-tighter text-white tabular-nums">
@@ -108,8 +108,8 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
         </div>
 
         {/* Lap Delta Counter */}
-        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-zinc-950 border border-zinc-850">
-          <span className="text-[9px] uppercase tracking-wider text-zinc-500 font-bold">
+        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10">
+          <span className="text-[9px] uppercase tracking-wider text-zinc-400 font-bold">
             REMAINING
           </span>
           <span
@@ -122,8 +122,8 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
         </div>
 
         {/* Engine Strat Mode */}
-        <div className="hidden sm:flex flex-col items-center justify-center p-2 rounded-xl bg-zinc-950 border border-zinc-850">
-          <span className="text-[9px] uppercase tracking-wider text-zinc-500 font-bold">
+        <div className="hidden sm:flex flex-col items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10">
+          <span className="text-[9px] uppercase tracking-wider text-zinc-400 font-bold">
             STRAT MODE
           </span>
           <span className="text-sm font-bold text-emerald-400 tracking-wider">
@@ -132,8 +132,8 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
         </div>
 
         {/* Target Category Radar */}
-        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-zinc-950 border border-zinc-850">
-          <span className="text-[9px] uppercase tracking-wider text-zinc-500 font-bold">
+        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10">
+          <span className="text-[9px] uppercase tracking-wider text-zinc-400 font-bold">
             TARGET
           </span>
           <span className="text-xs font-bold text-red-500 uppercase tracking-wide">
@@ -142,8 +142,8 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
         </div>
 
         {/* DRS Status */}
-        <div className="hidden sm:flex flex-col items-center justify-center p-2 rounded-xl bg-zinc-950 border border-zinc-850">
-          <span className="text-[9px] uppercase tracking-wider text-zinc-500 font-bold">
+        <div className="hidden sm:flex flex-col items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10">
+          <span className="text-[9px] uppercase tracking-wider text-zinc-400 font-bold">
             DRS ZONE
           </span>
           <span className="text-xs font-bold text-emerald-400 tracking-wider">

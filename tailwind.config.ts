@@ -33,6 +33,11 @@ const config: Config = {
         marquee: "marquee var(--duration) linear infinite",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
         shine: "shine 3s ease-in-out infinite",
+        "spin-slow": "spin 50s linear infinite",
+        "spin-reverse-slow": "spin-reverse 38s linear infinite",
+        "laser-scan": "laser-scan 7s ease-in-out infinite",
+        "aero-drift": "aero-drift 14s linear infinite",
+        "pulse-glow": "pulse-glow 5s ease-in-out infinite",
       },
       keyframes: {
         "border-beam": {
@@ -43,6 +48,23 @@ const config: Config = {
         "grid-scroll": {
           "0%": { transform: "translateY(0)" },
           "100%": { transform: "translateY(60px)" },
+        },
+        "spin-reverse": {
+          from: { transform: "rotate(360deg)" },
+          to: { transform: "rotate(0deg)" },
+        },
+        "laser-scan": {
+          "0%, 100%": { transform: "translateY(-5vh)", opacity: "0" },
+          "20%, 80%": { opacity: "0.5" },
+          "50%": { transform: "translateY(105vh)", opacity: "0.8" },
+        },
+        "aero-drift": {
+          from: { transform: "translateX(-100%)" },
+          to: { transform: "translateX(250%)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "0.2" },
+          "50%": { opacity: "0.6" },
         },
         marquee: {
           from: { transform: "translateX(0)" },
