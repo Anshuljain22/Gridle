@@ -57,3 +57,4 @@ export const NumberTicker: React.FC<NumberTickerProps> = ({
     </span>
   );
 };
+

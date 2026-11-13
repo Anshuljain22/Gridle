@@ -11,6 +11,7 @@ import {
 } from "@/types";
 import { ArrowUp, ArrowDown } from "lucide-react";
 import { getFlag } from "@/data/continents";
+import { motion } from "motion/react";
 
 interface FeedbackGridProps {
   category: Category;
@@ -77,43 +78,61 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
 
           {/* Guesses Rows */}
           <div className="space-y-2 mt-2">
-            {comparisons.map((comp, idx) => (
-              <div
-                key={`${comp.id}-${idx}`}
-                className="grid grid-cols-7 gap-2 items-center text-xs animate-flipIn"
-                style={{ animationDelay: `${idx * 0.05}s` }}
-              >
-                {/* Entity Name Cell */}
-                <div className="flex items-center gap-2 p-2 rounded-xl bg-zinc-950 border border-zinc-800 min-h-[54px]">
-                  <span className="text-base shrink-0">
-                    {category === "driver"
-                      ? getFlag((comp as DriverComparison).guessedItem.nationality)
-                      : getFlag(
-                          category === "team"
-                            ? (comp as TeamComparison).guessedItem.country
-                            : (comp as TrackComparison).guessedItem.country
-                        )}
-                  </span>
-                  <div className="flex flex-col truncate">
-                    <span className="font-bold text-white truncate text-xs">
-                      {comp.name}
+            {comparisons.map((comp, rowIdx) => {
+              const isLatestRow = rowIdx === comparisons.length - 1;
+
+              return (
+                <div
+                  key={`${comp.id}-${rowIdx}`}
+                  className="grid grid-cols-7 gap-2 items-center text-xs"
+                >
+                  {/* Entity Name Cell with Motion Dev Stagger */}
+                  <motion.div
+                    initial={isLatestRow ? { rotateX: -90, opacity: 0 } : false}
+                    animate={{ rotateX: 0, opacity: 1 }}
+                    transition={{
+                      duration: 0.35,
+                      delay: 0,
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 24,
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    className="flex items-center gap-2 p-2 rounded-xl bg-zinc-950 border border-zinc-800 min-h-[54px] shadow-sm"
+                  >
+                    <span className="text-base shrink-0">
+                      {category === "driver"
+                        ? getFlag((comp as DriverComparison).guessedItem.nationality)
+                        : getFlag(
+                            category === "team"
+                              ? (comp as TeamComparison).guessedItem.country
+                              : (comp as TrackComparison).guessedItem.country
+                          )}
                     </span>
-                    <span className="text-[10px] text-zinc-500 font-mono tabular-nums">
-                      Lap {idx + 1}/7
-                    </span>
-                  </div>
+                    <div className="flex flex-col truncate">
+                      <span className="font-bold text-white truncate text-xs">
+                        {comp.name}
+                      </span>
+                      <span className="text-[10px] text-zinc-500 font-mono tabular-nums">
+                        Lap {rowIdx + 1}/7
+                      </span>
+                    </div>
+                  </motion.div>
+
+                  {/* Driver Cells */}
+                  {category === "driver" &&
+                    renderDriverCells(comp as DriverComparison, isLatestRow)}
+
+                  {/* Team Cells */}
+                  {category === "team" &&
+                    renderTeamCells(comp as TeamComparison, isLatestRow)}
+
+                  {/* Track Cells */}
+                  {category === "track" &&
+                    renderTrackCells(comp as TrackComparison, isLatestRow)}
                 </div>
-
-                {/* Driver Cells */}
-                {category === "driver" && renderDriverCells(comp as DriverComparison)}
-
-                {/* Team Cells */}
-                {category === "team" && renderTeamCells(comp as TeamComparison)}
-
-                {/* Track Cells */}
-                {category === "track" && renderTrackCells(comp as TrackComparison)}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -122,53 +141,68 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
 };
 
 // Render Driver Cells
-function renderDriverCells(d: DriverComparison) {
+function renderDriverCells(d: DriverComparison, isLatest: boolean) {
   return (
     <>
-      {renderCell(d.nationality, d.nationality.value)}
-      {renderNumericCell(d.birthYear, d.birthYear.value)}
-      {renderNumericCell(d.debutYear, d.debutYear.value)}
-      {renderNumericCell(d.championships, `${d.championships.value}x`)}
-      {renderNumericCell(d.wins, d.wins.value)}
-      {renderNumericCell(d.teamsCount, d.teamsCount.value)}
+      {renderCell(d.nationality, d.nationality.value, 1, isLatest)}
+      {renderNumericCell(d.birthYear, d.birthYear.value, 2, isLatest)}
+      {renderNumericCell(d.debutYear, d.debutYear.value, 3, isLatest)}
+      {renderNumericCell(d.championships, `${d.championships.value}x`, 4, isLatest)}
+      {renderNumericCell(d.wins, d.wins.value, 5, isLatest)}
+      {renderNumericCell(d.teamsCount, d.teamsCount.value, 6, isLatest)}
     </>
   );
 }
 
 // Render Team Cells
-function renderTeamCells(t: TeamComparison) {
+function renderTeamCells(t: TeamComparison, isLatest: boolean) {
   return (
     <>
-      {renderCell(t.country, t.country.value)}
-      {renderNumericCell(t.debutYear, t.debutYear.value)}
-      {renderNumericCell(t.championships, `${t.championships.value}x`)}
-      {renderNumericCell(t.wins, t.wins.value)}
-      {renderNumericCell(t.podiums, t.podiums.value)}
-      {renderNumericCell(t.seasonsCompeted, `${t.seasonsCompeted.value}y`)}
+      {renderCell(t.country, t.country.value, 1, isLatest)}
+      {renderNumericCell(t.debutYear, t.debutYear.value, 2, isLatest)}
+      {renderNumericCell(t.championships, `${t.championships.value}x`, 3, isLatest)}
+      {renderNumericCell(t.wins, t.wins.value, 4, isLatest)}
+      {renderNumericCell(t.podiums, t.podiums.value, 5, isLatest)}
+      {renderNumericCell(t.seasonsCompeted, `${t.seasonsCompeted.value}y`, 6, isLatest)}
     </>
   );
 }
 
 // Render Track Cells
-function renderTrackCells(tr: TrackComparison) {
+function renderTrackCells(tr: TrackComparison, isLatest: boolean) {
   return (
     <>
-      {renderCell(tr.country, tr.country.value)}
-      {renderNumericCell(tr.lengthKm, `${tr.lengthKm.value.toFixed(2)} km`)}
-      {renderNumericCell(tr.corners, tr.corners.value)}
-      {renderNumericCell(tr.firstGPYea, tr.firstGPYea.value)}
-      {renderCell(tr.circuitType, tr.circuitType.value)}
-      {renderCell(tr.direction, tr.direction.value)}
+      {renderCell(tr.country, tr.country.value, 1, isLatest)}
+      {renderNumericCell(tr.lengthKm, `${tr.lengthKm.value.toFixed(2)} km`, 2, isLatest)}
+      {renderNumericCell(tr.corners, tr.corners.value, 3, isLatest)}
+      {renderNumericCell(tr.firstGPYea, tr.firstGPYea.value, 4, isLatest)}
+      {renderCell(tr.circuitType, tr.circuitType.value, 5, isLatest)}
+      {renderCell(tr.direction, tr.direction.value, 6, isLatest)}
     </>
   );
 }
 
-// Generic Categorical Cell
-function renderCell(comp: ValueComparison<string>, displayVal: string | number) {
+// Generic Categorical Cell with Motion Dev Staggered Reveal
+function renderCell(
+  comp: ValueComparison<string>,
+  displayVal: string | number,
+  colIndex: number,
+  isLatest: boolean
+) {
   const statusClasses = getStatusStyles(comp.status);
 
   return (
-    <div
+    <motion.div
+      initial={isLatest ? { rotateX: -90, opacity: 0 } : false}
+      animate={{ rotateX: 0, opacity: 1 }}
+      transition={{
+        duration: 0.35,
+        delay: isLatest ? colIndex * 0.08 : 0,
+        type: "spring",
+        stiffness: 300,
+        damping: 24,
+      }}
+      whileHover={{ scale: 1.02 }}
       className={`flex flex-col items-center justify-center p-1.5 rounded-xl border text-center min-h-[54px] font-mono font-bold ${statusClasses}`}
     >
       <span className="truncate max-w-full px-1">{displayVal}</span>
@@ -177,19 +211,31 @@ function renderCell(comp: ValueComparison<string>, displayVal: string | number) 
           Same Region
         </span>
       )}
-    </div>
+    </motion.div>
   );
 }
 
-// Generic Numeric Cell with Arrow
+// Generic Numeric Cell with Arrow and Motion Dev Staggered Reveal
 function renderNumericCell(
   comp: ValueComparison<number>,
-  displayVal: string | number
+  displayVal: string | number,
+  colIndex: number,
+  isLatest: boolean
 ) {
   const statusClasses = getStatusStyles(comp.status);
 
   return (
-    <div
+    <motion.div
+      initial={isLatest ? { rotateX: -90, opacity: 0 } : false}
+      animate={{ rotateX: 0, opacity: 1 }}
+      transition={{
+        duration: 0.35,
+        delay: isLatest ? colIndex * 0.08 : 0,
+        type: "spring",
+        stiffness: 300,
+        damping: 24,
+      }}
+      whileHover={{ scale: 1.02 }}
       className={`relative flex flex-col items-center justify-center p-1.5 rounded-xl border text-center min-h-[54px] font-mono font-bold tabular-nums ${statusClasses}`}
     >
       <div className="flex items-center justify-center gap-1">
@@ -212,7 +258,7 @@ function renderNumericCell(
           Match ✓
         </span>
       )}
-    </div>
+    </motion.div>
   );
 }
 

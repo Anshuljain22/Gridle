@@ -4,6 +4,7 @@ import React from "react";
 import { Category, GameMode, Difficulty, UserStats } from "@/types";
 import { User, Shield, MapPin, Sparkles, Clock, Compass, CheckCircle2 } from "lucide-react";
 import { formatCountdown } from "@/lib/daily";
+import { motion } from "motion/react";
 
 interface ModeSelectorProps {
   selectedCategory: Category;
@@ -98,29 +99,40 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
 
   return (
     <div className="w-full space-y-4 mb-4">
-      {/* Top Segmented Mode Bar */}
+      {/* Top Segmented Mode Bar with Watermelon UI / Motion Dev Sliding Pill */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-2.5 rounded-2xl bg-[#090b10] border border-zinc-800/90 shadow-xl">
         {/* Daily vs Practice Switcher */}
-        <div className="flex items-center bg-black/70 p-1 rounded-xl border border-zinc-800/80">
+        <div className="relative flex items-center bg-black/70 p-1 rounded-xl border border-zinc-800/80">
           <button
             onClick={() => onSelectGameMode("daily")}
-            className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-all ${
-              gameMode === "daily"
-                ? "bg-red-600 text-white shadow-md shadow-red-950/60"
-                : "text-zinc-400 hover:text-white"
+            className={`relative z-10 flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors select-none ${
+              gameMode === "daily" ? "text-white" : "text-zinc-400 hover:text-white"
             }`}
           >
+            {gameMode === "daily" && (
+              <motion.div
+                layoutId="mode-selector-pill"
+                className="absolute inset-0 z-[-1] rounded-lg bg-red-600 shadow-md shadow-red-950/60"
+                transition={{ type: "spring", stiffness: 450, damping: 32 }}
+              />
+            )}
             <Sparkles className="w-3.5 h-3.5" />
             <span>DAILY GRAND PRIX</span>
           </button>
+
           <button
             onClick={() => onSelectGameMode("practice")}
-            className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-all ${
-              gameMode === "practice"
-                ? "bg-zinc-800 text-white shadow-md"
-                : "text-zinc-400 hover:text-white"
+            className={`relative z-10 flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors select-none ${
+              gameMode === "practice" ? "text-white" : "text-zinc-400 hover:text-white"
             }`}
           >
+            {gameMode === "practice" && (
+              <motion.div
+                layoutId="mode-selector-pill"
+                className="absolute inset-0 z-[-1] rounded-lg bg-zinc-800 shadow-md"
+                transition={{ type: "spring", stiffness: 450, damping: 32 }}
+              />
+            )}
             <Compass className="w-3.5 h-3.5" />
             <span>PRACTICE SESSION</span>
           </button>
@@ -149,18 +161,21 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
         )}
       </div>
 
-      {/* 3 Categories: Styled like Cockpit Selection Switches */}
+      {/* 3 Categories: Styled like Cockpit Selection Switches with Motion Dev Gestures */}
       <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {categories.map((cat) => {
           const isSelected = selectedCategory === cat.id;
 
           return (
-            <button
+            <motion.button
               key={cat.id}
               onClick={() => onSelectCategory(cat.id)}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className={`relative flex flex-col p-3 rounded-2xl border text-left transition-all ${
                 isSelected
-                  ? "bg-zinc-900/90 border-red-600 shadow-lg shadow-red-950/30"
+                  ? "bg-zinc-900/90 border-red-600 shadow-lg shadow-red-950/30 ring-1 ring-red-600/50"
                   : "bg-zinc-950/60 border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/40 text-zinc-400"
               }`}
             >
@@ -183,14 +198,20 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
               <span className="text-[11px] text-zinc-500 truncate hidden sm:block">
                 {cat.subtitle}
               </span>
-            </button>
+            </motion.button>
           );
         })}
       </div>
 
       {/* Difficulty Tyre Compound Picker (Visible in Practice Mode) */}
       {gameMode === "practice" && (
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 rounded-2xl bg-black/40 border border-zinc-800/80">
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.25 }}
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 rounded-2xl bg-black/40 border border-zinc-800/80"
+        >
           <span className="text-xs font-mono text-zinc-400 pl-1">
             Tyre Compound / Tolerance:
           </span>
@@ -199,9 +220,11 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
             {difficulties.map((diff) => {
               const isSelected = difficulty === diff.id;
               return (
-                <button
+                <motion.button
                   key={diff.id}
                   onClick={() => onSelectDifficulty(diff.id)}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-mono font-bold transition-all ${
                     isSelected
                       ? diff.borderActive
@@ -214,11 +237,11 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
                   <span className="text-[10px] opacity-70 font-normal">
                     [{diff.compound}]
                   </span>
-                </button>
+                </motion.button>
               );
             })}
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );

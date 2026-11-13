@@ -41,8 +41,10 @@ import { ResultModal } from "@/components/ResultModal";
 import { HowToPlayModal } from "@/components/HowToPlayModal";
 import { GameStatsModal } from "@/components/GameStatsModal";
 
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { RetroGrid } from "@/components/magicui/RetroGrid";
+import { AnimatedTabs, TabOption } from "@/components/watermelon/AnimatedTabs";
+import { MotionButton } from "@/components/watermelon/MotionButton";
 import { Flag, AlertTriangle, RotateCcw, Compass, BookOpen, Trophy } from "lucide-react";
 
 export default function F1WordleApp() {
@@ -72,6 +74,13 @@ export default function F1WordleApp() {
   const [guesses, setGuesses] = useState<string[]>([]);
   const [comparisons, setComparisons] = useState<ComparisonResult[]>([]);
   const [status, setStatus] = useState<GameStatus>("in_progress");
+
+  // Navigation Tabs with Watermelon UI spec
+  const mainNavTabs: TabOption<"game" | "archive" | "trophies">[] = [
+    { id: "game", label: "RACE COCKPIT", icon: <Compass className="w-3.5 h-3.5" /> },
+    { id: "archive", label: "PADDOCK ARCHIVE", icon: <BookOpen className="w-3.5 h-3.5" /> },
+    { id: "trophies", label: "SUPERLICENSE & TROPHIES", icon: <Trophy className="w-3.5 h-3.5" /> },
+  ];
 
   // Timer for UTC reset countdown
   useEffect(() => {
@@ -308,7 +317,7 @@ export default function F1WordleApp() {
             gameMode={gameMode}
           />
 
-      {/* 3. Main Cockpit Navigation Tabs */}
+      {/* 3. Main Cockpit Navigation Tabs (Watermelon UI + Motion Dev) */}
       <div className="w-full max-w-7xl mx-auto px-4 pt-3 flex-1">
         <Tabs
           value={activeMainTab}
@@ -316,20 +325,13 @@ export default function F1WordleApp() {
           className="w-full"
         >
           <div className="flex justify-center mb-4">
-            <TabsList className="bg-[#0b0e14] border border-zinc-800">
-              <TabsTrigger value="game" className="flex items-center gap-1.5 font-mono">
-                <Compass className="w-3.5 h-3.5" />
-                <span>RACE COCKPIT</span>
-              </TabsTrigger>
-              <TabsTrigger value="archive" className="flex items-center gap-1.5 font-mono">
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>PADDOCK ARCHIVE</span>
-              </TabsTrigger>
-              <TabsTrigger value="trophies" className="flex items-center gap-1.5 font-mono">
-                <Trophy className="w-3.5 h-3.5" />
-                <span>SUPERLICENSE & TROPHIES</span>
-              </TabsTrigger>
-            </TabsList>
+            <AnimatedTabs
+              tabs={mainNavTabs}
+              activeTab={activeMainTab}
+              onTabChange={(val) => setActiveMainTab(val)}
+              layoutId="main-nav-pill"
+              className="max-w-xl w-full"
+            />
           </div>
 
           {/* TAB 1: RACE COCKPIT (THE GAME) */}
@@ -404,39 +406,45 @@ export default function F1WordleApp() {
                   {/* Wordle Attribute Comparison Feedback Grid */}
                   <FeedbackGrid category={category} comparisons={comparisons} />
 
-                  {/* Action Bar (Give Up & Replay) */}
+                  {/* Action Bar (Give Up & Replay) with Watermelon UI MotionButton */}
                   <div className="flex items-center justify-between px-1 py-1">
                     <div>
                       {status === "in_progress" && guesses.length > 0 && (
-                        <button
+                        <MotionButton
+                          variant="ghost"
+                          size="sm"
                           onClick={handleGiveUp}
-                          className="flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-red-400 transition-colors"
+                          className="text-zinc-500 hover:text-red-400 p-0 hover:bg-transparent"
                         >
-                          <AlertTriangle className="w-3.5 h-3.5" />
+                          <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
                           <span>RETIRE FROM RACE (DNF)</span>
-                        </button>
+                        </MotionButton>
                       )}
                     </div>
 
                     <div className="flex items-center gap-3">
                       {status !== "in_progress" && (
-                        <button
+                        <MotionButton
+                          variant="outline"
+                          size="sm"
                           onClick={() => setIsResultOpen(true)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300 hover:text-white transition-colors"
+                          className="text-zinc-300 hover:text-white"
                         >
                           <Flag className="w-3.5 h-3.5 text-red-500" />
                           <span>VIEW RACE RESULTS</span>
-                        </button>
+                        </MotionButton>
                       )}
 
                       {gameMode === "practice" && (
-                        <button
+                        <MotionButton
+                          variant="secondary"
+                          size="sm"
                           onClick={() => initRound(category, gameMode, difficulty)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400 hover:text-zinc-200 transition-colors"
+                          className="text-zinc-300 hover:text-white"
                         >
                           <RotateCcw className="w-3.5 h-3.5" />
                           <span>NEW PRACTICE ROUND</span>
-                        </button>
+                        </MotionButton>
                       )}
                     </div>
                   </div>
