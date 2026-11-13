@@ -1,101 +1,506 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  Category,
+  Difficulty,
+  GameMode,
+  Driver,
+  Team,
+  Track,
+  ComparisonResult,
+  Hint,
+  UserStats,
+  GameStatus,
+} from "@/types";
+import { getEntityById, getEntitiesByDifficulty } from "@/data";
+import { compareEntities } from "@/lib/comparison";
+import { getHintsForEntity } from "@/lib/hints";
+import { getDailyChallenge, getSecondsUntilUtcMidnight, getUtcDateString } from "@/lib/daily";
+import {
+  loadUserStats,
+  recordGameResult,
+  loadDailySession,
+  saveDailySession,
+} from "@/lib/storage";
+import { sound } from "@/lib/sound";
+
+import { LiveTicker } from "@/components/LiveTicker";
+import { Navbar } from "@/components/Navbar";
+import { ModeSelector } from "@/components/ModeSelector";
+import { SteeringWheelDisplay } from "@/components/SteeringWheelDisplay";
+import { StartLights } from "@/components/StartLights";
+import { SearchBar } from "@/components/SearchBar";
+import { TimingTower } from "@/components/TimingTower";
+import { FeedbackGrid } from "@/components/FeedbackGrid";
+import { HintPanel } from "@/components/HintPanel";
+import { PitRadio } from "@/components/PitRadio";
+import { Encyclopedia } from "@/components/Encyclopedia";
+import { TrophyRoom } from "@/components/TrophyRoom";
+import { ResultModal } from "@/components/ResultModal";
+import { HowToPlayModal } from "@/components/HowToPlayModal";
+import { GameStatsModal } from "@/components/GameStatsModal";
+
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { RetroGrid } from "@/components/magicui/RetroGrid";
+import { Flag, AlertTriangle, RotateCcw, Compass, BookOpen, Trophy } from "lucide-react";
+
+export default function F1WordleApp() {
+  // Navigation & View Mode
+  const [activeMainTab, setActiveMainTab] = useState<"game" | "archive" | "trophies">("game");
+  const [isStatsOpen, setIsStatsOpen] = useState(false);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [isResultOpen, setIsResultOpen] = useState(false);
+
+  // Game Settings
+  const [category, setCategory] = useState<Category>("driver");
+  const [gameMode, setGameMode] = useState<GameMode>("daily");
+  const [difficulty, setDifficulty] = useState<Difficulty>("easy");
+
+  // User Stats & Daily Progress
+  const [userStats, setUserStats] = useState<UserStats>(loadUserStats());
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(getSecondsUntilUtcMidnight());
+  const [dailyCompleted, setDailyCompleted] = useState<{
+    driver: boolean;
+    team: boolean;
+    track: boolean;
+  }>({ driver: false, team: false, track: false });
+
+  // Current Round State
+  const [targetEntity, setTargetEntity] = useState<Driver | Team | Track | null>(null);
+  const [hints, setHints] = useState<Hint[]>([]);
+  const [guesses, setGuesses] = useState<string[]>([]);
+  const [comparisons, setComparisons] = useState<ComparisonResult[]>([]);
+  const [status, setStatus] = useState<GameStatus>("in_progress");
+
+  // Timer for UTC reset countdown
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsRemaining(getSecondsUntilUtcMidnight());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Check which daily categories are already completed
+  const refreshDailyStatus = useCallback(() => {
+    const today = getUtcDateString();
+    const driverSession = loadDailySession("driver", today);
+    const teamSession = loadDailySession("team", today);
+    const trackSession = loadDailySession("track", today);
+
+    setDailyCompleted({
+      driver: Boolean(driverSession && driverSession.status !== "in_progress"),
+      team: Boolean(teamSession && teamSession.status !== "in_progress"),
+      track: Boolean(trackSession && trackSession.status !== "in_progress"),
+    });
+  }, []);
+
+  useEffect(() => {
+    refreshDailyStatus();
+  }, [refreshDailyStatus]);
+
+  // Initialize or restore round when category, mode, or difficulty changes
+  const initRound = useCallback(
+    (cat: Category, mode: GameMode, diff: Difficulty) => {
+      const today = getUtcDateString();
+
+      if (mode === "daily") {
+        const dailyEntry = getDailyChallenge(today);
+        const mysteryId =
+          cat === "driver"
+            ? dailyEntry.driverId
+            : cat === "team"
+            ? dailyEntry.teamId
+            : dailyEntry.trackId;
+
+        const target = getEntityById(cat, mysteryId);
+        if (!target) return;
+
+        setTargetEntity(target);
+        setHints(getHintsForEntity(cat, target));
+
+        // Restore saved daily session if any
+        const saved = loadDailySession(cat, today);
+        if (saved && saved.mysteryId === target.id) {
+          setGuesses(saved.guesses || []);
+          setComparisons(saved.comparisons || []);
+          setStatus(saved.status || "in_progress");
+          if (saved.status && saved.status !== "in_progress") {
+            setIsResultOpen(true);
+          } else {
+            setIsResultOpen(false);
+          }
+        } else {
+          setGuesses([]);
+          setComparisons([]);
+          setStatus("in_progress");
+          setIsResultOpen(false);
+        }
+      } else {
+        // Practice Mode: choose a mystery target matching chosen difficulty
+        const pool = getEntitiesByDifficulty(cat, diff);
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        const target = pool[randomIndex];
+
+        setTargetEntity(target);
+        setHints(getHintsForEntity(cat, target));
+        setGuesses([]);
+        setComparisons([]);
+        setStatus("in_progress");
+        setIsResultOpen(false);
+        sound.playEngineRev();
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    initRound(category, gameMode, difficulty);
+  }, [category, gameMode, difficulty, initRound]);
+
+  // Handle a guess submission
+  const handleGuess = (guessedItem: Driver | Team | Track) => {
+    if (status !== "in_progress" || !targetEntity) return;
+    if (guesses.includes(guessedItem.id)) return;
+
+    // Run Wordle-style comparison
+    const comparison = compareEntities(category, guessedItem, targetEntity);
+    const newGuesses = [...guesses, guessedItem.id];
+    const newComparisons = [...comparisons, comparison];
+
+    const isMatch = comparison.isCorrect;
+    const isOutOfAttempts = newGuesses.length >= 7;
+
+    setGuesses(newGuesses);
+    setComparisons(newComparisons);
+
+    // Check game outcome
+    if (isMatch) {
+      setStatus("won");
+      sound.playCorrect();
+
+      const updatedStats = recordGameResult(
+        category,
+        difficulty,
+        gameMode === "daily",
+        true,
+        newGuesses.length
+      );
+      setUserStats(updatedStats);
+
+      if (gameMode === "daily") {
+        saveDailySession(category, {
+          category,
+          mode: gameMode,
+          difficulty,
+          mysteryId: targetEntity.id,
+          guesses: newGuesses,
+          comparisons: newComparisons,
+          status: "won",
+        });
+        refreshDailyStatus();
+      }
+
+      setTimeout(() => setIsResultOpen(true), 800);
+    } else if (isOutOfAttempts) {
+      setStatus("lost");
+      sound.playWrong();
+
+      const updatedStats = recordGameResult(
+        category,
+        difficulty,
+        gameMode === "daily",
+        false,
+        newGuesses.length
+      );
+      setUserStats(updatedStats);
+
+      if (gameMode === "daily") {
+        saveDailySession(category, {
+          category,
+          mode: gameMode,
+          difficulty,
+          mysteryId: targetEntity.id,
+          guesses: newGuesses,
+          comparisons: newComparisons,
+          status: "lost",
+        });
+        refreshDailyStatus();
+      }
+
+      setTimeout(() => setIsResultOpen(true), 800);
+    } else {
+      sound.playHintUnlock();
+
+      if (gameMode === "daily") {
+        saveDailySession(category, {
+          category,
+          mode: gameMode,
+          difficulty,
+          mysteryId: targetEntity.id,
+          guesses: newGuesses,
+          comparisons: newComparisons,
+          status: "in_progress",
+        });
+      }
+    }
+  };
+
+  // Surrender / Give Up option
+  const handleGiveUp = () => {
+    if (status !== "in_progress" || !targetEntity) return;
+
+    const confirmGiveUp = window.confirm(
+      `Are you sure you want to retire from the race? The mystery ${category} will be revealed.`
+    );
+    if (!confirmGiveUp) return;
+
+    setStatus("lost");
+    sound.playWrong();
+
+    const updatedStats = recordGameResult(
+      category,
+      difficulty,
+      gameMode === "daily",
+      false,
+      7
+    );
+    setUserStats(updatedStats);
+
+    if (gameMode === "daily") {
+      saveDailySession(category, {
+        category,
+        mode: gameMode,
+        difficulty,
+        mysteryId: targetEntity.id,
+        guesses,
+        comparisons,
+        status: "lost",
+      });
+      refreshDailyStatus();
+    }
+
+    setIsResultOpen(true);
+  };
+
+  const remainingGuesses = Math.max(0, 7 - guesses.length);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="relative min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white bg-[#050608] overflow-x-hidden">
+      {/* 0. 3D Racetrack Perspective Grid (Magic UI) */}
+      <RetroGrid className="opacity-15 fixed inset-0 z-0 pointer-events-none" />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      {/* Main Content Area */}
+      <div className="relative z-10 flex flex-col min-h-screen justify-between">
+        <div>
+          {/* 1. Live F1 Broadcast Telemetry Ticker */}
+          <LiveTicker
+            secondsRemaining={secondsRemaining}
+            streak={userStats.currentStreak}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+
+          {/* 2. Top Motorsport Header */}
+          <Navbar
+            onOpenStats={() => setIsStatsOpen(true)}
+            onOpenHelp={() => setIsHelpOpen(true)}
+            onResetGame={() => initRound(category, gameMode, difficulty)}
+            streakCount={userStats.currentStreak}
+            gameMode={gameMode}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+      {/* 3. Main Cockpit Navigation Tabs */}
+      <div className="w-full max-w-7xl mx-auto px-4 pt-3 flex-1">
+        <Tabs
+          value={activeMainTab}
+          onValueChange={(val) => setActiveMainTab(val as "game" | "archive" | "trophies")}
+          className="w-full"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+          <div className="flex justify-center mb-4">
+            <TabsList className="bg-[#0b0e14] border border-zinc-800">
+              <TabsTrigger value="game" className="flex items-center gap-1.5 font-mono">
+                <Compass className="w-3.5 h-3.5" />
+                <span>RACE COCKPIT</span>
+              </TabsTrigger>
+              <TabsTrigger value="archive" className="flex items-center gap-1.5 font-mono">
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>PADDOCK ARCHIVE</span>
+              </TabsTrigger>
+              <TabsTrigger value="trophies" className="flex items-center gap-1.5 font-mono">
+                <Trophy className="w-3.5 h-3.5" />
+                <span>SUPERLICENSE & TROPHIES</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          {/* TAB 1: RACE COCKPIT (THE GAME) */}
+          <TabsContent value="game">
+            <main className="py-1">
+              {/* Asymmetrical Pit Wall Command Station */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+                {/* Left Flight Column: Race Engineer, Wheel HUD & Telemetry Feed (5 cols) */}
+                <div className="lg:col-span-5 space-y-4">
+                  {/* Category, Mode & Compound Selectors */}
+                  <ModeSelector
+                    selectedCategory={category}
+                    onSelectCategory={(cat) => setCategory(cat)}
+                    gameMode={gameMode}
+                    onSelectGameMode={(m) => setGameMode(m)}
+                    difficulty={difficulty}
+                    onSelectDifficulty={(d) => setDifficulty(d)}
+                    dailySecondsRemaining={secondsRemaining}
+                    dailyCompleted={dailyCompleted}
+                    userStats={userStats}
+                  />
+
+                  {/* F1 Steering Wheel RPM & Shift Light Display */}
+                  <SteeringWheelDisplay
+                    currentLap={guesses.length}
+                    maxLaps={7}
+                    isWon={status === "won"}
+                    isGameOver={status !== "in_progress"}
+                    category={category}
+                  />
+
+                  {/* F1 5-Light Starting Gantry */}
+                  <StartLights
+                    attemptsUsed={guesses.length}
+                    maxAttempts={7}
+                    isWon={status === "won"}
+                    isGameOver={status !== "in_progress"}
+                  />
+
+                  {/* AI Team Radio / Strategist Guidance */}
+                  <PitRadio
+                    category={category}
+                    targetEntity={targetEntity}
+                    attemptsCount={guesses.length}
+                  />
+
+                  {/* 6 Progressive Telemetry Hints Panel */}
+                  <HintPanel
+                    hints={hints}
+                    attemptsCount={guesses.length}
+                  />
+                </div>
+
+                {/* Right Flight Column: Timing Screen & Guess Matrix (7 cols) */}
+                <div className="lg:col-span-7 space-y-4">
+                  {/* Search & Guess Input Area */}
+                  <SearchBar
+                    category={category}
+                    guessedIds={guesses}
+                    disabled={status !== "in_progress"}
+                    onSelectGuess={handleGuess}
+                    remainingGuesses={remainingGuesses}
+                  />
+
+                  {/* F1 Live Timing Tower */}
+                  <TimingTower
+                    category={category}
+                    comparisons={comparisons}
+                    maxLaps={7}
+                  />
+
+                  {/* Wordle Attribute Comparison Feedback Grid */}
+                  <FeedbackGrid category={category} comparisons={comparisons} />
+
+                  {/* Action Bar (Give Up & Replay) */}
+                  <div className="flex items-center justify-between px-1 py-1">
+                    <div>
+                      {status === "in_progress" && guesses.length > 0 && (
+                        <button
+                          onClick={handleGiveUp}
+                          className="flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-red-400 transition-colors"
+                        >
+                          <AlertTriangle className="w-3.5 h-3.5" />
+                          <span>RETIRE FROM RACE (DNF)</span>
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      {status !== "in_progress" && (
+                        <button
+                          onClick={() => setIsResultOpen(true)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300 hover:text-white transition-colors"
+                        >
+                          <Flag className="w-3.5 h-3.5 text-red-500" />
+                          <span>VIEW RACE RESULTS</span>
+                        </button>
+                      )}
+
+                      {gameMode === "practice" && (
+                        <button
+                          onClick={() => initRound(category, gameMode, difficulty)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400 hover:text-zinc-200 transition-colors"
+                        >
+                          <RotateCcw className="w-3.5 h-3.5" />
+                          <span>NEW PRACTICE ROUND</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </main>
+          </TabsContent>
+
+          {/* TAB 2: PADDOCK ENCYCLOPEDIA */}
+          <TabsContent value="archive">
+            <Encyclopedia />
+          </TabsContent>
+
+          {/* TAB 3: SUPERLICENSE & TROPHY ROOM */}
+          <TabsContent value="trophies">
+            <TrophyRoom stats={userStats} />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+
+    {/* Footer with Kerbing Stripe */}
+    <div>
+      <div className="kerb-divider w-full mt-8" />
+      <footer className="w-full bg-black/60 py-4 text-center text-xs font-mono text-zinc-500">
+        <p>
+          F1 GRIDLE • Formula 1 Motorsport Mission Control • Data verified through FIA Official Records
+        </p>
       </footer>
+    </div>
+  </div>
+
+      {/* Result Modal */}
+      {targetEntity && (
+        <ResultModal
+          isOpen={isResultOpen}
+          isWon={status === "won"}
+          category={category}
+          mode={gameMode}
+          targetEntity={targetEntity}
+          attemptsCount={guesses.length}
+          hintsUsed={Math.min(6, Math.max(0, guesses.length - 1))}
+          comparisons={comparisons}
+          onPlayAgain={() => initRound(category, "practice", difficulty)}
+          onClose={() => setIsResultOpen(false)}
+          onNextCategory={(nextCat) => {
+            setCategory(nextCat);
+            setIsResultOpen(false);
+          }}
+        />
+      )}
+
+      {/* How To Play Modal */}
+      <HowToPlayModal
+        isOpen={isHelpOpen}
+        onClose={() => setIsHelpOpen(false)}
+      />
+
+      {/* User Statistics Modal */}
+      <GameStatsModal
+        isOpen={isStatsOpen}
+        onClose={() => setIsStatsOpen(false)}
+        stats={userStats}
+      />
     </div>
   );
 }
