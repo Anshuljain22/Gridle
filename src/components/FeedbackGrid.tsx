@@ -47,8 +47,8 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
                 <div>Nationality</div>
                 <div>Born</div>
                 <div>F1 Debut</div>
-                <div>Titles</div>
-                <div>Wins</div>
+                <div title="World Drivers' Championship Titles (Season Champions)">WDC Titles</div>
+                <div title="Total Career Grand Prix Race Victories">GP Wins</div>
                 <div>Teams</div>
               </>
             )}
@@ -57,8 +57,8 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
                 <div className="text-left pl-2">Constructor</div>
                 <div>Country</div>
                 <div>Debut</div>
-                <div>Titles</div>
-                <div>Wins</div>
+                <div title="World Constructors' Championship Titles">WCC Titles</div>
+                <div title="Total Grand Prix Race Victories">GP Wins</div>
                 <div>Podiums</div>
                 <div>Seasons</div>
               </>

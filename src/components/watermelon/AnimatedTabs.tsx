@@ -78,3 +78,4 @@ export function AnimatedTabs<T extends string = string>({
     </div>
   );
 }
+

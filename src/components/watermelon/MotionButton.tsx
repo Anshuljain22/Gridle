@@ -72,3 +72,4 @@ export const MotionButton: React.FC<MotionButtonProps> = ({
     </motion.button>
   );
 };
+
