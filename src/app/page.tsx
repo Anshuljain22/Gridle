@@ -30,14 +30,8 @@ import { sound } from "@/lib/sound";
 
 import { LiveTicker } from "@/components/LiveTicker";
 import { Navbar } from "@/components/Navbar";
-import { ModeSelector } from "@/components/ModeSelector";
-import { SteeringWheelDisplay } from "@/components/SteeringWheelDisplay";
-import { StartLights } from "@/components/StartLights";
 import { SearchBar } from "@/components/SearchBar";
-import { TimingTower } from "@/components/TimingTower";
 import { FeedbackGrid } from "@/components/FeedbackGrid";
-import { HintPanel } from "@/components/HintPanel";
-import { PitRadio } from "@/components/PitRadio";
 import { Encyclopedia } from "@/components/Encyclopedia";
 import { TrophyRoom } from "@/components/TrophyRoom";
 import { ResultModal } from "@/components/ResultModal";
@@ -57,13 +51,13 @@ import {
   AlertTriangle,
   RotateCcw,
   Compass,
-  BookOpen,
-  Trophy,
   GitCommit,
   Radio,
   Zap,
   Wind,
   Calendar,
+  BookOpen,
+  Trophy,
 } from "lucide-react";
 
 import { CareerTimelineMode } from "@/components/modes/CareerTimelineMode";
@@ -72,7 +66,7 @@ import { CornerQuizMode } from "@/components/modes/CornerQuizMode";
 import { HeadToHeadMode } from "@/components/modes/HeadToHeadMode";
 import { AeroCarViewer } from "@/components/f1/AeroCarViewer";
 import { SeasonHub } from "@/components/f1/SeasonHub";
-import { TeamThemeSelector, TEAM_THEMES, TeamTheme } from "@/components/f1/TeamThemeSelector";
+import { TEAM_THEMES, TeamTheme } from "@/components/f1/TeamThemeSelector";
 
 type MainTabType =
   | "game"
@@ -100,7 +94,6 @@ export default function F1WordleApp() {
 
   // User Stats & Daily Progress
   const [userStats, setUserStats] = useState<UserStats>(DEFAULT_STATS);
-  const [hasMounted, setHasMounted] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(getSecondsUntilUtcMidnight());
   const [dailyCompleted, setDailyCompleted] = useState<{
     driver: boolean;
@@ -123,7 +116,6 @@ export default function F1WordleApp() {
 
   // Sync client-only storage data after mounting to prevent SSR hydration mismatches
   useEffect(() => {
-    setHasMounted(true);
     setUserStats(loadUserStats());
     const savedThemeId = loadSavedThemeId();
     const matched = TEAM_THEMES.find((t) => t.id === savedThemeId);
