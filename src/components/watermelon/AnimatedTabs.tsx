@@ -56,7 +56,11 @@ export function AnimatedTabs<T extends string = string>({
             {isActive && (
               <motion.div
                 layoutId={layoutId}
-                className="absolute inset-0 z-[-1] rounded-xl bg-gradient-to-r from-red-600 to-red-700 shadow-md shadow-red-950/60"
+                className="absolute inset-0 z-[-1] rounded-xl shadow-md transition-[background,box-shadow] duration-300"
+                style={{
+                  background: "var(--team-gradient-h)",
+                  boxShadow: "0 4px 16px var(--team-glow)",
+                }}
                 transition={{
                   type: "spring",
                   stiffness: 450,

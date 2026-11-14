@@ -152,7 +152,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 ? "opacity-50 cursor-not-allowed border-white/5"
                 : errorMsg
                 ? "border-red-500 ring-2 ring-red-500/30"
-                : "border-white/10 focus:border-red-500/80 focus:ring-2 focus:ring-red-500/25"
+                : "border-white/10 focus:border-[var(--team-primary)] focus:ring-2 focus:ring-[var(--team-glow)]"
             }`}
           />
 
@@ -179,7 +179,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                   submitItem(availableMatches[selectedIndex]);
                 }
               }}
-              className="flex items-center gap-1 px-3 sm:px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 disabled:opacity-40 disabled:hover:bg-red-600 text-white font-mono text-xs font-bold shadow-md shadow-red-950 transition-all"
+              className="flex items-center gap-1 px-3 sm:px-4 py-2 rounded-xl text-white font-mono text-xs font-bold shadow-md transition-all disabled:opacity-40 hover:brightness-110 active:scale-95"
+              style={{
+                background: "var(--team-gradient)",
+                boxShadow: "0 4px 14px var(--team-glow)",
+              }}
             >
               <span>SUBMIT</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -240,9 +244,17 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                     onClick={() => submitItem(item)}
                     className={`flex items-center justify-between px-4 py-2.5 cursor-pointer transition-colors ${
                       isSelected
-                        ? "bg-red-950/60 text-white"
+                        ? "text-white"
                         : "text-zinc-200 hover:bg-zinc-900/60"
                     }`}
+                    style={
+                      isSelected
+                        ? {
+                            backgroundColor: "var(--team-bg-tint)",
+                            borderLeft: "3px solid var(--team-primary)",
+                          }
+                        : undefined
+                    }
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-xl">{flag}</span>

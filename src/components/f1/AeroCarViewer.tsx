@@ -137,7 +137,10 @@ export const AeroCarViewer: React.FC = () => {
         <div className="lg:col-span-7 f1-glass rounded-3xl p-5 sm:p-6 relative overflow-hidden">
           <div className="flex items-center justify-between mb-3 text-xs font-mono">
             <span className="text-zinc-400 font-bold flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+              <span
+                className="w-2 h-2 rounded-full animate-pulse transition-colors"
+                style={{ backgroundColor: "var(--team-primary)" }}
+              />
               GROUND-EFFECT CHASSIS CAD VIEW
             </span>
             <span className="text-zinc-500 text-[10px]">CLICK SENSORS TO INSPECT</span>
@@ -229,9 +232,17 @@ export const AeroCarViewer: React.FC = () => {
                 onClick={() => setActiveHotspot(s)}
                 className={`px-3 py-1.5 rounded-xl font-mono text-[11px] font-bold transition-all ${
                   activeHotspot.id === s.id
-                    ? "bg-red-600 text-white shadow-md shadow-red-950/60"
+                    ? "text-white shadow-md"
                     : "bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white border border-white/5"
                 }`}
+                style={
+                  activeHotspot.id === s.id
+                    ? {
+                        background: "var(--team-gradient-h)",
+                        boxShadow: "0 4px 14px var(--team-glow)",
+                      }
+                    : undefined
+                }
               >
                 {s.name.split(" ")[0]} {s.name.split(" ")[1]}
               </button>
@@ -242,7 +253,14 @@ export const AeroCarViewer: React.FC = () => {
         {/* Right: Technical Inspector Dossier (5 cols) */}
         <div className="lg:col-span-5 f1-glass rounded-3xl p-5 sm:p-6 space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-red-500 bg-red-950/40 px-2 py-0.5 rounded border border-red-900/50">
+            <span
+              className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded border transition-colors"
+              style={{
+                color: "var(--team-primary-light)",
+                backgroundColor: "var(--team-bg-tint)",
+                borderColor: "var(--team-border)",
+              }}
+            >
               {activeHotspot.category}
             </span>
             <span className="text-xs font-mono text-emerald-400 font-bold">

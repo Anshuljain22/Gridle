@@ -61,7 +61,7 @@ export const CornerQuizMode: React.FC = () => {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-5 select-none animate-fadeIn py-2">
       {/* Header */}
-      <SpotlightCard spotlightColor="rgba(225, 6, 0, 0.2)" className="p-4 sm:p-6">
+      <SpotlightCard spotlightColor="var(--team-glow)" className="p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Icon3D name="flag" size={38} />
@@ -120,10 +120,11 @@ export const CornerQuizMode: React.FC = () => {
           {/* Subtle grid lines */}
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#27272a_1px,transparent_1px),linear-gradient(to_bottom,#27272a_1px,transparent_1px)] bg-[size:24px_24px] opacity-25 pointer-events-none" />
 
-          {/* SVG Silhouette Curve with Glowing Red Track Outline */}
+          {/* SVG Silhouette Curve with Glowing Team Track Outline */}
           <svg
             viewBox={currentCorner.viewBox}
-            className="w-full h-full max-w-sm drop-shadow-[0_0_15px_rgba(225,6,0,0.6)]"
+            className="w-full h-full max-w-sm"
+            style={{ filter: "drop-shadow(0 0 15px var(--team-glow))" }}
           >
             {/* Outer Kerbing Pattern */}
             <path
@@ -137,7 +138,7 @@ export const CornerQuizMode: React.FC = () => {
             <path
               d={currentCorner.svgPath}
               fill="none"
-              stroke="#E10600"
+              stroke="var(--team-primary)"
               strokeWidth="5"
               strokeLinecap="round"
             />
@@ -157,7 +158,7 @@ export const CornerQuizMode: React.FC = () => {
             const isSelected = selectedGuess === option.id;
             const isThisCorrect = option.id === currentCorner.id;
 
-            let cardStyle = "bg-white/5 border-white/10 text-white hover:border-red-500/60";
+            let cardStyle = "bg-white/5 border-white/10 text-white hover:border-[var(--team-primary)]";
 
             if (isAnswered) {
               if (isThisCorrect) {

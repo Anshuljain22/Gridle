@@ -173,7 +173,7 @@ export const SeasonHub: React.FC = () => {
   return (
     <div className="w-full max-w-5xl mx-auto space-y-5 select-none animate-fadeIn py-2">
       {/* Header */}
-      <SpotlightCard spotlightColor="rgba(225, 6, 0, 0.2)" className="p-4 sm:p-6">
+      <SpotlightCard spotlightColor="var(--team-glow)" className="p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Icon3D name="flag" size={38} />
@@ -283,9 +283,18 @@ export const SeasonHub: React.FC = () => {
                   onClick={() => setSelectedRace(race)}
                   className={`px-3 py-2 rounded-xl font-mono text-xs whitespace-nowrap border transition-all shrink-0 flex items-center gap-1.5 ${
                     selectedRace.round === race.round
-                      ? "bg-red-600 border-red-500 text-white shadow-md shadow-red-950/60"
+                      ? "text-white shadow-md"
                       : "bg-white/5 border-white/5 text-zinc-400 hover:text-white hover:bg-white/10"
                   }`}
+                  style={
+                    selectedRace.round === race.round
+                      ? {
+                          background: "var(--team-gradient-h)",
+                          borderColor: "var(--team-primary)",
+                          boxShadow: "0 4px 14px var(--team-glow)",
+                        }
+                      : undefined
+                  }
                 >
                   <span>{getFlag(race.country)}</span>
                   <span>R{race.round}: {race.country}</span>

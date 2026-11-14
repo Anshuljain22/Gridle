@@ -153,3 +153,23 @@ export function setSoundEnabled(val: boolean): void {
   localStorage.setItem(SOUND_KEY, val.toString());
 }
 
+const THEME_KEY = "f1wordle_team_theme_v1";
+
+export function loadSavedThemeId(): string {
+  if (typeof window === "undefined") return "ferrari";
+  try {
+    return localStorage.getItem(THEME_KEY) || "ferrari";
+  } catch {
+    return "ferrari";
+  }
+}
+
+export function saveThemeId(themeId: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(THEME_KEY, themeId);
+  } catch (e) {
+    console.error("Failed to save theme id", e);
+  }
+}
+

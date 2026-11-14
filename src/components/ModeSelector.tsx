@@ -119,7 +119,11 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
             {gameMode === "daily" && (
               <motion.div
                 layoutId="mode-selector-pill"
-                className="absolute inset-0 z-[-1] rounded-lg bg-red-600 shadow-md shadow-red-950/60"
+                className="absolute inset-0 z-[-1] rounded-lg shadow-md transition-[background,box-shadow] duration-300"
+                style={{
+                  background: "var(--team-gradient-h)",
+                  boxShadow: "0 4px 14px var(--team-glow)",
+                }}
                 transition={{ type: "spring", stiffness: 450, damping: 32 }}
               />
             )}
@@ -148,7 +152,7 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
         {/* Live Daily Timer or Practice Status */}
         {gameMode === "daily" ? (
           <div className="flex items-center justify-center sm:justify-end gap-2 text-xs font-mono text-zinc-400 px-2">
-            <Clock className="w-3.5 h-3.5 text-red-500 animate-pulse" />
+            <Clock className="w-3.5 h-3.5 animate-pulse" style={{ color: "var(--team-primary)" }} />
             <span>RESET IN</span>
             <span
               suppressHydrationWarning
@@ -188,9 +192,18 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className={`relative flex flex-col p-3 rounded-2xl border text-left transition-all ${
                 isSelected
-                  ? "bg-white/10 border-red-500 shadow-[0_8px_30px_rgba(225,6,0,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] ring-1 ring-red-500/50 backdrop-blur-xl"
+                  ? "backdrop-blur-xl ring-1"
                   : "f1-glass-subtle hover:border-white/20 text-zinc-300"
               }`}
+              style={
+                isSelected
+                  ? {
+                      backgroundColor: "var(--team-bg-tint)",
+                      borderColor: "var(--team-primary)",
+                      boxShadow: "0 8px 30px var(--team-glow), inset 0 1px 0 rgba(255,255,255,0.15)",
+                    }
+                  : undefined
+              }
             >
               <div className="flex items-center justify-between w-full mb-1">
                 <div className="p-1.5 rounded-lg bg-black/60 border border-zinc-800/80">

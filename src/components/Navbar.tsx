@@ -60,7 +60,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={onResetGame}
             title="Reset Cockpit / Return Home"
           >
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-red-600 flex items-center justify-center shadow-md shadow-red-950/80 border border-red-500/50 group-hover:bg-red-500 transition-colors">
+            <div
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shadow-md border transition-all group-hover:scale-105"
+              style={{
+                background: "var(--team-gradient)",
+                borderColor: "var(--team-primary)",
+                boxShadow: "0 0 12px var(--team-glow)",
+              }}
+            >
               <span className="font-black italic text-white text-xs sm:text-sm tracking-tighter">
                 F1
               </span>
@@ -68,7 +75,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="flex items-baseline gap-2">
               <span className="font-black italic tracking-wide text-base sm:text-lg text-white">
                 <ShinyText text="GRID" className="font-black italic tracking-wide" />
-                <span className="text-red-500 font-black italic">LE</span>
+                <span
+                  className="font-black italic transition-colors duration-300"
+                  style={{ color: "var(--team-primary)" }}
+                >
+                  LE
+                </span>
               </span>
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-300 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10 backdrop-blur-md">
                 {gameMode === "daily" ? "Daily" : "Practice"}

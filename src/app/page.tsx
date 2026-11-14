@@ -23,6 +23,8 @@ import {
   loadDailySession,
   saveDailySession,
   DEFAULT_STATS,
+  loadSavedThemeId,
+  saveThemeId,
 } from "@/lib/storage";
 import { sound } from "@/lib/sound";
 
@@ -122,7 +124,22 @@ export default function F1WordleApp() {
   useEffect(() => {
     setHasMounted(true);
     setUserStats(loadUserStats());
+    const savedThemeId = loadSavedThemeId();
+    const matched = TEAM_THEMES.find((t) => t.id === savedThemeId);
+    if (matched) {
+      setCurrentTheme(matched);
+      if (typeof document !== "undefined") {
+        document.documentElement.setAttribute("data-theme", matched.id);
+      }
+    }
   }, []);
+
+  // Update data-theme on document root whenever theme changes
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.setAttribute("data-theme", currentTheme.id);
+    }
+  }, [currentTheme]);
 
   // Navigation Tabs with Watermelon UI spec
   const mainNavTabs: TabOption<MainTabType>[] = [
@@ -350,7 +367,10 @@ export default function F1WordleApp() {
   const remainingGuesses = Math.max(0, 7 - guesses.length);
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white bg-[#050608]/80 overflow-x-hidden">
+    <div
+      data-theme={currentTheme.id}
+      className="relative min-h-screen flex flex-col justify-between selection:bg-[var(--team-primary)] selection:text-white bg-[#050608]/80 overflow-x-hidden transition-colors duration-500"
+    >
       <CircuitBackdrop />
       <GarageBackground className="opacity-40" />
       <RetroGrid className="opacity-10 fixed inset-0 z-0 pointer-events-none" />
@@ -372,7 +392,10 @@ export default function F1WordleApp() {
             streakCount={userStats.currentStreak}
             gameMode={gameMode}
             currentThemeId={currentTheme.id}
-            onSelectTheme={(theme) => setCurrentTheme(theme)}
+            onSelectTheme={(theme) => {
+              setCurrentTheme(theme);
+              saveThemeId(theme.id);
+            }}
           />
           <CircuitRibbon />
 

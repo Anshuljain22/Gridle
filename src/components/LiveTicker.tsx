@@ -67,7 +67,12 @@ export const LiveTicker: React.FC<LiveTickerProps> = ({
               <span className="text-zinc-500">NEXT RESET:</span>
               <span
                 suppressHydrationWarning
-                className="text-red-400 font-bold tabular-nums bg-red-950/40 px-2 py-0.5 rounded border border-red-900/50"
+                className="font-bold tabular-nums px-2 py-0.5 rounded border transition-colors"
+                style={{
+                  color: "var(--team-primary-light)",
+                  backgroundColor: "var(--team-bg-tint)",
+                  borderColor: "var(--team-border)",
+                }}
               >
                 {mounted ? formatCountdown(secondsRemaining) : "--:--:--"} UTC
               </span>

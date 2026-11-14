@@ -24,7 +24,7 @@ export const MotionButton: React.FC<MotionButtonProps> = ({
 }) => {
   const variantStyles = {
     primary:
-      "bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-950/50 border border-red-500/30",
+      "text-white shadow-lg border hover:brightness-110",
     secondary:
       "bg-zinc-800 hover:bg-zinc-700 text-zinc-100 shadow-md border border-zinc-700/60",
     outline:
@@ -41,11 +41,22 @@ export const MotionButton: React.FC<MotionButtonProps> = ({
     lg: "px-5 py-2.5 text-sm rounded-xl gap-2.5",
   }[size];
 
+  const dynamicStyle =
+    variant === "primary"
+      ? {
+          background: "var(--team-gradient)",
+          borderColor: "var(--team-primary)",
+          boxShadow: "0 4px 16px var(--team-glow)",
+          ...props.style,
+        }
+      : props.style;
+
   return (
     <motion.button
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.97 }}
       transition={{ type: "spring", stiffness: 450, damping: 25 }}
+      style={dynamicStyle}
       className={cn(
         "relative overflow-hidden inline-flex items-center justify-center font-mono font-bold select-none transition-colors disabled:opacity-50 disabled:pointer-events-none cursor-pointer",
         variantStyles,

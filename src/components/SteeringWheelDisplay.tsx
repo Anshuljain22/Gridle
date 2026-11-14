@@ -32,14 +32,20 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
 
   return (
     <SpotlightCard
-      spotlightColor="rgba(225, 6, 0, 0.22)"
+      spotlightColor="var(--team-glow)"
       className="w-full p-3 sm:p-4 select-none"
     >
       {/* Carbon edge visual strip */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-zinc-400 to-red-600 opacity-80" />
+      <div
+        className="absolute top-0 left-0 right-0 h-1 opacity-80"
+        style={{
+          background:
+            "linear-gradient(90deg, var(--team-primary), var(--team-accent), var(--team-primary))",
+        }}
+      />
 
       {/* Magic UI Border Beam */}
-      <BorderBeam size={240} duration={8} colorFrom="#E10600" colorTo="#FF8000" />
+      <BorderBeam size={240} duration={8} colorFrom="var(--team-primary)" colorTo="var(--team-accent)" />
 
       {/* 1. Authentic 15-LED Shift Light Bar (F1 Wheel Top Cluster) */}
       <div className="flex items-center justify-between gap-1 sm:gap-2 px-2 sm:px-6 py-1.5 bg-black/60 backdrop-blur-md rounded-2xl border border-white/10 mb-3 shadow-inner">
@@ -141,7 +147,10 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
           <span className="text-[9px] uppercase tracking-wider text-zinc-400 font-bold">
             TARGET
           </span>
-          <span className="text-xs font-bold text-red-500 uppercase tracking-wide">
+          <span
+            className="text-xs font-bold uppercase tracking-wide transition-colors"
+            style={{ color: "var(--team-primary)" }}
+          >
             {category}
           </span>
         </div>

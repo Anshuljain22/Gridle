@@ -19,7 +19,7 @@ export const TimingTower: React.FC<TimingTowerProps> = ({
 }) => {
   return (
     <SpotlightCard
-      spotlightColor="rgba(225, 6, 0, 0.18)"
+      spotlightColor="var(--team-glow)"
       className="w-full p-3 sm:p-4 select-none"
     >
       {/* Timing Tower Header */}
@@ -117,9 +117,19 @@ export const TimingTower: React.FC<TimingTowerProps> = ({
               key={lapIdx}
               className={`flex items-center justify-between p-2 rounded-xl border transition-all backdrop-blur-sm ${
                 isCurrentLap
-                  ? "bg-red-950/30 border-red-500/50 text-red-300 shadow-sm shadow-red-950/40"
+                  ? "shadow-sm"
                   : "bg-black/25 border-white/5 text-zinc-500"
               }`}
+              style={
+                isCurrentLap
+                  ? {
+                      backgroundColor: "var(--team-bg-tint)",
+                      borderColor: "var(--team-primary)",
+                      color: "var(--team-primary-light)",
+                      boxShadow: "0 0 14px var(--team-glow)",
+                    }
+                  : undefined
+              }
             >
               <div className="flex items-center gap-2.5">
                 <span className="w-6 h-6 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center font-bold text-xs tabular-nums text-zinc-400">
@@ -129,7 +139,10 @@ export const TimingTower: React.FC<TimingTowerProps> = ({
                   {isCurrentLap ? "CURRENT SECTOR ATTEMPT" : "IN PIT (AWAITING LAP)"}
                 </span>
               </div>
-              <span className="text-[10px] text-zinc-500 font-mono">
+              <span
+                className="text-[10px] font-mono font-bold"
+                style={{ color: isCurrentLap ? "var(--team-primary)" : "#71717a" }}
+              >
                 {isCurrentLap ? "ACTIVE" : "--:--"}
               </span>
             </div>

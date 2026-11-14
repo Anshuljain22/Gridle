@@ -18,7 +18,10 @@ export const CircuitRibbon: React.FC = () => {
   return (
     <div className="w-full px-4">
       <div className="max-w-7xl mx-auto mt-3 mb-1 rounded-2xl f1-glass px-3 py-2 flex items-center gap-3 overflow-hidden">
-        <span className="shrink-0 font-mono text-[10px] tracking-[0.28em] text-red-400/90 font-bold">
+        <span
+          className="shrink-0 font-mono text-[10px] tracking-[0.28em] font-bold transition-colors"
+          style={{ color: "var(--team-primary)" }}
+        >
           CIRCUIT MAP
         </span>
         <div className="h-6 w-px bg-white/10 shrink-0" />

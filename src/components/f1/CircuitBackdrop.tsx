@@ -63,7 +63,10 @@ export const CircuitBackdrop: React.FC<CircuitBackdropProps> = ({ className }) =
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(5,6,8,0.55)_78%)]" />
 
       {/* Floodlight wash over the circuit park */}
-      <div className="absolute -top-24 left-1/3 h-56 w-[40%] rounded-full bg-red-600/10 blur-3xl" />
+      <div
+        className="absolute -top-24 left-1/3 h-56 w-[40%] rounded-full blur-3xl transition-colors duration-500"
+        style={{ backgroundColor: "var(--team-glow)" }}
+      />
       <div className="absolute bottom-10 right-1/4 h-48 w-[32%] rounded-full bg-cyan-500/8 blur-3xl" />
 
       {CIRCUITS.map((circuit) => (

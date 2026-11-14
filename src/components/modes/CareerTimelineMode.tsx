@@ -71,7 +71,7 @@ export const CareerTimelineMode: React.FC = () => {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-5 select-none animate-fadeIn py-2">
       {/* Header Banner */}
-      <SpotlightCard spotlightColor="rgba(225, 6, 0, 0.2)" className="p-4 sm:p-6">
+      <SpotlightCard spotlightColor="var(--team-glow)" className="p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Icon3D name="helmet" size={36} />
@@ -192,7 +192,7 @@ export const CareerTimelineMode: React.FC = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Type driver name (e.g. Sebastian Vettel, Kimi Räikkönen)..."
-                className="w-full px-4 py-3 rounded-2xl bg-black/60 border border-white/15 focus:border-red-500 text-white placeholder-zinc-500 font-mono text-sm outline-none backdrop-blur-md shadow-inner transition-colors"
+                className="w-full px-4 py-3 rounded-2xl bg-black/60 border border-white/15 focus:border-[var(--team-primary)] text-white placeholder-zinc-500 font-mono text-sm outline-none backdrop-blur-md shadow-inner transition-colors"
               />
 
               {/* Autocomplete Suggestions */}
@@ -202,7 +202,7 @@ export const CareerTimelineMode: React.FC = () => {
                     <button
                       key={m.id}
                       onClick={() => handleGuess(m.name)}
-                      className="w-full px-4 py-2.5 flex items-center justify-between text-left text-xs font-mono text-zinc-200 hover:bg-red-600/30 hover:text-white transition-colors border-b border-white/5 last:border-0"
+                      className="w-full px-4 py-2.5 flex items-center justify-between text-left text-xs font-mono text-zinc-200 hover:bg-[var(--team-bg-tint)] hover:text-white transition-colors border-b border-white/5 last:border-0"
                     >
                       <div className="flex items-center gap-2">
                         <DriverAvatar name={m.name} size={24} />

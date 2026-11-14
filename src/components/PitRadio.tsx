@@ -69,9 +69,12 @@ export const PitRadio: React.FC<PitRadioProps> = ({
           <button
             onClick={requestRadioClue}
             disabled={isBroadcasting}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-red-500/80 text-zinc-200 hover:text-white font-mono text-xs font-bold transition-all shadow-sm active:scale-95 group shrink-0 backdrop-blur-md"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-[var(--team-primary)] text-zinc-200 hover:text-white font-mono text-xs font-bold transition-all shadow-sm active:scale-95 group shrink-0 backdrop-blur-md"
           >
-            <div className="w-2 h-2 rounded-full bg-red-600 group-hover:animate-ping" />
+            <div
+              className="w-2 h-2 rounded-full group-hover:animate-ping transition-colors"
+              style={{ backgroundColor: "var(--team-primary)" }}
+            />
             <Icon3D name="radio" size={18} />
             <span>PIT WALL RADIO</span>
           </button>

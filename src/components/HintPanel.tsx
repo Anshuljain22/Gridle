@@ -51,7 +51,10 @@ export const HintPanel: React.FC<HintPanelProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
         <h3 className="font-bold text-sm text-white font-mono tracking-tight flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+          <span
+            className="w-2 h-2 rounded-full animate-pulse transition-colors"
+            style={{ backgroundColor: "var(--team-primary)" }}
+          />
           Sector Telemetry Hints
         </h3>
         <motion.span
