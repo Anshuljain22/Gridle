@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import { Category, Driver, Team, Track } from "@/types";
-import { Radio, Volume2 } from "lucide-react";
+import { Volume2 } from "lucide-react";
 import { sound } from "@/lib/sound";
+import { Icon3D } from "./icons3d/Icon3D";
+import { DecryptedText } from "./reactbits/DecryptedText";
 
 interface PitRadioProps {
   category: Category;
@@ -70,7 +72,7 @@ export const PitRadio: React.FC<PitRadioProps> = ({
             className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-red-500/80 text-zinc-200 hover:text-white font-mono text-xs font-bold transition-all shadow-sm active:scale-95 group shrink-0 backdrop-blur-md"
           >
             <div className="w-2 h-2 rounded-full bg-red-600 group-hover:animate-ping" />
-            <Radio className="w-3.5 h-3.5 text-red-500" />
+            <Icon3D name="radio" size={18} />
             <span>PIT WALL RADIO</span>
           </button>
 
@@ -88,7 +90,9 @@ export const PitRadio: React.FC<PitRadioProps> = ({
           <div className="flex-1 flex items-center justify-between gap-2 px-3 py-1 rounded-xl bg-black/70 border border-red-900/50 text-xs font-mono text-red-300 animate-fadeIn">
             <div className="flex items-center gap-2 truncate">
               <Volume2 className="w-3.5 h-3.5 text-red-400 shrink-0" />
-              <span className="truncate italic">{radioMsg}</span>
+              <div className="truncate italic">
+                <DecryptedText text={radioMsg} speed={25} maxIterations={6} />
+              </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}

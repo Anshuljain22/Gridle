@@ -16,6 +16,10 @@ import {
 import { copyToClipboard } from "@/lib/share";
 import { BorderBeam } from "./magicui/BorderBeam";
 import { NumberTicker } from "./magicui/NumberTicker";
+import { Icon3D } from "./icons3d/Icon3D";
+import { SpotlightCard } from "./reactbits/SpotlightCard";
+import { ShinyText } from "./reactbits/ShinyText";
+import { GlowEffect } from "./motion-primitives/GlowEffect";
 
 interface TrophyRoomProps {
   stats: UserStats;
@@ -54,42 +58,42 @@ export const TrophyRoom: React.FC<TrophyRoomProps> = ({ stats }) => {
       id: "first_win",
       title: "Chequered Flag",
       description: "Claim your first victory in any category.",
-      icon: <Trophy className="w-5 h-5 text-amber-400" />,
+      icon: <Icon3D name="flag" size={24} />,
       isUnlocked: stats.wins >= 1,
     },
     {
       id: "grand_slam",
       title: "Grand Slam",
       description: "Solve a mystery puzzle on your very first guess.",
-      icon: <Zap className="w-5 h-5 text-yellow-400" />,
+      icon: <Icon3D name="trophy" size={24} />,
       isUnlocked: (stats.guessDistribution[1] || 0) >= 1,
     },
     {
       id: "pole_to_flag",
       title: "Pole to Flag",
       description: "Solve a mystery puzzle within 2 attempts.",
-      icon: <Award className="w-5 h-5 text-emerald-400" />,
+      icon: <Icon3D name="stopwatch" size={24} />,
       isUnlocked: (stats.guessDistribution[2] || 0) >= 1,
     },
     {
       id: "streak_master",
       title: "Hat-Trick Streak",
       description: "Maintain a 3-day daily challenge streak.",
-      icon: <Flame className="w-5 h-5 text-orange-400" />,
+      icon: <Icon3D name="tyre-soft" size={24} />,
       isUnlocked: stats.maxStreak >= 3,
     },
     {
       id: "driver_expert",
       title: "Driver Whisperer",
       description: "Win 5 Driver mystery challenges.",
-      icon: <ShieldCheck className="w-5 h-5 text-red-500" />,
+      icon: <Icon3D name="helmet" size={24} />,
       isUnlocked: stats.byCategory.driver.won >= 5,
     },
     {
       id: "circuit_master",
       title: "Track Master",
       description: "Win 5 Circuit mystery challenges.",
-      icon: <BarChart3 className="w-5 h-5 text-sky-400" />,
+      icon: <Icon3D name="car" size={24} />,
       isUnlocked: stats.byCategory.track.won >= 5,
     },
   ];
@@ -105,7 +109,10 @@ export const TrophyRoom: React.FC<TrophyRoomProps> = ({ stats }) => {
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-4 space-y-6">
       {/* Official FIA Holographic Superlicense */}
-      <div className="relative overflow-hidden rounded-3xl p-6 sm:p-8 f1-glass-modal">
+      <SpotlightCard
+        spotlightColor="rgba(255, 215, 0, 0.18)"
+        className="p-6 sm:p-8"
+      >
         {/* Magic UI Border Beam (FIA Gold & F1 Red) */}
         <BorderBeam size={320} duration={12} colorFrom="#FFD700" colorTo="#E10600" />
 
@@ -122,7 +129,7 @@ export const TrophyRoom: React.FC<TrophyRoomProps> = ({ stats }) => {
                 FEDERATION INTERNATIONALE DE L&apos;AUTOMOBILE
               </span>
               <h2 className="text-xl sm:text-2xl font-black italic tracking-wide text-white font-mono">
-                FORMULA 1 SUPERLICENSE
+                <ShinyText text="FORMULA 1 SUPERLICENSE" className="text-xl sm:text-2xl font-black italic" />
               </h2>
             </div>
           </div>
@@ -180,7 +187,7 @@ export const TrophyRoom: React.FC<TrophyRoomProps> = ({ stats }) => {
           <Share2 className="w-3.5 h-3.5" />
           <span>SHARE OFFICIAL SUPERLICENSE</span>
         </button>
-      </div>
+      </SpotlightCard>
 
       {/* Career Achievements Trophy Showcase */}
       <div className="p-6 rounded-3xl f1-glass">
@@ -198,16 +205,17 @@ export const TrophyRoom: React.FC<TrophyRoomProps> = ({ stats }) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {achievements.map((ach) => (
-            <div
+            <SpotlightCard
               key={ach.id}
+              spotlightColor={ach.isUnlocked ? "rgba(255, 215, 0, 0.15)" : "rgba(255, 255, 255, 0.05)"}
               className={`p-4 rounded-2xl border transition-all ${
                 ach.isUnlocked
                   ? "bg-zinc-900/80 border-amber-500/40 shadow-md shadow-amber-950/20"
-                  : "bg-zinc-950/40 border-zinc-800/40 opacity-50"
+                  : "bg-zinc-950/40 border-zinc-800/40 opacity-60"
               }`}
             >
               <div className="flex items-start justify-between mb-2">
-                <div className="p-2 rounded-xl bg-black/60 border border-zinc-800">
+                <div className="p-2 rounded-xl bg-black/60 border border-zinc-800 shrink-0">
                   {ach.icon}
                 </div>
                 {ach.isUnlocked ? (
@@ -222,7 +230,7 @@ export const TrophyRoom: React.FC<TrophyRoomProps> = ({ stats }) => {
               <p className="text-xs text-zinc-400 leading-snug">
                 {ach.description}
               </p>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </div>

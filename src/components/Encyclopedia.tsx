@@ -11,6 +11,8 @@ import { Search, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { AnimatedTabs, TabOption } from "@/components/watermelon/AnimatedTabs";
 import { MotionButton } from "@/components/watermelon/MotionButton";
+import { DriverAvatar } from "./avatars/DriverAvatar";
+import { Icon3D } from "./icons3d/Icon3D";
 
 export const Encyclopedia: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Category>("driver");
@@ -102,12 +104,15 @@ export const Encyclopedia: React.FC = () => {
               className="p-4 rounded-2xl f1-glass-interactive cursor-pointer group"
             >
               <div className="flex items-start justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">{getFlag(driver.nationality)}</span>
+                <div className="flex items-center gap-3">
+                  <DriverAvatar name={driver.name} size={40} className="shrink-0" />
                   <div>
-                    <h3 className="font-bold text-sm text-white group-hover:text-red-400 transition-colors">
-                      {driver.name}
-                    </h3>
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="font-bold text-sm text-white group-hover:text-red-400 transition-colors">
+                        {driver.name}
+                      </h3>
+                      <span className="text-sm">{getFlag(driver.nationality)}</span>
+                    </div>
                     <span className="text-[11px] font-mono text-zinc-400">
                       {driver.nationality} • Born {driver.birthYear}
                     </span>
@@ -160,12 +165,15 @@ export const Encyclopedia: React.FC = () => {
               className="p-4 rounded-2xl f1-glass-interactive cursor-pointer group"
             >
               <div className="flex items-start justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">{getFlag(team.country)}</span>
+                <div className="flex items-center gap-3">
+                  <Icon3D name="car" size={32} className="shrink-0" />
                   <div>
-                    <h3 className="font-bold text-sm text-white group-hover:text-red-400 transition-colors">
-                      {team.name}
-                    </h3>
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="font-bold text-sm text-white group-hover:text-red-400 transition-colors">
+                        {team.name}
+                      </h3>
+                      <span className="text-sm">{getFlag(team.country)}</span>
+                    </div>
                     <span className="text-[11px] font-mono text-zinc-400">
                       {team.country} • Debut {team.debutYear}
                     </span>
@@ -221,12 +229,15 @@ export const Encyclopedia: React.FC = () => {
             >
               <div>
                 <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">{getFlag(track.country)}</span>
+                  <div className="flex items-center gap-3">
+                    <Icon3D name="flag" size={30} className="shrink-0" />
                     <div>
-                      <h3 className="font-bold text-sm text-white group-hover:text-red-400 transition-colors">
-                        {track.name}
-                      </h3>
+                      <div className="flex items-center gap-1.5">
+                        <h3 className="font-bold text-sm text-white group-hover:text-red-400 transition-colors">
+                          {track.name}
+                        </h3>
+                        <span className="text-sm">{getFlag(track.country)}</span>
+                      </div>
                       <span className="text-[11px] font-mono text-zinc-400">
                         {track.country} • {track.lengthKm} km
                       </span>

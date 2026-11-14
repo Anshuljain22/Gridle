@@ -5,6 +5,8 @@ import { Category, GameMode, Difficulty, UserStats } from "@/types";
 import { User, Shield, MapPin, Sparkles, Clock, Compass, CheckCircle2 } from "lucide-react";
 import { formatCountdown } from "@/lib/daily";
 import { motion } from "motion/react";
+import { Icon3D } from "./icons3d/Icon3D";
+import { SpotlightCard } from "./reactbits/SpotlightCard";
 
 interface ModeSelectorProps {
   selectedCategory: Category;
@@ -45,21 +47,21 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
       id: "driver",
       title: "Drivers",
       subtitle: "Champions & Grid Stars",
-      icon: <User className="w-4 h-4 text-red-500" />,
+      icon: <Icon3D name="helmet" size={22} />,
       isCompleted: dailyCompleted.driver,
     },
     {
       id: "team",
       title: "Constructors",
       subtitle: "Heritage & Factory Teams",
-      icon: <Shield className="w-4 h-4 text-sky-400" />,
+      icon: <Icon3D name="car" size={22} />,
       isCompleted: dailyCompleted.team,
     },
     {
       id: "track",
       title: "Circuits",
       subtitle: "Grand Prix Venues",
-      icon: <MapPin className="w-4 h-4 text-emerald-400" />,
+      icon: <Icon3D name="flag" size={22} />,
       isCompleted: dailyCompleted.track,
     },
   ];
@@ -243,7 +245,16 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
                   }`}
                   title={diff.desc}
                 >
-                  <span className={`w-2.5 h-2.5 rounded-full ${diff.dotColor}`} />
+                  <Icon3D
+                    name={
+                      diff.id === "easy"
+                        ? "tyre-soft"
+                        : diff.id === "medium"
+                        ? "tyre-medium"
+                        : "tyre-hard"
+                    }
+                    size={16}
+                  />
                   <span>{diff.tyre}</span>
                   <span className="text-[10px] opacity-70 font-normal">
                     [{diff.compound}]

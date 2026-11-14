@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { getSoundEnabled, setSoundEnabled } from "@/lib/storage";
 import { sound } from "@/lib/sound";
+import { ShinyText } from "./reactbits/ShinyText";
+import { Icon3D } from "./icons3d/Icon3D";
 
 interface NavbarProps {
   onOpenStats: () => void;
@@ -60,7 +62,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div className="flex items-baseline gap-2">
               <span className="font-black italic tracking-wide text-base sm:text-lg text-white">
-                GRID<span className="text-red-500">LE</span>
+                <ShinyText text="GRID" className="font-black italic tracking-wide" />
+                <span className="text-red-500 font-black italic">LE</span>
               </span>
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-300 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10 backdrop-blur-md">
                 {gameMode === "daily" ? "Daily" : "Practice"}
@@ -71,12 +74,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right Tools */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Daily Streak Pill */}
+          {/* Daily Streak Pill with 3D Flag/Flame */}
           <div
             className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md text-xs font-mono font-bold text-amber-400 shadow-sm"
             title="Current Daily Grand Prix Streak"
           >
-            <Flame className="w-3.5 h-3.5 text-amber-500" />
+            <Icon3D name="flag" size={16} />
             <span suppressHydrationWarning className="tabular-nums">
               {mounted ? streakCount : 0}
             </span>

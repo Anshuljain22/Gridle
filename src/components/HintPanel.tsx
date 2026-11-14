@@ -18,6 +18,7 @@ import {
   Flame,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { DecryptedText } from "./reactbits/DecryptedText";
 
 interface HintPanelProps {
   hints: Hint[];
@@ -108,9 +109,9 @@ export const HintPanel: React.FC<HintPanelProps> = ({
                       </span>
                     </div>
 
-                    <p className="text-xs font-semibold text-zinc-100 leading-snug">
-                      {hint.value}
-                    </p>
+                    <div className="text-xs font-semibold text-zinc-100 leading-snug">
+                      <DecryptedText text={hint.value} speed={30} maxIterations={8} />
+                    </div>
                   </motion.div>
                 ) : (
                   <motion.div

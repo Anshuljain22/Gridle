@@ -12,6 +12,8 @@ import {
 import { ArrowUp, ArrowDown } from "lucide-react";
 import { getFlag } from "@/data/continents";
 import { motion } from "motion/react";
+import { DriverAvatar } from "./avatars/DriverAvatar";
+import { Icon3D } from "./icons3d/Icon3D";
 
 interface FeedbackGridProps {
   category: Category;
@@ -98,21 +100,34 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
                       damping: 24,
                     }}
                     whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-2 p-2 rounded-xl bg-white/5 border border-white/10 min-h-[54px] shadow-sm backdrop-blur-md"
+                    className="flex items-center gap-2 p-1.5 sm:p-2 rounded-xl bg-white/5 border border-white/10 min-h-[54px] shadow-sm backdrop-blur-md"
                   >
-                    <span className="text-base shrink-0">
-                      {category === "driver"
-                        ? getFlag((comp as DriverComparison).guessedItem.nationality)
-                        : getFlag(
-                            category === "team"
-                              ? (comp as TeamComparison).guessedItem.country
-                              : (comp as TrackComparison).guessedItem.country
-                          )}
-                    </span>
+                    {category === "driver" ? (
+                      <DriverAvatar
+                        name={comp.name}
+                        size={32}
+                        className="shrink-0"
+                      />
+                    ) : category === "team" ? (
+                      <Icon3D name="car" size={26} className="shrink-0" />
+                    ) : (
+                      <Icon3D name="flag" size={26} className="shrink-0" />
+                    )}
                     <div className="flex flex-col truncate">
-                      <span className="font-bold text-white truncate text-xs">
-                        {comp.name}
-                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-white truncate text-xs">
+                          {comp.name}
+                        </span>
+                        <span className="text-xs shrink-0">
+                          {category === "driver"
+                            ? getFlag((comp as DriverComparison).guessedItem.nationality)
+                            : getFlag(
+                                category === "team"
+                                  ? (comp as TeamComparison).guessedItem.country
+                                  : (comp as TrackComparison).guessedItem.country
+                              )}
+                        </span>
+                      </div>
                       <span className="text-[10px] text-zinc-500 font-mono tabular-nums">
                         Lap {rowIdx + 1}/7
                       </span>

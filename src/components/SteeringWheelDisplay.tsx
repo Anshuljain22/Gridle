@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { BorderBeam } from "./magicui/BorderBeam";
+import { SpotlightCard } from "./reactbits/SpotlightCard";
+import { TachometerSweep } from "./anime/TachometerSweep";
 
 interface SteeringWheelDisplayProps {
   currentLap: number; // 0 to 7 (attempts used)
@@ -29,7 +31,10 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
   const remainingLaps = Math.max(0, maxLaps - currentLap);
 
   return (
-    <div className="w-full f1-glass rounded-3xl p-3 sm:p-4 relative overflow-hidden select-none">
+    <SpotlightCard
+      spotlightColor="rgba(225, 6, 0, 0.22)"
+      className="w-full p-3 sm:p-4 select-none"
+    >
       {/* Carbon edge visual strip */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-zinc-400 to-red-600 opacity-80" />
 
@@ -151,7 +156,12 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
           </span>
         </div>
       </div>
-    </div>
+
+      {/* 3. Tachometer Gauge (Anime.js Kinetic Engine) */}
+      <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
+        <TachometerSweep currentLap={currentLap} maxLaps={maxLaps} className="w-full" />
+      </div>
+    </SpotlightCard>
   );
 };
 

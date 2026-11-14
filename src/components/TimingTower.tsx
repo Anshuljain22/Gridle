@@ -3,6 +3,8 @@
 import React from "react";
 import { Category, ComparisonResult, DriverComparison, TeamComparison, TrackComparison } from "@/types";
 import { getFlag } from "@/data/continents";
+import { SpotlightCard } from "./reactbits/SpotlightCard";
+import { Icon3D } from "./icons3d/Icon3D";
 
 interface TimingTowerProps {
   category: Category;
@@ -16,11 +18,14 @@ export const TimingTower: React.FC<TimingTowerProps> = ({
   maxLaps = 7,
 }) => {
   return (
-    <div className="w-full f1-glass rounded-3xl p-3 sm:p-4 relative select-none">
+    <SpotlightCard
+      spotlightColor="rgba(225, 6, 0, 0.18)"
+      className="w-full p-3 sm:p-4 select-none"
+    >
       {/* Timing Tower Header */}
       <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10 text-xs font-mono">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse" />
+          <Icon3D name="stopwatch" size={20} />
           <h3 className="font-bold text-white uppercase tracking-wider">
             F1 TIMING TOWER
           </h3>
@@ -131,7 +136,7 @@ export const TimingTower: React.FC<TimingTowerProps> = ({
           );
         })}
       </div>
-    </div>
+    </SpotlightCard>
   );
 };
 

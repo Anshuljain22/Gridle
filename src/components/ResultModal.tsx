@@ -9,6 +9,11 @@ import { getFlag } from "@/data/continents";
 import { sound } from "@/lib/sound";
 import { motion, AnimatePresence } from "motion/react";
 import { MotionButton } from "@/components/watermelon/MotionButton";
+import { SparklesCore } from "./aceternity/SparklesCore";
+import { Icon3D } from "./icons3d/Icon3D";
+import { DecryptedText } from "./reactbits/DecryptedText";
+import { ShinyText } from "./reactbits/ShinyText";
+import { DriverAvatar } from "./avatars/DriverAvatar";
 
 interface ResultModalProps {
   isOpen: boolean;
@@ -121,6 +126,18 @@ export const ResultModal: React.FC<ResultModalProps> = ({
             transition={{ type: "spring", stiffness: 350, damping: 28 }}
             className="relative w-full max-w-2xl f1-glass-modal rounded-3xl p-6 sm:p-8 my-8 overflow-hidden z-10"
           >
+            {/* Podium Sparkles Backdrop (Aceternity UI) */}
+            {isWon && (
+              <div className="absolute inset-0 pointer-events-none opacity-40 z-0">
+                <SparklesCore
+                  particleColor="#FFD700"
+                  particleDensity={50}
+                  minSize={0.8}
+                  maxSize={3}
+                />
+              </div>
+            )}
+
             {/* Top Accent Strip */}
             <div
               className={`absolute top-0 left-0 right-0 h-1.5 ${
@@ -131,13 +148,21 @@ export const ResultModal: React.FC<ResultModalProps> = ({
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 rounded-xl bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800 transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-xl bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800 transition-colors z-20"
             >
               <X className="w-4 h-4" />
             </button>
 
             {/* Header Banner */}
-            <div className="text-center mb-6">
+            <div className="relative z-10 text-center mb-6">
+              <div className="flex justify-center mb-3">
+                {isWon ? (
+                  <Icon3D name="trophy" size={54} />
+                ) : (
+                  <Icon3D name="helmet" size={54} />
+                )}
+              </div>
+
               <span
                 className={`inline-block px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider border mb-3 ${performanceBadge}`}
               >
@@ -145,7 +170,11 @@ export const ResultModal: React.FC<ResultModalProps> = ({
               </span>
 
               <h2 className="text-2xl sm:text-3xl font-black italic tracking-tight text-white mb-1">
-                {isWon ? "CIRCUIT CONQUERED" : "RACE SUMMARY"}
+                {isWon ? (
+                  <ShinyText text="CIRCUIT CONQUERED" className="text-2xl sm:text-3xl font-black italic" />
+                ) : (
+                  "RACE SUMMARY"
+                )}
               </h2>
               <p className="text-xs sm:text-sm text-zinc-400 font-mono">
                 {isWon
@@ -155,13 +184,22 @@ export const ResultModal: React.FC<ResultModalProps> = ({
             </div>
 
             {/* Answer Reveal Card */}
-            <div className="relative p-5 rounded-2xl f1-glass-subtle mb-6">
+            <div className="relative z-10 p-5 rounded-2xl f1-glass-subtle mb-6">
               <div className="flex items-center gap-4">
-                <div className="text-4xl sm:text-5xl">{flag}</div>
+                {category === "driver" ? (
+                  <DriverAvatar name={targetEntity.name} size={64} className="shrink-0" />
+                ) : category === "team" ? (
+                  <Icon3D name="car" size={56} className="shrink-0" />
+                ) : (
+                  <div className="text-4xl sm:text-5xl">{flag}</div>
+                )}
                 <div className="flex-1">
-                  <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide">
-                    {targetEntity.name}
-                  </h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">{flag}</span>
+                    <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide">
+                      <DecryptedText text={targetEntity.name} speed={25} maxIterations={10} />
+                    </h3>
+                  </div>
                   <p className="text-xs text-zinc-400 font-mono mt-0.5">
                     {category === "driver" &&
                       `${(targetEntity as Driver).nationality} • Debut: ${
