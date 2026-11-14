@@ -26,29 +26,21 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
 }) => {
   if (comparisons.length === 0) {
     return (
-      <div className="w-full cockpit-bezel cockpit-chamfer p-7 text-center my-3 relative overflow-hidden">
-        <div className="absolute top-2 left-2 hex-rivet" />
-        <div className="absolute top-2 right-2 hex-rivet" />
-        <div className="absolute bottom-2 left-2 hex-rivet" />
-        <div className="absolute bottom-2 right-2 hex-rivet" />
+      <div className="w-full rounded-2xl bg-black/50 border border-white/10 backdrop-blur-xl p-6 text-center relative overflow-hidden">
         <h4 className="font-bold text-xs text-zinc-300 font-mono tracking-widest uppercase mb-1 flex items-center justify-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-pulse" />
+          <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: "var(--team-primary)" }} />
           TELEMETRY ANALYSIS DECK AWAITING DATA
         </h4>
         <p className="text-xs text-zinc-400 max-w-md mx-auto font-mono mt-1">
-          Submit your first guess using the tactical command terminal above to generate driver attribute comparisons and unlock progressive sector telemetry.
+          Submit your first guess using the tactical command terminal above to generate attribute comparisons and unlock progressive sector telemetry.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="w-full my-3 cockpit-bezel cockpit-chamfer p-3.5 sm:p-4 relative overflow-hidden">
-      <div className="absolute top-2 left-2 hex-rivet" />
-      <div className="absolute top-2 right-2 hex-rivet" />
-      <div className="absolute bottom-2 left-2 hex-rivet" />
-      <div className="absolute bottom-2 right-2 hex-rivet" />
-      <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-zinc-800">
+    <div className="w-full rounded-2xl bg-black/50 border border-white/10 backdrop-blur-xl p-3 sm:p-3.5 relative overflow-hidden shadow-xl">
+      <div className="overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-zinc-800">
         <div className="min-w-[660px]">
           {/* Table Headers */}
           <div className="grid grid-cols-7 gap-2 pb-2 text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-400 border-b border-white/10 text-center">

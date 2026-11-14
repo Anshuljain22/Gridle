@@ -26,8 +26,18 @@ export const GarageBackground: React.FC<GarageBackgroundProps> = ({ className })
       aria-hidden="true"
     >
       {/* 1. Overhead Pit Box Neon Ambient Illumination */}
-      <div className="absolute top-0 left-1/4 right-1/4 h-32 bg-gradient-to-b from-white/8 via-cyan-500/5 to-transparent blur-3xl opacity-60" />
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-red-600/40 to-transparent" />
+      <div
+        className="absolute top-0 left-1/4 right-1/4 h-32 blur-3xl opacity-60 transition-colors duration-500"
+        style={{
+          background: "radial-gradient(ellipse at top, var(--team-glow) 0%, transparent 70%)",
+        }}
+      />
+      <div
+        className="absolute top-0 left-0 right-0 h-1 transition-colors duration-500"
+        style={{
+          background: "linear-gradient(90deg, transparent, var(--team-primary), transparent)",
+        }}
+      />
 
       {/* 2. Top-Right: Rotating F1 Centerlock Rim & Carbon Brake Assembly */}
       <div className="absolute -top-32 -right-32 w-[520px] h-[520px] opacity-25">
@@ -40,7 +50,7 @@ export const GarageBackground: React.FC<GarageBackgroundProps> = ({ className })
           {/* Outer Rim & Tyre Contour */}
           <circle cx="200" cy="200" r="190" strokeWidth="1.5" strokeDasharray="4 8" />
           <circle cx="200" cy="200" r="175" strokeWidth="1" strokeOpacity="0.4" />
-          <circle cx="200" cy="200" r="150" strokeWidth="2" stroke="rgba(225, 6, 0, 0.4)" />
+          <circle cx="200" cy="200" r="150" strokeWidth="2" stroke="var(--team-primary)" strokeOpacity="0.6" />
 
           {/* Ventilated Carbon Brake Disc with Drilling Holes */}
           <circle cx="200" cy="200" r="125" strokeWidth="1" strokeDasharray="2 4" strokeOpacity="0.6" />
@@ -50,19 +60,19 @@ export const GarageBackground: React.FC<GarageBackgroundProps> = ({ className })
           {[0, 36, 72, 108, 144, 180, 216, 252, 288, 324].map((deg) => (
             <g key={deg} transform={`rotate(${deg} 200 200)`}>
               <line x1="200" y1="200" x2="200" y2="28" strokeWidth="1.5" strokeOpacity="0.7" />
-              <circle cx="200" cy="80" r="4" strokeWidth="1" stroke="rgba(225, 6, 0, 0.5)" />
+              <circle cx="200" cy="80" r="4" strokeWidth="1" stroke="var(--team-primary)" strokeOpacity="0.6" />
             </g>
           ))}
 
           {/* Center-Lock Anodized Nut & Axle Core */}
-          <circle cx="200" cy="200" r="45" strokeWidth="2" stroke="rgba(225, 6, 0, 0.7)" />
+          <circle cx="200" cy="200" r="45" strokeWidth="2" stroke="var(--team-primary)" strokeOpacity="0.8" />
           <polygon
             points="200,165 230,182 230,218 200,235 170,218 170,182"
             strokeWidth="1.5"
             stroke="rgba(255, 255, 255, 0.8)"
-            fill="rgba(225, 6, 0, 0.1)"
+            fill="var(--team-bg-tint)"
           />
-          <circle cx="200" cy="200" r="14" fill="rgba(225, 6, 0, 0.4)" strokeWidth="1" />
+          <circle cx="200" cy="200" r="14" fill="var(--team-primary)" fillOpacity="0.6" strokeWidth="1" />
         </svg>
       </div>
 
@@ -89,7 +99,8 @@ export const GarageBackground: React.FC<GarageBackgroundProps> = ({ className })
               y2="140"
               transform={`rotate(${deg} 200 200)`}
               strokeWidth="2"
-              stroke="rgba(225, 6, 0, 0.6)"
+              stroke="var(--team-primary)"
+              strokeOpacity="0.6"
             />
           ))}
 
@@ -101,7 +112,7 @@ export const GarageBackground: React.FC<GarageBackgroundProps> = ({ className })
             return (
               <g key={idx}>
                 <circle cx={cx} cy={cy} r="42" strokeWidth="1.5" stroke="rgba(255, 255, 255, 0.6)" />
-                <circle cx={cx} cy={cy} r="10" strokeWidth="1" stroke="rgba(225, 6, 0, 0.8)" fill="rgba(0,0,0,0.5)" />
+                <circle cx={cx} cy={cy} r="10" strokeWidth="1" stroke="var(--team-primary)" strokeOpacity="0.8" fill="rgba(0,0,0,0.5)" />
               </g>
             );
           })}
@@ -117,8 +128,12 @@ export const GarageBackground: React.FC<GarageBackgroundProps> = ({ className })
         />
         {/* Streamline 2 */}
         <div
-          className="absolute top-[32%] left-0 w-[600px] h-[1.5px] bg-gradient-to-r from-transparent via-red-500 to-transparent animate-aero-drift"
-          style={{ animationDuration: "14s", animationDelay: "3s" }}
+          className="absolute top-[32%] left-0 w-[600px] h-[1.5px] animate-aero-drift"
+          style={{
+            animationDuration: "14s",
+            animationDelay: "3s",
+            background: "linear-gradient(90deg, transparent, var(--team-primary), transparent)",
+          }}
         />
         {/* Streamline 3 */}
         <div
@@ -127,8 +142,12 @@ export const GarageBackground: React.FC<GarageBackgroundProps> = ({ className })
         />
         {/* Streamline 4 */}
         <div
-          className="absolute top-[78%] left-0 w-[700px] h-[1.5px] bg-gradient-to-r from-transparent via-red-400/80 to-transparent animate-aero-drift"
-          style={{ animationDuration: "16s", animationDelay: "1.5s" }}
+          className="absolute top-[78%] left-0 w-[700px] h-[1.5px] animate-aero-drift"
+          style={{
+            animationDuration: "16s",
+            animationDelay: "1.5s",
+            background: "linear-gradient(90deg, transparent, var(--team-primary-light, var(--team-primary)), transparent)",
+          }}
         />
       </div>
 

@@ -48,8 +48,8 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { RetroGrid } from "@/components/magicui/RetroGrid";
 import { GarageBackground } from "@/components/f1/GarageBackground";
 import { CircuitBackdrop } from "@/components/f1/CircuitBackdrop";
-import { CircuitRibbon } from "@/components/f1/CircuitRibbon";
-import { CockpitTelemetryWing } from "@/components/f1/CockpitTelemetryWing";
+import { CompactCockpitHUD } from "@/components/f1/CompactCockpitHUD";
+import { PitWallMFD } from "@/components/f1/PitWallMFD";
 import { AnimatedTabs, TabOption } from "@/components/watermelon/AnimatedTabs";
 import { MotionButton } from "@/components/watermelon/MotionButton";
 import {
@@ -370,238 +370,221 @@ export default function F1WordleApp() {
   return (
     <div
       data-theme={currentTheme.id}
-      className="relative min-h-screen flex flex-col justify-between selection:bg-[var(--team-primary)] selection:text-white bg-[#050608]/80 overflow-x-hidden transition-colors duration-500"
+      className="relative h-screen max-h-screen flex flex-col selection:bg-[var(--team-primary)] selection:text-white bg-[#050608] overflow-hidden transition-colors duration-500"
     >
       <CircuitBackdrop />
       <GarageBackground className="opacity-40" />
       <RetroGrid className="opacity-10 fixed inset-0 z-0 pointer-events-none" />
 
-      {/* Main Content Area */}
-      <div className="relative z-10 flex flex-col min-h-screen justify-between">
-        <div>
-          {/* 1. Live F1 Broadcast Telemetry Ticker */}
-          <LiveTicker
-            secondsRemaining={secondsRemaining}
-            streak={userStats.currentStreak}
-          />
+      {/* Main Screen Layout (Single Viewport Zero-Scroll) */}
+      <div className="relative z-10 flex flex-col h-full overflow-hidden">
+        {/* 1. Live F1 Broadcast Telemetry Ticker */}
+        <LiveTicker
+          secondsRemaining={secondsRemaining}
+          streak={userStats.currentStreak}
+        />
 
-          {/* 2. Top Motorsport Header with Team Livery Selector */}
-          <Navbar
-            onOpenStats={() => setIsStatsOpen(true)}
-            onOpenHelp={() => setIsHelpOpen(true)}
-            onResetGame={() => initRound(category, gameMode, difficulty)}
-            streakCount={userStats.currentStreak}
-            gameMode={gameMode}
-            currentThemeId={currentTheme.id}
-            onSelectTheme={(theme) => {
-              setCurrentTheme(theme);
-              saveThemeId(theme.id);
-            }}
-          />
-          <CircuitRibbon />
+        {/* 2. Top Motorsport Header with Team Livery Selector */}
+        <Navbar
+          onOpenStats={() => setIsStatsOpen(true)}
+          onOpenHelp={() => setIsHelpOpen(true)}
+          onResetGame={() => initRound(category, gameMode, difficulty)}
+          streakCount={userStats.currentStreak}
+          gameMode={gameMode}
+          currentThemeId={currentTheme.id}
+          onSelectTheme={(theme) => {
+            setCurrentTheme(theme);
+            saveThemeId(theme.id);
+          }}
+        />
 
-      {/* 3. Main Cockpit Navigation Tabs (Watermelon UI + Motion Dev) */}
-      <div className="w-full max-w-[1740px] 2xl:max-w-[1900px] mx-auto px-3 sm:px-5 lg:px-6 2xl:px-8 pt-3 flex-1">
-        <Tabs
-          value={activeMainTab}
-          onValueChange={(val) => setActiveMainTab(val as MainTabType)}
-          className="w-full"
-        >
-          <div className="flex justify-center mb-4">
-            <AnimatedTabs
-              tabs={mainNavTabs}
-              activeTab={activeMainTab}
-              onTabChange={(val) => setActiveMainTab(val)}
-              layoutId="main-nav-pill"
-              className="max-w-6xl w-full overflow-x-auto pb-1"
-            />
-          </div>
+        {/* 3. Main Navigation & Dynamic Viewport Arena */}
+        <div className="w-full max-w-[1760px] mx-auto px-2.5 sm:px-4 pt-1.5 flex-1 min-h-0 flex flex-col overflow-hidden">
+          <Tabs
+            value={activeMainTab}
+            onValueChange={(val) => setActiveMainTab(val as MainTabType)}
+            className="w-full flex-1 flex flex-col min-h-0 overflow-hidden"
+          >
+            {/* Nav Tabs Ribbon (Slim single-row) */}
+            <div className="flex justify-center mb-1.5 shrink-0">
+              <AnimatedTabs
+                tabs={mainNavTabs}
+                activeTab={activeMainTab}
+                onTabChange={(val) => setActiveMainTab(val)}
+                layoutId="main-nav-pill"
+                className="max-w-5xl w-full overflow-x-auto no-scrollbar py-0.5"
+              />
+            </div>
 
-          {/* TAB 1: RACE COCKPIT (THE GAME) */}
-          <TabsContent value="game">
-            <main className="py-1">
-              {/* Formula 1 Mission Control Panoramic 3-Wing Deck */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 xl:grid-cols-16 2xl:grid-cols-20 gap-5 items-start">
-                
-                {/* WING 1: LEFT FLANK TELEMETRY & TRACK RADAR (Expands on XL & 2XL) */}
-                <aside className="hidden xl:block xl:col-span-4 2xl:col-span-5 space-y-4">
-                  <CockpitTelemetryWing
-                    category={category}
-                    targetEntity={targetEntity}
-                    attemptsCount={guesses.length}
-                  />
-                </aside>
+            {/* TAB 1: RACE COCKPIT (THE GAME) - 100% SINGLE VIEWPORT NO SCROLL */}
+            <TabsContent
+              value="game"
+              className="flex-1 flex flex-col min-h-0 overflow-hidden m-0 p-0 data-[state=inactive]:hidden"
+            >
+              <div className="w-full flex-1 flex flex-col gap-2 min-h-0 overflow-hidden">
+                {/* 1. Integrated Cockpit HUD: Categories + 15-LED Shift Light Bar + Mode + Timer */}
+                <CompactCockpitHUD
+                  category={category}
+                  onSelectCategory={(cat) => setCategory(cat)}
+                  gameMode={gameMode}
+                  onSelectGameMode={(m) => setGameMode(m)}
+                  difficulty={difficulty}
+                  onSelectDifficulty={(d) => setDifficulty(d)}
+                  currentLap={guesses.length}
+                  maxLaps={7}
+                  isWon={status === "won"}
+                  isGameOver={status !== "in_progress"}
+                  dailySecondsRemaining={secondsRemaining}
+                  dailyCompleted={dailyCompleted}
+                />
 
-                {/* WING 2: CENTER ARENA — HOTLAP & COMMAND TERMINAL */}
-                <section className="col-span-1 lg:col-span-7 xl:col-span-8 2xl:col-span-10 space-y-4">
-                  {/* F1 5-Light Starting Gantry */}
-                  <StartLights
-                    attemptsUsed={guesses.length}
-                    maxAttempts={7}
-                    isWon={status === "won"}
-                    isGameOver={status !== "in_progress"}
-                  />
+                {/* 2. Tactical Autocomplete Command Bar */}
+                <SearchBar
+                  category={category}
+                  guessedIds={guesses}
+                  disabled={status !== "in_progress"}
+                  onSelectGuess={handleGuess}
+                  remainingGuesses={remainingGuesses}
+                />
 
-                  {/* F1 Steering Wheel RPM & Shift Light Display */}
-                  <SteeringWheelDisplay
-                    currentLap={guesses.length}
-                    maxLaps={7}
-                    isWon={status === "won"}
-                    isGameOver={status !== "in_progress"}
-                    category={category}
-                  />
-
-                  {/* Cockpit Mode & Rotary Switches */}
-                  <ModeSelector
-                    selectedCategory={category}
-                    onSelectCategory={(cat) => setCategory(cat)}
-                    gameMode={gameMode}
-                    onSelectGameMode={(m) => setGameMode(m)}
-                    difficulty={difficulty}
-                    onSelectDifficulty={(d) => setDifficulty(d)}
-                    dailySecondsRemaining={secondsRemaining}
-                    dailyCompleted={dailyCompleted}
-                    userStats={userStats}
-                  />
-
-                  {/* Tactical Command Input Area */}
-                  <SearchBar
-                    category={category}
-                    guessedIds={guesses}
-                    disabled={status !== "in_progress"}
-                    onSelectGuess={handleGuess}
-                    remainingGuesses={remainingGuesses}
-                  />
-
-                  {/* Wordle Attribute Comparison Feedback Grid */}
-                  <FeedbackGrid category={category} comparisons={comparisons} />
-
-                  {/* Action Bar (Give Up & Replay) with Watermelon UI MotionButton */}
-                  <div className="flex items-center justify-between px-1 py-1">
-                    <div>
-                      {status === "in_progress" && guesses.length > 0 && (
-                        <MotionButton
-                          variant="ghost"
-                          size="sm"
-                          onClick={handleGiveUp}
-                          className="text-zinc-500 hover:text-red-400 p-0 hover:bg-transparent"
-                        >
-                          <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
-                          <span>RETIRE FROM RACE (DNF)</span>
-                        </MotionButton>
-                      )}
+                {/* 3. Main Mission Control Telemetry Split */}
+                <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch overflow-hidden pb-1">
+                  {/* Left Hero Pane (62% width / 8 cols): Feedback Comparison Table + Action Bar */}
+                  <div className="lg:col-span-8 flex flex-col min-h-0 overflow-hidden space-y-1.5">
+                    <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar">
+                      <FeedbackGrid category={category} comparisons={comparisons} />
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      {status !== "in_progress" && (
-                        <MotionButton
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setIsResultOpen(true)}
-                          className="text-zinc-300 hover:text-white"
-                        >
-                          <Flag className="w-3.5 h-3.5 text-red-500" />
-                          <span>VIEW RACE RESULTS</span>
-                        </MotionButton>
-                      )}
+                    {/* Action Bar (Retire DNF, View Results, New Practice) */}
+                    <div className="flex items-center justify-between px-2 py-1 shrink-0 bg-black/40 rounded-xl border border-white/5 backdrop-blur-md">
+                      <div>
+                        {status === "in_progress" && guesses.length > 0 && (
+                          <MotionButton
+                            variant="ghost"
+                            size="sm"
+                            onClick={handleGiveUp}
+                            className="text-zinc-500 hover:text-red-400 p-0 hover:bg-transparent text-xs"
+                          >
+                            <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+                            <span>RETIRE FROM RACE (DNF)</span>
+                          </MotionButton>
+                        )}
+                      </div>
 
-                      {gameMode === "practice" && (
-                        <MotionButton
-                          variant="primary"
-                          size="sm"
-                          onClick={() => initRound(category, "practice", difficulty)}
-                          className="text-white font-bold"
-                        >
-                          <RotateCcw className="w-3.5 h-3.5" />
-                          <span>NEW PRACTICE ROUND</span>
-                        </MotionButton>
-                      )}
+                      <div className="flex items-center gap-2">
+                        {status !== "in_progress" && (
+                          <MotionButton
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setIsResultOpen(true)}
+                            className="text-zinc-300 hover:text-white text-xs"
+                          >
+                            <Flag className="w-3.5 h-3.5 text-red-500" />
+                            <span>VIEW RACE RESULTS</span>
+                          </MotionButton>
+                        )}
+
+                        {gameMode === "practice" && (
+                          <MotionButton
+                            variant="primary"
+                            size="sm"
+                            onClick={() => initRound(category, "practice", difficulty)}
+                            className="text-white font-bold text-xs"
+                          >
+                            <RotateCcw className="w-3.5 h-3.5" />
+                            <span>NEW PRACTICE ROUND</span>
+                          </MotionButton>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </section>
 
-                {/* WING 3: RIGHT FLANK — TIMING TOWER & SECTOR ANALYTICS */}
-                <aside className="col-span-1 lg:col-span-5 xl:col-span-4 2xl:col-span-5 space-y-4">
-                  {/* F1 Live Timing Tower */}
-                  <TimingTower
-                    category={category}
-                    comparisons={comparisons}
-                    maxLaps={7}
-                  />
-
-                  {/* 6 Progressive Telemetry Hints Panel */}
-                  <HintPanel
-                    hints={hints}
-                    attemptsCount={guesses.length}
-                  />
-
-                  {/* On screen sizes below XL where left wing is hidden, show Pit Radio here */}
-                  <div className="xl:hidden">
-                    <PitRadio
+                  {/* Right Dock (38% width / 4 cols): Unified PitWall MFD (Timing Tower, Pit Radio, Hints) */}
+                  <div className="lg:col-span-4 h-full min-h-0 overflow-hidden">
+                    <PitWallMFD
                       category={category}
+                      comparisons={comparisons}
+                      hints={hints}
                       targetEntity={targetEntity}
                       attemptsCount={guesses.length}
+                      maxLaps={7}
                     />
                   </div>
-                </aside>
-
+                </div>
               </div>
-            </main>
-          </TabsContent>
+            </TabsContent>
 
-          {/* TAB 2: CAREER TIMELINE MODE */}
-          <TabsContent value="career">
-            <CareerTimelineMode />
-          </TabsContent>
+            {/* TAB 2: CAREER TIMELINE MODE */}
+            <TabsContent
+              value="career"
+              className="flex-1 min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden"
+            >
+              <CareerTimelineMode />
+            </TabsContent>
 
-          {/* TAB 3: TEAM RADIO QUIZ */}
-          <TabsContent value="radio">
-            <RadioQuizMode />
-          </TabsContent>
+            {/* TAB 3: TEAM RADIO QUIZ */}
+            <TabsContent
+              value="radio"
+              className="flex-1 min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden"
+            >
+              <RadioQuizMode />
+            </TabsContent>
 
-          {/* TAB 4: APEX CORNER QUIZ */}
-          <TabsContent value="corners">
-            <CornerQuizMode />
-          </TabsContent>
+            {/* TAB 4: APEX CORNER QUIZ */}
+            <TabsContent
+              value="corners"
+              className="flex-1 min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden"
+            >
+              <CornerQuizMode />
+            </TabsContent>
 
-          {/* TAB 5: DRIVER SHOWDOWN (HIGHER/LOWER) */}
-          <TabsContent value="battles">
-            <HeadToHeadMode />
-          </TabsContent>
+            {/* TAB 5: DRIVER SHOWDOWN (HIGHER/LOWER) */}
+            <TabsContent
+              value="battles"
+              className="flex-1 min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden"
+            >
+              <HeadToHeadMode />
+            </TabsContent>
 
-          {/* TAB 6: WIND TUNNEL & CFD AERO INSPECTOR */}
-          <TabsContent value="aero">
-            <AeroCarViewer />
-          </TabsContent>
+            {/* TAB 6: WIND TUNNEL & CFD AERO INSPECTOR */}
+            <TabsContent
+              value="aero"
+              className="flex-1 min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden"
+            >
+              <AeroCarViewer />
+            </TabsContent>
 
-          {/* TAB 7: 2025 SEASON CALENDAR & WEATHER RADAR */}
-          <TabsContent value="season">
-            <SeasonHub />
-          </TabsContent>
+            {/* TAB 7: 2025 SEASON CALENDAR & WEATHER RADAR */}
+            <TabsContent
+              value="season"
+              className="flex-1 min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden"
+            >
+              <SeasonHub />
+            </TabsContent>
 
-          {/* TAB 8: PADDOCK ENCYCLOPEDIA */}
-          <TabsContent value="archive">
-            <Encyclopedia />
-          </TabsContent>
+            {/* TAB 8: PADDOCK ENCYCLOPEDIA */}
+            <TabsContent
+              value="archive"
+              className="flex-1 min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden"
+            >
+              <Encyclopedia />
+            </TabsContent>
 
-          {/* TAB 9: SUPERLICENSE & TROPHY ROOM */}
-          <TabsContent value="trophies">
-            <TrophyRoom stats={userStats} />
-          </TabsContent>
-        </Tabs>
+            {/* TAB 9: SUPERLICENSE & TROPHY ROOM */}
+            <TabsContent
+              value="trophies"
+              className="flex-1 min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden"
+            >
+              <TrophyRoom stats={userStats} />
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Ultra-slim Footer */}
+        <footer className="w-full py-1 text-center text-[10px] font-mono text-zinc-500 shrink-0 border-t border-white/5 bg-black/40">
+          <span>F1 GRIDLE • FIA Motorsport Telemetry Console • Single Viewport Mission Control</span>
+        </footer>
       </div>
-    </div>
-
-    {/* Footer with Kerbing Stripe */}
-    <div>
-      <div className="kerb-divider w-full mt-8" />
-      <footer className="w-full bg-black/25 backdrop-blur-xl py-4 text-center text-xs font-mono text-zinc-400 border-t border-white/10">
-        <p>
-          F1 GRIDLE • Formula 1 Motorsport Mission Control • Data verified through FIA Official Records
-        </p>
-      </footer>
-    </div>
-  </div>
 
       {/* Result Modal */}
       {targetEntity && (

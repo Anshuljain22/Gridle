@@ -126,35 +126,13 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       : ["Monaco", "Spa", "Silverstone", "Monza", "Suzuka", "Interlagos", "Austin"];
 
   return (
-    <div className="w-full relative z-30 space-y-2.5">
-      {/* Cockpit Tactical Command Console Frame */}
-      <div className="cockpit-bezel cockpit-chamfer p-3.5 sm:p-4 relative">
-        {/* Hex rivets in corners */}
-        <div className="absolute top-2.5 left-2.5 hex-rivet" />
-        <div className="absolute top-2.5 right-2.5 hex-rivet" />
-        <div className="absolute bottom-2.5 left-2.5 hex-rivet" />
-        <div className="absolute bottom-2.5 right-2.5 hex-rivet" />
-
-        {/* Telemetry Console Header */}
-        <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-white/10 text-xs font-mono pl-1 pr-1">
-          <div className="flex items-center gap-2">
-            <span
-              className="w-2 h-2 rounded-full animate-pulse"
-              style={{ backgroundColor: "var(--team-primary)" }}
-            />
-            <span className="font-bold text-white tracking-wider uppercase text-[11px]">
-              TACTICAL COMMAND ENTRY
-            </span>
-          </div>
-          <span className="text-[10px] text-zinc-400 font-mono">
-            {remainingGuesses} ATTEMPTS REMAINING
-          </span>
-        </div>
-
+    <div className="w-full relative z-30">
+      {/* Sleek Command Console Input */}
+      <div className="p-2 sm:p-2.5 rounded-2xl bg-black/50 border border-white/10 backdrop-blur-xl relative">
         {/* Search Input Box */}
         <div className="relative">
           <div className="relative flex items-center">
-            <div className="absolute left-4 text-zinc-400 pointer-events-none">
+            <div className="absolute left-3.5 text-zinc-400 pointer-events-none">
               <Search className="w-4 h-4 text-zinc-400" />
             </div>
 
@@ -171,7 +149,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               onFocus={() => setIsOpen(true)}
               onKeyDown={handleKeyDown}
               placeholder={placeholderText}
-              className={`w-full bg-black/60 text-white placeholder-zinc-400 text-sm font-medium rounded-xl pl-11 pr-28 py-3.5 border transition-all outline-none ${
+              className={`w-full bg-black/70 text-white placeholder-zinc-500 text-xs sm:text-sm font-medium rounded-xl pl-10 pr-24 py-2.5 sm:py-3 border transition-all outline-none ${
                 disabled
                   ? "opacity-50 cursor-not-allowed border-white/5"
                   : errorMsg
@@ -181,7 +159,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             />
 
             {/* Right Action / Submit */}
-            <div className="absolute right-2 flex items-center gap-1.5">
+            <div className="absolute right-1.5 sm:right-2 flex items-center gap-1.5">
               {query && (
                 <button
                   type="button"
@@ -189,7 +167,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                     setQuery("");
                     inputRef.current?.focus();
                   }}
-                  className="p-1.5 rounded-lg text-zinc-400 hover:text-white"
+                  className="p-1 rounded-lg text-zinc-400 hover:text-white"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -203,10 +181,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                     submitItem(availableMatches[selectedIndex]);
                   }
                 }}
-                className="flex items-center gap-1 px-3 sm:px-4 py-2 rounded-lg text-white font-mono text-xs font-bold shadow-md transition-all disabled:opacity-40 hover:brightness-110 active:scale-95"
+                className="flex items-center gap-1 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-white font-mono text-xs font-bold shadow-md transition-all disabled:opacity-40 hover:brightness-110 active:scale-95"
                 style={{
                   background: "var(--team-gradient)",
-                  boxShadow: "0 4px 14px var(--team-glow)",
+                  boxShadow: "0 2px 10px var(--team-glow)",
                 }}
               >
                 <span>SUBMIT</span>
@@ -217,8 +195,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
           {/* Quick Paddock Filter Chips */}
           {!disabled && (
-            <div className="flex items-center gap-1.5 overflow-x-auto pt-2.5 text-xs font-mono text-zinc-400 no-scrollbar">
-              <span className="text-zinc-500 text-[10px] uppercase shrink-0 font-bold">
+            <div className="flex items-center gap-1.5 overflow-x-auto pt-1.5 text-xs font-mono text-zinc-400 no-scrollbar">
+              <span className="text-zinc-500 text-[9px] uppercase shrink-0 font-bold">
                 QUICK PICKS:
               </span>
               {sampleSuggestions.map((suggestion) => (
@@ -229,7 +207,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                     setQuery(suggestion);
                     inputRef.current?.focus();
                   }}
-                  className="px-2.5 py-0.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white border border-white/10 text-[11px] shrink-0 transition-all hover:scale-105"
+                  className="px-2 py-0.5 rounded-md bg-white/5 hover:bg-white/15 hover:text-white border border-white/10 text-[10px] shrink-0 transition-all hover:scale-105"
                 >
                   {suggestion}
                 </button>
