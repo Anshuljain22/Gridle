@@ -114,16 +114,16 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     category === "driver"
       ? `Search driver name or number (${remainingGuesses} attempts left)...`
       : category === "team"
-      ? `Search constructor name (${remainingGuesses} attempts left)...`
-      : `Search circuit name or country (${remainingGuesses} attempts left)...`;
+        ? `Search constructor name (${remainingGuesses} attempts left)...`
+        : `Search circuit name or country (${remainingGuesses} attempts left)...`;
 
   // Quick Chips for fast discovery
   const sampleSuggestions =
     category === "driver"
       ? ["Hamilton", "Verstappen", "Senna", "Schumacher", "Alonso", "Leclerc", "Norris"]
       : category === "team"
-      ? ["Ferrari", "McLaren", "Mercedes", "Red Bull", "Williams", "Lotus", "Brawn GP"]
-      : ["Monaco", "Spa", "Silverstone", "Monza", "Suzuka", "Interlagos", "Austin"];
+        ? ["Ferrari", "McLaren", "Mercedes", "Red Bull", "Williams", "Lotus", "Brawn GP"]
+        : ["Monaco", "Spa", "Silverstone", "Monza", "Suzuka", "Interlagos", "Austin"];
 
   return (
     <div className="w-full relative z-30">
@@ -155,7 +155,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                   : errorMsg
                   ? "border-red-500 ring-2 ring-red-500/30"
                   : "border-white/15 focus:border-[var(--team-primary)] focus:ring-2 focus:ring-[var(--team-glow)]"
-              }`}
+                }`}
             />
 
             {/* Right Action / Submit */}
@@ -229,103 +229,99 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               ref={listRef}
               className="absolute left-0 right-0 mt-2 max-h-72 overflow-y-auto rounded-2xl f1-glass-modal divide-y divide-white/5 z-50 shadow-2xl"
             >
-            {availableMatches.length > 0 ? (
-              availableMatches.map((item, idx) => {
-                const isSelected = idx === selectedIndex;
-                const flag =
-                  category === "driver"
-                    ? getFlag((item as Driver).nationality)
-                    : getFlag(
+              {availableMatches.length > 0 ? (
+                availableMatches.map((item, idx) => {
+                  const isSelected = idx === selectedIndex;
+                  const flag =
+                    category === "driver"
+                      ? getFlag((item as Driver).nationality)
+                      : getFlag(
                         category === "team"
                           ? (item as Team).country
                           : (item as Track).country
                       );
 
-                let subline = "";
-                if (category === "driver") {
-                  const d = item as Driver;
-                  subline = `${d.nationality} • Debut: ${d.debutYear} • ${
-                    d.championships > 0
+                  let subline = "";
+                  if (category === "driver") {
+                    const d = item as Driver;
+                    subline = `${d.nationality} • Debut: ${d.debutYear} • ${d.championships > 0
                       ? `${d.championships}x World Champion`
                       : `${d.wins} wins`
-                  }`;
-                } else if (category === "team") {
-                  const t = item as Team;
-                  subline = `${t.country} • Debut: ${t.debutYear} • ${
-                    t.championships > 0
+                      }`;
+                  } else if (category === "team") {
+                    const t = item as Team;
+                    subline = `${t.country} • Debut: ${t.debutYear} • ${t.championships > 0
                       ? `${t.championships}x Constructors' Titles`
                       : `${t.wins} wins`
-                  }`;
-                } else {
-                  const tr = item as Track;
-                  subline = `${tr.country} • ${tr.lengthKm} km • ${tr.circuitType}`;
-                }
+                      }`;
+                  } else {
+                    const tr = item as Track;
+                    subline = `${tr.country} • ${tr.lengthKm} km • ${tr.circuitType}`;
+                  }
 
-                return (
-                  <div
-                    key={item.id}
-                    onMouseEnter={() => setSelectedIndex(idx)}
-                    onClick={() => submitItem(item)}
-                    className={`flex items-center justify-between px-4 py-2.5 cursor-pointer transition-colors ${
-                      isSelected
+                  return (
+                    <div
+                      key={item.id}
+                      onMouseEnter={() => setSelectedIndex(idx)}
+                      onClick={() => submitItem(item)}
+                      className={`flex items-center justify-between px-4 py-2.5 cursor-pointer transition-colors ${isSelected
                         ? "text-white"
                         : "text-zinc-200 hover:bg-zinc-900/60"
-                    }`}
-                    style={
-                      isSelected
-                        ? {
+                        }`}
+                      style={
+                        isSelected
+                          ? {
                             backgroundColor: "var(--team-bg-tint)",
                             borderLeft: "3px solid var(--team-primary)",
                           }
-                        : undefined
-                    }
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl">{flag}</span>
-                      <div className="flex flex-col">
-                        <span className="font-bold text-sm tracking-wide text-white">
-                          {item.name}
-                        </span>
-                        <span className="text-[11px] text-zinc-400 font-mono">
-                          {subline}
-                        </span>
+                          : undefined
+                      }
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">{flag}</span>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-sm tracking-wide text-white">
+                            {item.name}
+                          </span>
+                          <span className="text-[11px] text-zinc-400 font-mono">
+                            {subline}
+                          </span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-center gap-2">
-                      {category === "driver" && (item as Driver).carNumber && (
-                        <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 border border-zinc-800">
-                          #{(item as Driver).carNumber}
-                        </span>
-                      )}
-                      {category === "team" && (
-                        <span
-                          className="w-3 h-3 rounded-full border border-black"
-                          style={{
-                            backgroundColor: (item as Team).colorHex || "#e10600",
-                          }}
-                        />
-                      )}
-                      <ChevronRight
-                        className={`w-3.5 h-3.5 transition-transform ${
-                          isSelected
+                      <div className="flex items-center gap-2">
+                        {category === "driver" && (item as Driver).carNumber && (
+                          <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 border border-zinc-800">
+                            #{(item as Driver).carNumber}
+                          </span>
+                        )}
+                        {category === "team" && (
+                          <span
+                            className="w-3 h-3 rounded-full border border-black"
+                            style={{
+                              backgroundColor: (item as Team).colorHex || "#e10600",
+                            }}
+                          />
+                        )}
+                        <ChevronRight
+                          className={`w-3.5 h-3.5 transition-transform ${isSelected
                             ? "text-red-500 translate-x-0.5"
                             : "text-zinc-600"
-                        }`}
-                      />
+                            }`}
+                        />
+                      </div>
                     </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="p-4 text-center text-xs font-mono text-zinc-500">
-                No matching registered {category} found. Check spelling or try a surname.
-              </div>
-            )}
-          </div>
-        )}
+                  );
+                })
+              ) : (
+                <div className="p-4 text-center text-xs font-mono text-zinc-500">
+                  No matching registered {category} found. Check spelling or try a surname.
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
