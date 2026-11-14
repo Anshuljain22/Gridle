@@ -12,6 +12,7 @@ import { getSoundEnabled, setSoundEnabled } from "@/lib/storage";
 import { sound } from "@/lib/sound";
 import { ShinyText } from "./reactbits/ShinyText";
 import { Icon3D } from "./icons3d/Icon3D";
+import { TeamThemeSelector, TeamTheme } from "./f1/TeamThemeSelector";
 
 interface NavbarProps {
   onOpenStats: () => void;
@@ -19,6 +20,8 @@ interface NavbarProps {
   onResetGame?: () => void;
   streakCount: number;
   gameMode: "daily" | "practice";
+  currentThemeId?: string;
+  onSelectTheme?: (theme: TeamTheme) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -27,6 +30,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onResetGame,
   streakCount,
   gameMode,
+  currentThemeId,
+  onSelectTheme,
 }) => {
   const [soundOn, setSoundOn] = useState<boolean>(true);
   const [mounted, setMounted] = useState<boolean>(false);
@@ -74,6 +79,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right Tools */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Team Livery Theme Selector */}
+          {onSelectTheme && (
+            <TeamThemeSelector
+              currentThemeId={currentThemeId || "ferrari"}
+              onSelectTheme={onSelectTheme}
+            />
+          )}
+
           {/* Daily Streak Pill with 3D Flag/Flame */}
           <div
             className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md text-xs font-mono font-bold text-amber-400 shadow-sm"

@@ -49,11 +49,43 @@ import { CircuitBackdrop } from "@/components/f1/CircuitBackdrop";
 import { CircuitRibbon } from "@/components/f1/CircuitRibbon";
 import { AnimatedTabs, TabOption } from "@/components/watermelon/AnimatedTabs";
 import { MotionButton } from "@/components/watermelon/MotionButton";
-import { Flag, AlertTriangle, RotateCcw, Compass, BookOpen, Trophy } from "lucide-react";
+import {
+  Flag,
+  AlertTriangle,
+  RotateCcw,
+  Compass,
+  BookOpen,
+  Trophy,
+  GitCommit,
+  Radio,
+  Zap,
+  Wind,
+  Calendar,
+} from "lucide-react";
+
+import { CareerTimelineMode } from "@/components/modes/CareerTimelineMode";
+import { RadioQuizMode } from "@/components/modes/RadioQuizMode";
+import { CornerQuizMode } from "@/components/modes/CornerQuizMode";
+import { HeadToHeadMode } from "@/components/modes/HeadToHeadMode";
+import { AeroCarViewer } from "@/components/f1/AeroCarViewer";
+import { SeasonHub } from "@/components/f1/SeasonHub";
+import { TeamThemeSelector, TEAM_THEMES, TeamTheme } from "@/components/f1/TeamThemeSelector";
+
+type MainTabType =
+  | "game"
+  | "career"
+  | "radio"
+  | "corners"
+  | "battles"
+  | "aero"
+  | "season"
+  | "archive"
+  | "trophies";
 
 export default function F1WordleApp() {
   // Navigation & View Mode
-  const [activeMainTab, setActiveMainTab] = useState<"game" | "archive" | "trophies">("game");
+  const [activeMainTab, setActiveMainTab] = useState<MainTabType>("game");
+  const [currentTheme, setCurrentTheme] = useState<TeamTheme>(TEAM_THEMES[0]);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [isResultOpen, setIsResultOpen] = useState(false);
@@ -93,10 +125,16 @@ export default function F1WordleApp() {
   }, []);
 
   // Navigation Tabs with Watermelon UI spec
-  const mainNavTabs: TabOption<"game" | "archive" | "trophies">[] = [
-    { id: "game", label: "RACE COCKPIT", icon: <Compass className="w-3.5 h-3.5" /> },
-    { id: "archive", label: "PADDOCK ARCHIVE", icon: <BookOpen className="w-3.5 h-3.5" /> },
-    { id: "trophies", label: "SUPERLICENSE & TROPHIES", icon: <Trophy className="w-3.5 h-3.5" /> },
+  const mainNavTabs: TabOption<MainTabType>[] = [
+    { id: "game", label: "COCKPIT", icon: <Compass className="w-3.5 h-3.5" /> },
+    { id: "career", label: "TIMELINES", icon: <GitCommit className="w-3.5 h-3.5" /> },
+    { id: "radio", label: "RADIO QUIZ", icon: <Radio className="w-3.5 h-3.5" /> },
+    { id: "corners", label: "APEX SLEUTH", icon: <Flag className="w-3.5 h-3.5" /> },
+    { id: "battles", label: "SHOWDOWN", icon: <Zap className="w-3.5 h-3.5" /> },
+    { id: "aero", label: "WIND TUNNEL", icon: <Wind className="w-3.5 h-3.5" /> },
+    { id: "season", label: "2025 HUB", icon: <Calendar className="w-3.5 h-3.5" /> },
+    { id: "archive", label: "ARCHIVE", icon: <BookOpen className="w-3.5 h-3.5" /> },
+    { id: "trophies", label: "SUPERLICENSE", icon: <Trophy className="w-3.5 h-3.5" /> },
   ];
 
   // Timer for UTC reset countdown
@@ -326,13 +364,15 @@ export default function F1WordleApp() {
             streak={userStats.currentStreak}
           />
 
-          {/* 2. Top Motorsport Header */}
+          {/* 2. Top Motorsport Header with Team Livery Selector */}
           <Navbar
             onOpenStats={() => setIsStatsOpen(true)}
             onOpenHelp={() => setIsHelpOpen(true)}
             onResetGame={() => initRound(category, gameMode, difficulty)}
             streakCount={userStats.currentStreak}
             gameMode={gameMode}
+            currentThemeId={currentTheme.id}
+            onSelectTheme={(theme) => setCurrentTheme(theme)}
           />
           <CircuitRibbon />
 
@@ -340,7 +380,7 @@ export default function F1WordleApp() {
       <div className="w-full max-w-7xl mx-auto px-4 pt-3 flex-1">
         <Tabs
           value={activeMainTab}
-          onValueChange={(val) => setActiveMainTab(val as "game" | "archive" | "trophies")}
+          onValueChange={(val) => setActiveMainTab(val as MainTabType)}
           className="w-full"
         >
           <div className="flex justify-center mb-4">
@@ -349,7 +389,7 @@ export default function F1WordleApp() {
               activeTab={activeMainTab}
               onTabChange={(val) => setActiveMainTab(val)}
               layoutId="main-nav-pill"
-              className="max-w-xl w-full"
+              className="max-w-5xl w-full overflow-x-auto pb-1"
             />
           </div>
 
@@ -472,12 +512,42 @@ export default function F1WordleApp() {
             </main>
           </TabsContent>
 
-          {/* TAB 2: PADDOCK ENCYCLOPEDIA */}
+          {/* TAB 2: CAREER TIMELINE MODE */}
+          <TabsContent value="career">
+            <CareerTimelineMode />
+          </TabsContent>
+
+          {/* TAB 3: TEAM RADIO QUIZ */}
+          <TabsContent value="radio">
+            <RadioQuizMode />
+          </TabsContent>
+
+          {/* TAB 4: APEX CORNER QUIZ */}
+          <TabsContent value="corners">
+            <CornerQuizMode />
+          </TabsContent>
+
+          {/* TAB 5: DRIVER SHOWDOWN (HIGHER/LOWER) */}
+          <TabsContent value="battles">
+            <HeadToHeadMode />
+          </TabsContent>
+
+          {/* TAB 6: WIND TUNNEL & CFD AERO INSPECTOR */}
+          <TabsContent value="aero">
+            <AeroCarViewer />
+          </TabsContent>
+
+          {/* TAB 7: 2025 SEASON CALENDAR & WEATHER RADAR */}
+          <TabsContent value="season">
+            <SeasonHub />
+          </TabsContent>
+
+          {/* TAB 8: PADDOCK ENCYCLOPEDIA */}
           <TabsContent value="archive">
             <Encyclopedia />
           </TabsContent>
 
-          {/* TAB 3: SUPERLICENSE & TROPHY ROOM */}
+          {/* TAB 9: SUPERLICENSE & TROPHY ROOM */}
           <TabsContent value="trophies">
             <TrophyRoom stats={userStats} />
           </TabsContent>
