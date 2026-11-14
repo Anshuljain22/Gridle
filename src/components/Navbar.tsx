@@ -27,8 +27,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   gameMode,
 }) => {
   const [soundOn, setSoundOn] = useState<boolean>(true);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
+    setMounted(true);
     setSoundOn(getSoundEnabled());
   }, []);
 
@@ -42,7 +44,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="w-full border-b border-white/10 bg-[#06080e]/60 backdrop-blur-2xl sticky top-0 z-40 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+    <header className="w-full border-b border-white/10 bg-black/20 backdrop-blur-2xl sticky top-0 z-40 shadow-[0_4px_30px_rgba(0,0,0,0.25)]">
       <div className="max-w-6xl mx-auto px-4 h-14 sm:h-16 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-3">
@@ -75,7 +77,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             title="Current Daily Grand Prix Streak"
           >
             <Flame className="w-3.5 h-3.5 text-amber-500" />
-            <span className="tabular-nums">{streakCount}</span>
+            <span suppressHydrationWarning className="tabular-nums">
+              {mounted ? streakCount : 0}
+            </span>
             <span className="text-[10px] text-zinc-400 font-normal uppercase hidden sm:inline">
               Streak
             </span>

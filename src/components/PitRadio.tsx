@@ -61,7 +61,7 @@ export const PitRadio: React.FC<PitRadioProps> = ({
 
   return (
     <div className="w-full mb-3">
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 p-2.5 rounded-2xl bg-[#090c14]/70 border border-white/10 backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 p-2.5 rounded-2xl f1-glass">
         {/* Left: Radio Trigger */}
         <div className="flex items-center gap-2">
           <button

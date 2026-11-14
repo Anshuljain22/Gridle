@@ -15,8 +15,8 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-xl bg-[#090b10] border border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-2xl my-8 text-left">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-xl overflow-y-auto animate-fadeIn">
+      <div className="relative w-full max-w-xl f1-glass-modal rounded-3xl p-6 sm:p-8 my-8 text-left">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -42,7 +42,7 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({
         </p>
 
         {/* 6 Progressive Hints Schedule */}
-        <div className="p-4 rounded-2xl bg-zinc-950 border border-zinc-800 mb-6">
+        <div className="p-4 rounded-2xl f1-glass-subtle mb-6">
           <h3 className="font-mono text-xs font-bold text-zinc-300 uppercase tracking-wider mb-2 flex items-center gap-2">
             <Lock className="w-3.5 h-3.5 text-amber-500" />
             <span>Progressive Telemetry Hints</span>
@@ -77,7 +77,7 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({
             Comparison Telemetry Codes
           </h3>
 
-          <div className="flex items-start gap-3 p-3 rounded-xl bg-zinc-950/70 border border-zinc-800">
+          <div className="flex items-start gap-3 p-3 rounded-xl f1-glass-subtle">
             <div className="w-8 h-8 rounded-lg bg-emerald-950/70 border border-emerald-600 text-emerald-300 font-mono font-bold flex items-center justify-center shrink-0">
               ✓
             </div>
@@ -89,7 +89,7 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({
             </div>
           </div>
 
-          <div className="flex items-start gap-3 p-3 rounded-xl bg-zinc-950/70 border border-zinc-800">
+          <div className="flex items-start gap-3 p-3 rounded-xl f1-glass-subtle">
             <div className="w-8 h-8 rounded-lg bg-amber-950/70 border border-amber-600 text-amber-300 font-mono font-bold flex items-center justify-center shrink-0">
               ~
             </div>
@@ -101,7 +101,7 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({
             </div>
           </div>
 
-          <div className="flex items-start gap-3 p-3 rounded-xl bg-zinc-950/70 border border-zinc-800">
+          <div className="flex items-start gap-3 p-3 rounded-xl f1-glass-subtle">
             <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-500 font-mono font-bold flex items-center justify-center shrink-0">
               ✕
             </div>
@@ -113,7 +113,7 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({
             </div>
           </div>
 
-          <div className="flex items-start gap-3 p-3 rounded-xl bg-zinc-950/70 border border-zinc-800">
+          <div className="flex items-start gap-3 p-3 rounded-xl f1-glass-subtle">
             <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-200 font-mono font-bold flex items-center justify-center shrink-0">
               <ArrowUp className="w-4 h-4" />
             </div>

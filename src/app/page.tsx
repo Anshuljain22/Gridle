@@ -22,6 +22,7 @@ import {
   recordGameResult,
   loadDailySession,
   saveDailySession,
+  DEFAULT_STATS,
 } from "@/lib/storage";
 import { sound } from "@/lib/sound";
 
@@ -44,6 +45,8 @@ import { GameStatsModal } from "@/components/GameStatsModal";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { RetroGrid } from "@/components/magicui/RetroGrid";
 import { GarageBackground } from "@/components/f1/GarageBackground";
+import { CircuitBackdrop } from "@/components/f1/CircuitBackdrop";
+import { CircuitRibbon } from "@/components/f1/CircuitRibbon";
 import { AnimatedTabs, TabOption } from "@/components/watermelon/AnimatedTabs";
 import { MotionButton } from "@/components/watermelon/MotionButton";
 import { Flag, AlertTriangle, RotateCcw, Compass, BookOpen, Trophy } from "lucide-react";
@@ -61,7 +64,8 @@ export default function F1WordleApp() {
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
 
   // User Stats & Daily Progress
-  const [userStats, setUserStats] = useState<UserStats>(loadUserStats());
+  const [userStats, setUserStats] = useState<UserStats>(DEFAULT_STATS);
+  const [hasMounted, setHasMounted] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(getSecondsUntilUtcMidnight());
   const [dailyCompleted, setDailyCompleted] = useState<{
     driver: boolean;
@@ -69,12 +73,24 @@ export default function F1WordleApp() {
     track: boolean;
   }>({ driver: false, team: false, track: false });
 
+  // Deterministic daily target for initial render
+  const todayDate = getUtcDateString();
+  const initialChallenge = getDailyChallenge(todayDate);
+  const initialDriverTarget = getEntityById("driver", initialChallenge.driverId);
+  const initialDriverHints = initialDriverTarget ? getHintsForEntity("driver", initialDriverTarget) : [];
+
   // Current Round State
-  const [targetEntity, setTargetEntity] = useState<Driver | Team | Track | null>(null);
-  const [hints, setHints] = useState<Hint[]>([]);
+  const [targetEntity, setTargetEntity] = useState<Driver | Team | Track | null>(initialDriverTarget || null);
+  const [hints, setHints] = useState<Hint[]>(initialDriverHints);
   const [guesses, setGuesses] = useState<string[]>([]);
   const [comparisons, setComparisons] = useState<ComparisonResult[]>([]);
   const [status, setStatus] = useState<GameStatus>("in_progress");
+
+  // Sync client-only storage data after mounting to prevent SSR hydration mismatches
+  useEffect(() => {
+    setHasMounted(true);
+    setUserStats(loadUserStats());
+  }, []);
 
   // Navigation Tabs with Watermelon UI spec
   const mainNavTabs: TabOption<"game" | "archive" | "trophies">[] = [
@@ -296,11 +312,10 @@ export default function F1WordleApp() {
   const remainingGuesses = Math.max(0, 7 - guesses.length);
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white bg-[#050608] overflow-x-hidden">
-      {/* 0. Active F1 Pit Garage & Moving Mechanical Telemetry Dynamics */}
-      <GarageBackground />
-      {/* 3D Racetrack Perspective Grid (Magic UI) */}
-      <RetroGrid className="opacity-15 fixed inset-0 z-0 pointer-events-none" />
+    <div className="relative min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white bg-[#050608]/80 overflow-x-hidden">
+      <CircuitBackdrop />
+      <GarageBackground className="opacity-40" />
+      <RetroGrid className="opacity-10 fixed inset-0 z-0 pointer-events-none" />
 
       {/* Main Content Area */}
       <div className="relative z-10 flex flex-col min-h-screen justify-between">
@@ -319,6 +334,7 @@ export default function F1WordleApp() {
             streakCount={userStats.currentStreak}
             gameMode={gameMode}
           />
+          <CircuitRibbon />
 
       {/* 3. Main Cockpit Navigation Tabs (Watermelon UI + Motion Dev) */}
       <div className="w-full max-w-7xl mx-auto px-4 pt-3 flex-1">
@@ -472,7 +488,7 @@ export default function F1WordleApp() {
     {/* Footer with Kerbing Stripe */}
     <div>
       <div className="kerb-divider w-full mt-8" />
-      <footer className="w-full bg-black/60 py-4 text-center text-xs font-mono text-zinc-500">
+      <footer className="w-full bg-black/25 backdrop-blur-xl py-4 text-center text-xs font-mono text-zinc-400 border-t border-white/10">
         <p>
           F1 GRIDLE • Formula 1 Motorsport Mission Control • Data verified through FIA Official Records
         </p>

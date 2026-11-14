@@ -16,7 +16,7 @@ export const TimingTower: React.FC<TimingTowerProps> = ({
   maxLaps = 7,
 }) => {
   return (
-    <div className="w-full bg-[#080a12]/70 border border-white/10 backdrop-blur-2xl rounded-3xl p-3 sm:p-4 shadow-[0_12px_36px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] relative select-none">
+    <div className="w-full f1-glass rounded-3xl p-3 sm:p-4 relative select-none">
       {/* Timing Tower Header */}
       <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10 text-xs font-mono">
         <div className="flex items-center gap-2">

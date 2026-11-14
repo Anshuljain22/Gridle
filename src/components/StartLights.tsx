@@ -21,7 +21,7 @@ export const StartLights: React.FC<StartLightsProps> = ({
   return (
     <div className="flex flex-col items-center my-3">
       {/* Starting Gantry Frame with Frosted Glassmorphism */}
-      <div className="bg-[#080b12]/65 backdrop-blur-2xl p-2.5 px-4 rounded-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] flex items-center justify-between gap-3 sm:gap-6 w-full max-w-md">
+      <div className="f1-glass p-2.5 px-4 rounded-2xl flex items-center justify-between gap-3 sm:gap-6 w-full max-w-md">
         {/* Left: Gantry Light Columns */}
         <div className="flex items-center gap-2 sm:gap-3">
           {[1, 2, 3, 4, 5].map((lightIdx) => {

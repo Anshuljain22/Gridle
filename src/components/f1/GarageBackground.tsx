@@ -199,3 +199,4 @@ export const GarageBackground: React.FC<GarageBackgroundProps> = ({ className })
     </div>
   );
 };
+

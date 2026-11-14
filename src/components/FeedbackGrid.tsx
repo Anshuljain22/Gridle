@@ -24,7 +24,7 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
 }) => {
   if (comparisons.length === 0) {
     return (
-      <div className="w-full p-8 rounded-2xl bg-[#090c14]/65 border border-dashed border-white/10 backdrop-blur-xl text-center my-4">
+      <div className="w-full p-8 rounded-2xl f1-glass-subtle border-dashed text-center my-4">
         <h4 className="font-bold text-sm text-zinc-300 font-mono mb-1">
           Telemetry Screen Awaiting Data
         </h4>
@@ -36,7 +36,7 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
   }
 
   return (
-    <div className="w-full my-4 rounded-2xl bg-[#090c14]/70 border border-white/10 p-3 sm:p-4 shadow-[0_12px_36px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl">
+    <div className="w-full my-4 rounded-2xl f1-glass p-3 sm:p-4">
       <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-zinc-800">
         <div className="min-w-[660px]">
           {/* Table Headers */}

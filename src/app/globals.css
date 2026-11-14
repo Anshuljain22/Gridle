@@ -44,6 +44,56 @@ body {
   opacity: 0.85;
 }
 
+.kerb-divider-vertical {
+  width: 4px;
+  background: repeating-linear-gradient(
+    180deg,
+    #e10600 0px,
+    #e10600 12px,
+    #ffffff 12px,
+    #ffffff 24px
+  );
+}
+
+.asphalt-grain {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.035) 0.6px, transparent 0.7px),
+    radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.025) 0.5px, transparent 0.6px),
+    linear-gradient(180deg, rgba(12, 14, 18, 0.2), rgba(5, 6, 8, 0.55));
+  background-size: 18px 18px, 22px 22px, 100% 100%;
+}
+
+.circuit-kerb {
+  stroke: url(#none);
+  stroke: #e10600;
+  stroke-dasharray: 6 6;
+  opacity: 0.55;
+}
+
+.circuit-racing-line {
+  stroke: #ffffff;
+  stroke-dasharray: 18 220;
+  animation: race-line 18s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(225, 6, 0, 0.55));
+}
+
+@keyframes race-line {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -900;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Subtle Carbon Fiber Weave */
 .carbon-grid {
   background-image: 
@@ -54,45 +104,64 @@ body {
   background-size: 8px 8px;
 }
 
-/* F1 Frosted Glassmorphism Styles */
+/* F1 Frosted Glassmorphism Styles — translucent so circuits show through */
 .f1-glass {
-  background: rgba(9, 12, 18, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 
-    0 12px 36px 0 rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(10, 14, 22, 0.34) 100%
+  );
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 12px 36px 0 rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
 }
 
 .f1-glass-subtle {
-  background: rgba(8, 10, 15, 0.45);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 
-    0 6px 20px 0 rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  background: rgba(8, 12, 20, 0.22);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 6px 20px 0 rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
 }
 
 .f1-glass-interactive {
-  background: rgba(10, 14, 22, 0.6);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 
-    0 8px 30px 0 rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.09);
+  background: rgba(12, 16, 26, 0.28);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 8px 30px 0 rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .f1-glass-interactive:hover {
-  background: rgba(16, 22, 34, 0.75);
-  border-color: rgba(255, 255, 255, 0.18);
-  box-shadow: 
-    0 14px 42px 0 rgba(0, 0, 0, 0.55),
+  background: rgba(18, 24, 38, 0.42);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 14px 42px 0 rgba(0, 0, 0, 0.35),
     0 0 25px rgba(225, 6, 0, 0.12),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
+}
+
+.f1-glass-modal {
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(8, 10, 16, 0.55) 55%,
+    rgba(8, 10, 16, 0.62) 100%
+  );
+  backdrop-filter: blur(28px) saturate(170%);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 /* Custom Scrollbars */

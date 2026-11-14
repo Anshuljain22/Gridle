@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Category, GameMode, Difficulty, UserStats } from "@/types";
 import { User, Shield, MapPin, Sparkles, Clock, Compass, CheckCircle2 } from "lucide-react";
 import { formatCountdown } from "@/lib/daily";
@@ -29,6 +29,11 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
   dailyCompleted,
   userStats,
 }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const categories: {
     id: Category;
     title: string;
@@ -100,7 +105,7 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
   return (
     <div className="w-full space-y-4 mb-4">
       {/* Top Segmented Mode Bar with Watermelon UI / Motion Dev Sliding Pill */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-2.5 rounded-2xl bg-[#090c14]/70 border border-white/10 backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-2.5 rounded-2xl f1-glass">
         {/* Daily vs Practice Switcher */}
         <div className="relative flex items-center bg-black/60 p-1 rounded-xl border border-white/10 backdrop-blur-md">
           <button
@@ -143,8 +148,11 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
           <div className="flex items-center justify-center sm:justify-end gap-2 text-xs font-mono text-zinc-400 px-2">
             <Clock className="w-3.5 h-3.5 text-red-500 animate-pulse" />
             <span>RESET IN</span>
-            <span className="font-bold text-white tabular-nums bg-black/60 px-2 py-0.5 rounded border border-zinc-800">
-              {formatCountdown(dailySecondsRemaining)}
+            <span
+              suppressHydrationWarning
+              className="font-bold text-white tabular-nums bg-black/60 px-2 py-0.5 rounded border border-zinc-800"
+            >
+              {mounted ? formatCountdown(dailySecondsRemaining) : "--:--:--"}
             </span>
           </div>
         ) : (
@@ -154,8 +162,11 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
               <span>UNLIMITED LAPS</span>
             </div>
             <span className="text-zinc-600 hidden sm:inline">•</span>
-            <span className="text-zinc-400 tabular-nums hidden sm:inline">
-              Record: {userStats.wins}W / {userStats.totalGames}GP
+            <span
+              suppressHydrationWarning
+              className="text-zinc-400 tabular-nums hidden sm:inline"
+            >
+              Record: {mounted ? `${userStats.wins}W / ${userStats.totalGames}GP` : "0W / 0GP"}
             </span>
           </div>
         )}
@@ -175,8 +186,8 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className={`relative flex flex-col p-3 rounded-2xl border text-left transition-all ${
                 isSelected
-                  ? "bg-[#141a29]/80 border-red-500 shadow-[0_8px_30px_rgba(225,6,0,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] ring-1 ring-red-500/50 backdrop-blur-xl"
-                  : "bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10 text-zinc-300 backdrop-blur-md"
+                  ? "bg-white/10 border-red-500 shadow-[0_8px_30px_rgba(225,6,0,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] ring-1 ring-red-500/50 backdrop-blur-xl"
+                  : "f1-glass-subtle hover:border-white/20 text-zinc-300"
               }`}
             >
               <div className="flex items-center justify-between w-full mb-1">
@@ -210,7 +221,7 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.25 }}
-          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 rounded-2xl bg-[#090c14]/70 border border-white/10 backdrop-blur-2xl shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 rounded-2xl f1-glass"
         >
           <span className="text-xs font-mono text-zinc-400 pl-1">
             Tyre Compound / Tolerance:

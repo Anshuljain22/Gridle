@@ -147,7 +147,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             onFocus={() => setIsOpen(true)}
             onKeyDown={handleKeyDown}
             placeholder={placeholderText}
-            className={`w-full bg-[#0a0d16]/70 backdrop-blur-2xl text-white placeholder-zinc-400 text-sm font-medium rounded-2xl pl-11 pr-28 py-3.5 border transition-all shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] outline-none ${
+            className={`w-full f1-glass text-white placeholder-zinc-400 text-sm font-medium rounded-2xl pl-11 pr-28 py-3.5 border transition-all outline-none ${
               disabled
                 ? "opacity-50 cursor-not-allowed border-white/5"
                 : errorMsg
@@ -199,7 +199,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         {isOpen && query.trim().length > 0 && (
           <div
             ref={listRef}
-            className="absolute left-0 right-0 mt-2 max-h-72 overflow-y-auto rounded-2xl bg-[#090c14]/85 border border-white/10 shadow-2xl backdrop-blur-2xl divide-y divide-white/5 z-50"
+            className="absolute left-0 right-0 mt-2 max-h-72 overflow-y-auto rounded-2xl f1-glass-modal divide-y divide-white/5 z-50"
           >
             {availableMatches.length > 0 ? (
               availableMatches.map((item, idx) => {

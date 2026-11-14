@@ -105,7 +105,7 @@ export const TrophyRoom: React.FC<TrophyRoomProps> = ({ stats }) => {
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-4 space-y-6">
       {/* Official FIA Holographic Superlicense */}
-      <div className="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-zinc-950 via-zinc-900 to-black border border-white/10 shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl p-6 sm:p-8 f1-glass-modal">
         {/* Magic UI Border Beam (FIA Gold & F1 Red) */}
         <BorderBeam size={320} duration={12} colorFrom="#FFD700" colorTo="#E10600" />
 
@@ -183,7 +183,7 @@ export const TrophyRoom: React.FC<TrophyRoomProps> = ({ stats }) => {
       </div>
 
       {/* Career Achievements Trophy Showcase */}
-      <div className="p-6 rounded-3xl bg-zinc-950/70 border border-zinc-800/80 shadow-xl backdrop-blur-md">
+      <div className="p-6 rounded-3xl f1-glass">
         <div className="flex items-center justify-between mb-4 pb-3 border-b border-zinc-800">
           <div className="flex items-center gap-2">
             <Trophy className="w-4 h-4 text-amber-500" />
@@ -228,7 +228,7 @@ export const TrophyRoom: React.FC<TrophyRoomProps> = ({ stats }) => {
       </div>
 
       {/* Telemetry Guess Distribution Histogram */}
-      <div className="p-6 rounded-3xl bg-zinc-950/70 border border-zinc-800/80 shadow-xl backdrop-blur-md">
+      <div className="p-6 rounded-3xl f1-glass">
         <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white mb-4">
           QUALIFYING ATTEMPT DISTRIBUTION
         </h3>

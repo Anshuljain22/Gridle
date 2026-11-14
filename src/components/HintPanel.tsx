@@ -46,7 +46,7 @@ export const HintPanel: React.FC<HintPanelProps> = ({
   const unlockedCount = Math.min(6, Math.max(0, attemptsCount));
 
   return (
-    <div className="w-full p-4 rounded-2xl bg-[#090c14]/70 border border-white/10 backdrop-blur-2xl shadow-[0_12px_36px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] my-4">
+    <div className="w-full p-4 rounded-2xl f1-glass my-4">
       {/* Header */}
       <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
         <h3 className="font-bold text-sm text-white font-mono tracking-tight flex items-center gap-2">

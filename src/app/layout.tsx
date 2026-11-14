@@ -50,8 +50,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`dark ${titillium.variable} ${jetbrains.variable}`}>
-      <body className="min-h-screen bg-[#050608] text-zinc-100 antialiased font-sans selection:bg-[#E10600] selection:text-white">
+    <html lang="en" suppressHydrationWarning className={`dark ${titillium.variable} ${jetbrains.variable}`}>
+      <body suppressHydrationWarning className="min-h-screen bg-[#050608] text-zinc-100 antialiased font-sans selection:bg-[#E10600] selection:text-white">
         {children}
       </body>
     </html>

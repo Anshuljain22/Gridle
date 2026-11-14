@@ -110,7 +110,7 @@ export const ResultModal: React.FC<ResultModalProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/85 backdrop-blur-md"
+            className="fixed inset-0 bg-black/45 backdrop-blur-xl"
           />
 
           {/* Modal Container with Watermelon UI Spring Scale */}
@@ -119,7 +119,7 @@ export const ResultModal: React.FC<ResultModalProps> = ({
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 15 }}
             transition={{ type: "spring", stiffness: 350, damping: 28 }}
-            className="relative w-full max-w-2xl bg-[#090b10] border border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-2xl my-8 overflow-hidden z-10"
+            className="relative w-full max-w-2xl f1-glass-modal rounded-3xl p-6 sm:p-8 my-8 overflow-hidden z-10"
           >
             {/* Top Accent Strip */}
             <div
@@ -155,7 +155,7 @@ export const ResultModal: React.FC<ResultModalProps> = ({
             </div>
 
             {/* Answer Reveal Card */}
-            <div className="relative p-5 rounded-2xl bg-zinc-950 border border-zinc-800 shadow-xl mb-6">
+            <div className="relative p-5 rounded-2xl f1-glass-subtle mb-6">
               <div className="flex items-center gap-4">
                 <div className="text-4xl sm:text-5xl">{flag}</div>
                 <div className="flex-1">
@@ -183,7 +183,7 @@ export const ResultModal: React.FC<ResultModalProps> = ({
             </div>
 
             {/* Educational F1 Deep Dive Section */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-zinc-950/60 border border-zinc-800/80 mb-6 text-left">
+            <div className="p-4 sm:p-5 rounded-2xl f1-glass-subtle mb-6 text-left">
               <div className="flex items-center gap-2 mb-3 text-red-500">
                 <BookOpen className="w-4 h-4" />
                 <h4 className="font-bold text-xs sm:text-sm uppercase tracking-wider font-mono text-white">

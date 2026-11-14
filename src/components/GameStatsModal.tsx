@@ -36,8 +36,8 @@ export const GameStatsModal: React.FC<GameStatsModalProps> = ({
   const maxGuessCount = Math.max(1, ...Object.values(stats.guessDistribution));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-xl bg-[#090b10] border border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-2xl my-8 text-left">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-xl overflow-y-auto animate-fadeIn">
+      <div className="relative w-full max-w-xl f1-glass-modal rounded-3xl p-6 sm:p-8 my-8 text-left">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -56,7 +56,7 @@ export const GameStatsModal: React.FC<GameStatsModalProps> = ({
 
         {/* Top 4 Key Metrics */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-          <div className="p-3.5 rounded-2xl bg-zinc-950 border border-zinc-800 text-center">
+          <div className="p-3.5 rounded-2xl f1-glass-subtle text-center">
             <span className="block text-2xl sm:text-3xl font-black font-mono tabular-nums text-white">
               {stats.totalGames}
             </span>
@@ -65,7 +65,7 @@ export const GameStatsModal: React.FC<GameStatsModalProps> = ({
             </span>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-zinc-950 border border-zinc-800 text-center">
+          <div className="p-3.5 rounded-2xl f1-glass-subtle text-center">
             <span className="block text-2xl sm:text-3xl font-black font-mono tabular-nums text-emerald-400">
               {winPercentage}%
             </span>
@@ -74,7 +74,7 @@ export const GameStatsModal: React.FC<GameStatsModalProps> = ({
             </span>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-zinc-950 border border-zinc-800 text-center">
+          <div className="p-3.5 rounded-2xl f1-glass-subtle text-center">
             <span className="block text-2xl sm:text-3xl font-black font-mono tabular-nums text-amber-400">
               {stats.currentStreak}
             </span>
@@ -83,7 +83,7 @@ export const GameStatsModal: React.FC<GameStatsModalProps> = ({
             </span>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-zinc-950 border border-zinc-800 text-center">
+          <div className="p-3.5 rounded-2xl f1-glass-subtle text-center">
             <span className="block text-2xl sm:text-3xl font-black font-mono tabular-nums text-red-500">
               {stats.maxStreak}
             </span>
@@ -94,7 +94,7 @@ export const GameStatsModal: React.FC<GameStatsModalProps> = ({
         </div>
 
         {/* Guess Distribution Bar Chart (1 to 7) */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800 mb-6">
+        <div className="p-4 sm:p-5 rounded-2xl f1-glass-subtle mb-6">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-mono text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-2">
               <BarChart2 className="w-3.5 h-3.5 text-red-500" />
@@ -133,7 +133,7 @@ export const GameStatsModal: React.FC<GameStatsModalProps> = ({
         {/* Breakdown By Category & Difficulty */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
           {/* Category Breakdown */}
-          <div className="p-3.5 rounded-2xl bg-zinc-950/70 border border-zinc-800">
+          <div className="p-3.5 rounded-2xl f1-glass-subtle">
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 block mb-2">
               Category Records
             </span>
@@ -160,7 +160,7 @@ export const GameStatsModal: React.FC<GameStatsModalProps> = ({
           </div>
 
           {/* Difficulty Breakdown */}
-          <div className="p-3.5 rounded-2xl bg-zinc-950/70 border border-zinc-800">
+          <div className="p-3.5 rounded-2xl f1-glass-subtle">
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 block mb-2">
               Tyre Compound Records
             </span>

@@ -29,7 +29,7 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
   const remainingLaps = Math.max(0, maxLaps - currentLap);
 
   return (
-    <div className="w-full bg-[#080a12]/70 border border-white/10 backdrop-blur-2xl rounded-3xl p-3 sm:p-4 shadow-[0_12px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)] relative overflow-hidden select-none">
+    <div className="w-full f1-glass rounded-3xl p-3 sm:p-4 relative overflow-hidden select-none">
       {/* Carbon edge visual strip */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-zinc-400 to-red-600 opacity-80" />
 

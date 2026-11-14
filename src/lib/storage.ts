@@ -5,7 +5,7 @@ const STATS_KEY = "f1wordle_user_stats_v1";
 const DAILY_SESSIONS_KEY = "f1wordle_daily_sessions_v1";
 const SOUND_KEY = "f1wordle_sound_enabled_v1";
 
-const DEFAULT_STATS: UserStats = {
+export const DEFAULT_STATS: UserStats = {
   totalGames: 0,
   wins: 0,
   currentStreak: 0,

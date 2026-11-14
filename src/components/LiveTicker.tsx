@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { formatCountdown } from "@/lib/daily";
 import { Thermometer, Wind } from "lucide-react";
 import { Marquee } from "./magicui/Marquee";
@@ -14,11 +14,16 @@ export const LiveTicker: React.FC<LiveTickerProps> = ({
   secondsRemaining,
   streak,
 }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   return (
-    <div className="w-full bg-[#050608] border-b border-zinc-800/80 overflow-hidden select-none font-mono text-[11px] text-zinc-400">
+    <div className="w-full bg-black/20 backdrop-blur-xl border-b border-white/10 overflow-hidden select-none font-mono text-[11px] text-zinc-400">
       <div className="flex items-center">
         {/* Fixed Left Badge: Official Timing Status */}
-        <div className="flex items-center gap-2 bg-black px-4 py-1.5 border-r border-zinc-800 shrink-0 z-10 shadow-lg">
+        <div className="flex items-center gap-2 bg-black/35 backdrop-blur-md px-4 py-1.5 border-r border-white/10 shrink-0 z-10">
           <span className="flex h-2 w-2 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -60,10 +65,13 @@ export const LiveTicker: React.FC<LiveTickerProps> = ({
 
             <div className="flex items-center gap-1.5">
               <span className="text-zinc-500">NEXT RESET:</span>
-              <span className="text-red-400 font-bold tabular-nums bg-red-950/40 px-2 py-0.5 rounded border border-red-900/50">
-                {formatCountdown(secondsRemaining)} UTC
+              <span
+                suppressHydrationWarning
+                className="text-red-400 font-bold tabular-nums bg-red-950/40 px-2 py-0.5 rounded border border-red-900/50"
+              >
+                {mounted ? formatCountdown(secondsRemaining) : "--:--:--"} UTC
               </span>
-              {streak > 0 && (
+              {mounted && streak > 0 && (
                 <span className="text-amber-400 font-bold">
                   🔥 {streak} DAY STREAK
                 </span>

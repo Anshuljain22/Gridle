@@ -48,7 +48,7 @@ export const Encyclopedia: React.FC = () => {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-4">
       {/* Top Header & Search with Watermelon UI styling */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-5 rounded-3xl bg-zinc-950/80 border border-zinc-800 shadow-2xl backdrop-blur-md mb-6">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-5 rounded-3xl f1-glass mb-6">
         <div>
           <h2 className="text-xl sm:text-2xl font-black italic tracking-wide text-white font-mono flex items-center gap-2">
             <span>FIA PADDOCK ARCHIVE</span>
@@ -99,7 +99,7 @@ export const Encyclopedia: React.FC = () => {
               onClick={() => setSelectedEntity(driver)}
               whileHover={{ y: -3, scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
-              className="p-4 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/50 cursor-pointer transition-colors shadow-md group"
+              className="p-4 rounded-2xl f1-glass-interactive cursor-pointer group"
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -157,7 +157,7 @@ export const Encyclopedia: React.FC = () => {
               onClick={() => setSelectedEntity(team)}
               whileHover={{ y: -3, scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
-              className="p-4 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/50 cursor-pointer transition-colors shadow-md group"
+              className="p-4 rounded-2xl f1-glass-interactive cursor-pointer group"
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -217,7 +217,7 @@ export const Encyclopedia: React.FC = () => {
               onClick={() => setSelectedEntity(track)}
               whileHover={{ y: -3, scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
-              className="p-4 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/50 cursor-pointer transition-colors shadow-md group flex flex-col justify-between"
+              className="p-4 rounded-2xl f1-glass-interactive cursor-pointer group flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-start justify-between mb-2">
@@ -274,7 +274,7 @@ export const Encyclopedia: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedEntity(null)}
-              className="fixed inset-0 bg-black/85 backdrop-blur-md"
+              className="fixed inset-0 bg-black/45 backdrop-blur-xl"
             />
 
             <motion.div
@@ -282,7 +282,7 @@ export const Encyclopedia: React.FC = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 15 }}
               transition={{ type: "spring", stiffness: 350, damping: 28 }}
-              className="relative w-full max-w-lg bg-zinc-950 border border-zinc-800 rounded-3xl p-6 shadow-2xl z-10"
+              className="relative w-full max-w-lg f1-glass-modal rounded-3xl p-6 z-10"
             >
               <button
                 onClick={() => setSelectedEntity(null)}
