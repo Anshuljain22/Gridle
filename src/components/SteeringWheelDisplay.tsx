@@ -31,13 +31,16 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
   const remainingLaps = Math.max(0, maxLaps - currentLap);
 
   return (
-    <SpotlightCard
-      spotlightColor="var(--team-glow)"
-      className="w-full p-3 sm:p-4 select-none"
-    >
+    <div className="cockpit-bezel cockpit-chamfer p-3.5 sm:p-5 select-none relative overflow-hidden">
+      {/* 4 Titanium hex bolts in bezel corners */}
+      <div className="absolute top-2.5 left-2.5 hex-rivet" />
+      <div className="absolute top-2.5 right-2.5 hex-rivet" />
+      <div className="absolute bottom-2.5 left-2.5 hex-rivet" />
+      <div className="absolute bottom-2.5 right-2.5 hex-rivet" />
+
       {/* Carbon edge visual strip */}
       <div
-        className="absolute top-0 left-0 right-0 h-1 opacity-80"
+        className="absolute top-0 left-0 right-0 h-1.5 opacity-90"
         style={{
           background:
             "linear-gradient(90deg, var(--team-primary), var(--team-accent), var(--team-primary))",
@@ -45,10 +48,10 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
       />
 
       {/* Magic UI Border Beam */}
-      <BorderBeam size={240} duration={8} colorFrom="var(--team-primary)" colorTo="var(--team-accent)" />
+      <BorderBeam size={260} duration={8} colorFrom="var(--team-primary)" colorTo="var(--team-accent)" />
 
       {/* 1. Authentic 15-LED Shift Light Bar (F1 Wheel Top Cluster) */}
-      <div className="flex items-center justify-between gap-1 sm:gap-2 px-2 sm:px-6 py-1.5 bg-black/60 backdrop-blur-md rounded-2xl border border-white/10 mb-3 shadow-inner">
+      <div className="flex items-center justify-between gap-1 sm:gap-2 px-2 sm:px-6 py-2 bg-black/80 backdrop-blur-md rounded-2xl border border-white/10 mb-3 shadow-inner">
         {/* 5 Green LEDs (Turns 1-5) */}
         <div className="flex items-center gap-1 sm:gap-1.5">
           {[1, 2, 3, 4, 5].map((idx) => {
@@ -170,7 +173,7 @@ export const SteeringWheelDisplay: React.FC<SteeringWheelDisplayProps> = ({
       <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
         <TachometerSweep currentLap={currentLap} maxLaps={maxLaps} className="w-full" />
       </div>
-    </SpotlightCard>
+    </div>
   );
 };
 

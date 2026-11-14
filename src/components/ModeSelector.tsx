@@ -105,14 +105,20 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
   ];
 
   return (
-    <div className="w-full space-y-4 mb-4">
-      {/* Top Segmented Mode Bar with Watermelon UI / Motion Dev Sliding Pill */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-2.5 rounded-2xl f1-glass">
+    <div className="w-full space-y-3 mb-2">
+      {/* Top Segmented Mode Bar with Cockpit Chamfer Bezel & Motion Dev Sliding Pill */}
+      <div className="cockpit-bezel cockpit-chamfer p-2.5 sm:p-3 relative overflow-hidden flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        {/* Hex rivets in corners */}
+        <div className="absolute top-2 left-2 hex-rivet" />
+        <div className="absolute top-2 right-2 hex-rivet" />
+        <div className="absolute bottom-2 left-2 hex-rivet" />
+        <div className="absolute bottom-2 right-2 hex-rivet" />
+
         {/* Daily vs Practice Switcher */}
-        <div className="relative flex items-center bg-black/60 p-1 rounded-xl border border-white/10 backdrop-blur-md">
+        <div className="relative flex items-center bg-black/70 p-1 rounded-xl border border-white/10 backdrop-blur-md">
           <button
             onClick={() => onSelectGameMode("daily")}
-            className={`relative z-10 flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors select-none ${
+            className={`relative z-10 flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors select-none ${
               gameMode === "daily" ? "text-white" : "text-zinc-400 hover:text-white"
             }`}
           >
@@ -133,7 +139,7 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
 
           <button
             onClick={() => onSelectGameMode("practice")}
-            className={`relative z-10 flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors select-none ${
+            className={`relative z-10 flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors select-none ${
               gameMode === "practice" ? "text-white" : "text-zinc-400 hover:text-white"
             }`}
           >
@@ -156,7 +162,7 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
             <span>RESET IN</span>
             <span
               suppressHydrationWarning
-              className="font-bold text-white tabular-nums bg-black/60 px-2 py-0.5 rounded border border-zinc-800"
+              className="font-bold text-white tabular-nums bg-black/70 px-2.5 py-0.5 rounded border border-zinc-800"
             >
               {mounted ? formatCountdown(dailySecondsRemaining) : "--:--:--"}
             </span>
@@ -164,7 +170,7 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
         ) : (
           <div className="flex items-center justify-center sm:justify-end gap-3 text-xs font-mono text-zinc-400 px-2">
             <div className="flex items-center gap-1.5 text-emerald-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>UNLIMITED LAPS</span>
             </div>
             <span className="text-zinc-600 hidden sm:inline">•</span>
@@ -178,8 +184,8 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
         )}
       </div>
 
-      {/* 3 Categories: Styled like Cockpit Selection Switches with Motion Dev Gestures */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+      {/* 3 Categories: Styled like Authentic Cockpit Rotary Dial Switches */}
+      <div className="grid grid-cols-3 gap-2.5 sm:gap-3.5">
         {categories.map((cat) => {
           const isSelected = selectedCategory === cat.id;
 
@@ -190,38 +196,51 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className={`relative flex flex-col p-3 rounded-2xl border text-left transition-all ${
+              className={`relative flex flex-col p-3.5 rounded-2xl border text-left transition-all ${
                 isSelected
-                  ? "backdrop-blur-xl ring-1"
-                  : "f1-glass-subtle hover:border-white/20 text-zinc-300"
+                  ? "cockpit-bezel-primary ring-1"
+                  : "cockpit-bezel hover:border-white/20 text-zinc-300"
               }`}
               style={
                 isSelected
                   ? {
                       backgroundColor: "var(--team-bg-tint)",
                       borderColor: "var(--team-primary)",
-                      boxShadow: "0 8px 30px var(--team-glow), inset 0 1px 0 rgba(255,255,255,0.15)",
+                      boxShadow: "0 8px 30px var(--team-glow), inset 0 1px 0 rgba(255,255,255,0.18)",
                     }
                   : undefined
               }
             >
-              <div className="flex items-center justify-between w-full mb-1">
-                <div className="p-1.5 rounded-lg bg-black/60 border border-zinc-800/80">
-                  {cat.icon}
-                </div>
+              {/* Dial tick marks top right */}
+              <div className="absolute top-2.5 right-2.5 flex items-center gap-1">
+                <span
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    isSelected ? "animate-pulse" : "bg-zinc-700 opacity-40"
+                  }`}
+                  style={isSelected ? { backgroundColor: "var(--team-primary)" } : undefined}
+                />
                 {gameMode === "daily" && cat.isCompleted && (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 ml-1" />
                 )}
               </div>
 
+              <div className="flex items-center justify-between w-full mb-1.5">
+                <div
+                  className="p-2 rounded-xl bg-black/70 border border-zinc-800 transition-colors"
+                  style={isSelected ? { borderColor: "var(--team-primary)" } : undefined}
+                >
+                  {cat.icon}
+                </div>
+              </div>
+
               <span
-                className={`font-bold text-sm tracking-tight ${
+                className={`font-black text-sm tracking-tight font-mono uppercase ${
                   isSelected ? "text-white" : "text-zinc-300"
                 }`}
               >
                 {cat.title}
               </span>
-              <span className="text-[11px] text-zinc-500 truncate hidden sm:block">
+              <span className="text-[11px] text-zinc-500 font-mono truncate hidden sm:block">
                 {cat.subtitle}
               </span>
             </motion.button>

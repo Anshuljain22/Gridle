@@ -35,7 +35,7 @@ export function AnimatedTabs<T extends string = string>({
   return (
     <div
       className={cn(
-        "relative flex items-center p-1 rounded-2xl f1-glass",
+        "relative flex items-center p-1.5 rounded-2xl cockpit-bezel cockpit-chamfer",
         className
       )}
     >

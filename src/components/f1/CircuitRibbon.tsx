@@ -16,10 +16,10 @@ const RIBBON = [
 
 export const CircuitRibbon: React.FC = () => {
   return (
-    <div className="w-full px-4">
-      <div className="max-w-7xl mx-auto mt-3 mb-1 rounded-2xl f1-glass px-3 py-2 flex items-center gap-3 overflow-hidden">
+    <div className="w-full px-3 sm:px-5 lg:px-6 2xl:px-8">
+      <div className="max-w-[1720px] 2xl:max-w-[1880px] mx-auto mt-3 mb-1 cockpit-bezel cockpit-chamfer px-4 py-2 flex items-center gap-3 overflow-hidden">
         <span
-          className="shrink-0 font-mono text-[10px] tracking-[0.28em] font-bold transition-colors"
+          className="shrink-0 font-mono text-[10px] tracking-[0.28em] font-bold transition-colors pl-1"
           style={{ color: "var(--team-primary)" }}
         >
           CIRCUIT MAP

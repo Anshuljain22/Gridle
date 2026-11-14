@@ -126,85 +126,131 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       : ["Monaco", "Spa", "Silverstone", "Monza", "Suzuka", "Interlagos", "Austin"];
 
   return (
-    <div className="w-full relative z-30 space-y-2">
-      {/* Search Input Box */}
-      <div className="relative">
-        <div className="relative flex items-center">
-          <div className="absolute left-4 text-zinc-400 pointer-events-none">
-            <Search className="w-4 h-4 text-zinc-400" />
+    <div className="w-full relative z-30 space-y-2.5">
+      {/* Cockpit Tactical Command Console Frame */}
+      <div className="cockpit-bezel cockpit-chamfer p-3.5 sm:p-4 relative">
+        {/* Hex rivets in corners */}
+        <div className="absolute top-2.5 left-2.5 hex-rivet" />
+        <div className="absolute top-2.5 right-2.5 hex-rivet" />
+        <div className="absolute bottom-2.5 left-2.5 hex-rivet" />
+        <div className="absolute bottom-2.5 right-2.5 hex-rivet" />
+
+        {/* Telemetry Console Header */}
+        <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-white/10 text-xs font-mono pl-1 pr-1">
+          <div className="flex items-center gap-2">
+            <span
+              className="w-2 h-2 rounded-full animate-pulse"
+              style={{ backgroundColor: "var(--team-primary)" }}
+            />
+            <span className="font-bold text-white tracking-wider uppercase text-[11px]">
+              TACTICAL COMMAND ENTRY
+            </span>
           </div>
-
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            disabled={disabled}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setIsOpen(true);
-              setErrorMsg(null);
-            }}
-            onFocus={() => setIsOpen(true)}
-            onKeyDown={handleKeyDown}
-            placeholder={placeholderText}
-            className={`w-full f1-glass text-white placeholder-zinc-400 text-sm font-medium rounded-2xl pl-11 pr-28 py-3.5 border transition-all outline-none ${
-              disabled
-                ? "opacity-50 cursor-not-allowed border-white/5"
-                : errorMsg
-                ? "border-red-500 ring-2 ring-red-500/30"
-                : "border-white/10 focus:border-[var(--team-primary)] focus:ring-2 focus:ring-[var(--team-glow)]"
-            }`}
-          />
-
-          {/* Right Action / Submit */}
-          <div className="absolute right-2 flex items-center gap-1.5">
-            {query && (
-              <button
-                type="button"
-                onClick={() => {
-                  setQuery("");
-                  inputRef.current?.focus();
-                }}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
-
-            <button
-              type="button"
-              disabled={disabled || (!availableMatches.length && !query)}
-              onClick={() => {
-                if (availableMatches.length > 0) {
-                  submitItem(availableMatches[selectedIndex]);
-                }
-              }}
-              className="flex items-center gap-1 px-3 sm:px-4 py-2 rounded-xl text-white font-mono text-xs font-bold shadow-md transition-all disabled:opacity-40 hover:brightness-110 active:scale-95"
-              style={{
-                background: "var(--team-gradient)",
-                boxShadow: "0 4px 14px var(--team-glow)",
-              }}
-            >
-              <span>SUBMIT</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
+          <span className="text-[10px] text-zinc-400 font-mono">
+            {remainingGuesses} ATTEMPTS REMAINING
+          </span>
         </div>
 
-        {/* Validation / Error Banner */}
-        {errorMsg && (
-          <div className="absolute -bottom-6 left-3 flex items-center gap-1.5 text-xs font-mono text-red-400 animate-fadeIn">
-            <AlertCircle className="w-3.5 h-3.5" />
-            <span>{errorMsg}</span>
-          </div>
-        )}
+        {/* Search Input Box */}
+        <div className="relative">
+          <div className="relative flex items-center">
+            <div className="absolute left-4 text-zinc-400 pointer-events-none">
+              <Search className="w-4 h-4 text-zinc-400" />
+            </div>
 
-        {/* Autocomplete Dropdown */}
-        {isOpen && query.trim().length > 0 && (
-          <div
-            ref={listRef}
-            className="absolute left-0 right-0 mt-2 max-h-72 overflow-y-auto rounded-2xl f1-glass-modal divide-y divide-white/5 z-50"
-          >
+            <input
+              ref={inputRef}
+              type="text"
+              value={query}
+              disabled={disabled}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setIsOpen(true);
+                setErrorMsg(null);
+              }}
+              onFocus={() => setIsOpen(true)}
+              onKeyDown={handleKeyDown}
+              placeholder={placeholderText}
+              className={`w-full bg-black/60 text-white placeholder-zinc-400 text-sm font-medium rounded-xl pl-11 pr-28 py-3.5 border transition-all outline-none ${
+                disabled
+                  ? "opacity-50 cursor-not-allowed border-white/5"
+                  : errorMsg
+                  ? "border-red-500 ring-2 ring-red-500/30"
+                  : "border-white/15 focus:border-[var(--team-primary)] focus:ring-2 focus:ring-[var(--team-glow)]"
+              }`}
+            />
+
+            {/* Right Action / Submit */}
+            <div className="absolute right-2 flex items-center gap-1.5">
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery("");
+                    inputRef.current?.focus();
+                  }}
+                  className="p-1.5 rounded-lg text-zinc-400 hover:text-white"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+
+              <button
+                type="button"
+                disabled={disabled || (!availableMatches.length && !query)}
+                onClick={() => {
+                  if (availableMatches.length > 0) {
+                    submitItem(availableMatches[selectedIndex]);
+                  }
+                }}
+                className="flex items-center gap-1 px-3 sm:px-4 py-2 rounded-lg text-white font-mono text-xs font-bold shadow-md transition-all disabled:opacity-40 hover:brightness-110 active:scale-95"
+                style={{
+                  background: "var(--team-gradient)",
+                  boxShadow: "0 4px 14px var(--team-glow)",
+                }}
+              >
+                <span>SUBMIT</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Quick Paddock Filter Chips */}
+          {!disabled && (
+            <div className="flex items-center gap-1.5 overflow-x-auto pt-2.5 text-xs font-mono text-zinc-400 no-scrollbar">
+              <span className="text-zinc-500 text-[10px] uppercase shrink-0 font-bold">
+                QUICK PICKS:
+              </span>
+              {sampleSuggestions.map((suggestion) => (
+                <button
+                  key={suggestion}
+                  type="button"
+                  onClick={() => {
+                    setQuery(suggestion);
+                    inputRef.current?.focus();
+                  }}
+                  className="px-2.5 py-0.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white border border-white/10 text-[11px] shrink-0 transition-all hover:scale-105"
+                >
+                  {suggestion}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Validation / Error Banner */}
+          {errorMsg && (
+            <div className="absolute -bottom-6 left-3 flex items-center gap-1.5 text-xs font-mono text-red-400 animate-fadeIn">
+              <AlertCircle className="w-3.5 h-3.5" />
+              <span>{errorMsg}</span>
+            </div>
+          )}
+
+          {/* Autocomplete Dropdown */}
+          {isOpen && query.trim().length > 0 && (
+            <div
+              ref={listRef}
+              className="absolute left-0 right-0 mt-2 max-h-72 overflow-y-auto rounded-2xl f1-glass-modal divide-y divide-white/5 z-50 shadow-2xl"
+            >
             {availableMatches.length > 0 ? (
               availableMatches.map((item, idx) => {
                 const isSelected = idx === selectedIndex;
@@ -301,28 +347,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           </div>
         )}
       </div>
-
-      {/* Quick Paddock Filter Chips */}
-      {!disabled && (
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs font-mono text-zinc-400 scrollbar-none">
-          <span className="text-zinc-400 text-[10px] uppercase shrink-0">
-            Quick Picks:
-          </span>
-          {sampleSuggestions.map((suggestion) => (
-            <button
-              key={suggestion}
-              type="button"
-              onClick={() => {
-                setQuery(suggestion);
-                inputRef.current?.focus();
-              }}
-              className="px-2.5 py-0.5 rounded-lg bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 backdrop-blur-md text-[11px] shrink-0 transition-all hover:scale-105"
-            >
-              {suggestion}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
-  );
+  </div>
+);
 };

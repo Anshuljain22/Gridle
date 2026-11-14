@@ -26,19 +26,28 @@ export const FeedbackGrid: React.FC<FeedbackGridProps> = ({
 }) => {
   if (comparisons.length === 0) {
     return (
-      <div className="w-full p-8 rounded-2xl f1-glass-subtle border-dashed text-center my-4">
-        <h4 className="font-bold text-sm text-zinc-300 font-mono mb-1">
-          Telemetry Screen Awaiting Data
+      <div className="w-full cockpit-bezel cockpit-chamfer p-7 text-center my-3 relative overflow-hidden">
+        <div className="absolute top-2 left-2 hex-rivet" />
+        <div className="absolute top-2 right-2 hex-rivet" />
+        <div className="absolute bottom-2 left-2 hex-rivet" />
+        <div className="absolute bottom-2 right-2 hex-rivet" />
+        <h4 className="font-bold text-xs text-zinc-300 font-mono tracking-widest uppercase mb-1 flex items-center justify-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-pulse" />
+          TELEMETRY ANALYSIS DECK AWAITING DATA
         </h4>
-        <p className="text-xs text-zinc-400 max-w-sm mx-auto">
-          Submit your first guess using the command input above to generate attribute comparisons and unlock progressive sector telemetry.
+        <p className="text-xs text-zinc-400 max-w-md mx-auto font-mono mt-1">
+          Submit your first guess using the tactical command terminal above to generate driver attribute comparisons and unlock progressive sector telemetry.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="w-full my-4 rounded-2xl f1-glass p-3 sm:p-4">
+    <div className="w-full my-3 cockpit-bezel cockpit-chamfer p-3.5 sm:p-4 relative overflow-hidden">
+      <div className="absolute top-2 left-2 hex-rivet" />
+      <div className="absolute top-2 right-2 hex-rivet" />
+      <div className="absolute bottom-2 left-2 hex-rivet" />
+      <div className="absolute bottom-2 right-2 hex-rivet" />
       <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-zinc-800">
         <div className="min-w-[660px]">
           {/* Table Headers */}

@@ -18,20 +18,23 @@ export const TimingTower: React.FC<TimingTowerProps> = ({
   maxLaps = 7,
 }) => {
   return (
-    <SpotlightCard
-      spotlightColor="var(--team-glow)"
-      className="w-full p-3 sm:p-4 select-none"
-    >
+    <div className="cockpit-bezel cockpit-chamfer p-4 select-none relative overflow-hidden">
+      {/* 4 Titanium hex bolts in bezel corners */}
+      <div className="absolute top-2.5 left-2.5 hex-rivet" />
+      <div className="absolute top-2.5 right-2.5 hex-rivet" />
+      <div className="absolute bottom-2.5 left-2.5 hex-rivet" />
+      <div className="absolute bottom-2.5 right-2.5 hex-rivet" />
+
       {/* Timing Tower Header */}
-      <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10 text-xs font-mono">
+      <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-white/10 text-xs font-mono pl-1 pr-1">
         <div className="flex items-center gap-2">
           <Icon3D name="stopwatch" size={20} />
-          <h3 className="font-bold text-white uppercase tracking-wider">
-            F1 TIMING TOWER
+          <h3 className="font-black text-white uppercase tracking-wider text-xs">
+            FIA OFFICIAL TIMING TOWER
           </h3>
         </div>
-        <span className="text-[11px] text-zinc-300 tabular-nums bg-white/5 px-2 py-0.5 rounded border border-white/10 backdrop-blur-md">
-          LAPS {comparisons.length}/{maxLaps}
+        <span className="text-[11px] font-mono text-zinc-300 tabular-nums bg-black/60 px-2 py-0.5 rounded border border-white/10 backdrop-blur-md">
+          LAP {comparisons.length}/{maxLaps}
         </span>
       </div>
 
@@ -118,7 +121,7 @@ export const TimingTower: React.FC<TimingTowerProps> = ({
               className={`flex items-center justify-between p-2 rounded-xl border transition-all backdrop-blur-sm ${
                 isCurrentLap
                   ? "shadow-sm"
-                  : "bg-black/25 border-white/5 text-zinc-500"
+                  : "bg-black/35 border-white/5 text-zinc-500"
               }`}
               style={
                 isCurrentLap
@@ -149,7 +152,7 @@ export const TimingTower: React.FC<TimingTowerProps> = ({
           );
         })}
       </div>
-    </SpotlightCard>
+    </div>
   );
 };
 

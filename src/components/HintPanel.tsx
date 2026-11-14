@@ -47,24 +47,30 @@ export const HintPanel: React.FC<HintPanelProps> = ({
   const unlockedCount = Math.min(6, Math.max(0, attemptsCount));
 
   return (
-    <div className="w-full p-4 rounded-2xl f1-glass my-4">
+    <div className="w-full cockpit-bezel cockpit-chamfer p-4 relative overflow-hidden my-3">
+      {/* Corner hex rivets */}
+      <div className="absolute top-2.5 left-2.5 hex-rivet" />
+      <div className="absolute top-2.5 right-2.5 hex-rivet" />
+      <div className="absolute bottom-2.5 left-2.5 hex-rivet" />
+      <div className="absolute bottom-2.5 right-2.5 hex-rivet" />
+
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
-        <h3 className="font-bold text-sm text-white font-mono tracking-tight flex items-center gap-2">
+      <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-white/10 pl-1 pr-1">
+        <h3 className="font-bold text-xs text-white font-mono tracking-tight uppercase flex items-center gap-2">
           <span
             className="w-2 h-2 rounded-full animate-pulse transition-colors"
             style={{ backgroundColor: "var(--team-primary)" }}
           />
-          Sector Telemetry Hints
+          SECTOR TELEMETRY DECRYPTION
         </h3>
         <motion.span
           key={unlockedCount}
           initial={{ scale: 1.2, color: "#ef4444" }}
           animate={{ scale: 1, color: "#a1a1aa" }}
           transition={{ duration: 0.3 }}
-          className="text-xs font-mono tabular-nums bg-white/5 px-2 py-0.5 rounded-lg border border-white/10 font-bold backdrop-blur-md"
+          className="text-[11px] font-mono tabular-nums bg-black/60 px-2 py-0.5 rounded border border-white/10 font-bold backdrop-blur-md"
         >
-          {unlockedCount}/6 Unlocked
+          {unlockedCount}/6 UNLOCKED
         </motion.span>
       </div>
 

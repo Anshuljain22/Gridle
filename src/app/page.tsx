@@ -49,6 +49,7 @@ import { RetroGrid } from "@/components/magicui/RetroGrid";
 import { GarageBackground } from "@/components/f1/GarageBackground";
 import { CircuitBackdrop } from "@/components/f1/CircuitBackdrop";
 import { CircuitRibbon } from "@/components/f1/CircuitRibbon";
+import { CockpitTelemetryWing } from "@/components/f1/CockpitTelemetryWing";
 import { AnimatedTabs, TabOption } from "@/components/watermelon/AnimatedTabs";
 import { MotionButton } from "@/components/watermelon/MotionButton";
 import {
@@ -400,7 +401,7 @@ export default function F1WordleApp() {
           <CircuitRibbon />
 
       {/* 3. Main Cockpit Navigation Tabs (Watermelon UI + Motion Dev) */}
-      <div className="w-full max-w-7xl mx-auto px-4 pt-3 flex-1">
+      <div className="w-full max-w-[1740px] 2xl:max-w-[1900px] mx-auto px-3 sm:px-5 lg:px-6 2xl:px-8 pt-3 flex-1">
         <Tabs
           value={activeMainTab}
           onValueChange={(val) => setActiveMainTab(val as MainTabType)}
@@ -412,18 +413,45 @@ export default function F1WordleApp() {
               activeTab={activeMainTab}
               onTabChange={(val) => setActiveMainTab(val)}
               layoutId="main-nav-pill"
-              className="max-w-5xl w-full overflow-x-auto pb-1"
+              className="max-w-6xl w-full overflow-x-auto pb-1"
             />
           </div>
 
           {/* TAB 1: RACE COCKPIT (THE GAME) */}
           <TabsContent value="game">
             <main className="py-1">
-              {/* Asymmetrical Pit Wall Command Station */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-                {/* Left Flight Column: Race Engineer, Wheel HUD & Telemetry Feed (5 cols) */}
-                <div className="lg:col-span-5 space-y-4">
-                  {/* Category, Mode & Compound Selectors */}
+              {/* Formula 1 Mission Control Panoramic 3-Wing Deck */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 xl:grid-cols-16 2xl:grid-cols-20 gap-5 items-start">
+                
+                {/* WING 1: LEFT FLANK TELEMETRY & TRACK RADAR (Expands on XL & 2XL) */}
+                <aside className="hidden xl:block xl:col-span-4 2xl:col-span-5 space-y-4">
+                  <CockpitTelemetryWing
+                    category={category}
+                    targetEntity={targetEntity}
+                    attemptsCount={guesses.length}
+                  />
+                </aside>
+
+                {/* WING 2: CENTER ARENA — HOTLAP & COMMAND TERMINAL */}
+                <section className="col-span-1 lg:col-span-7 xl:col-span-8 2xl:col-span-10 space-y-4">
+                  {/* F1 5-Light Starting Gantry */}
+                  <StartLights
+                    attemptsUsed={guesses.length}
+                    maxAttempts={7}
+                    isWon={status === "won"}
+                    isGameOver={status !== "in_progress"}
+                  />
+
+                  {/* F1 Steering Wheel RPM & Shift Light Display */}
+                  <SteeringWheelDisplay
+                    currentLap={guesses.length}
+                    maxLaps={7}
+                    isWon={status === "won"}
+                    isGameOver={status !== "in_progress"}
+                    category={category}
+                  />
+
+                  {/* Cockpit Mode & Rotary Switches */}
                   <ModeSelector
                     selectedCategory={category}
                     onSelectCategory={(cat) => setCategory(cat)}
@@ -436,53 +464,13 @@ export default function F1WordleApp() {
                     userStats={userStats}
                   />
 
-                  {/* F1 Steering Wheel RPM & Shift Light Display */}
-                  <SteeringWheelDisplay
-                    currentLap={guesses.length}
-                    maxLaps={7}
-                    isWon={status === "won"}
-                    isGameOver={status !== "in_progress"}
-                    category={category}
-                  />
-
-                  {/* F1 5-Light Starting Gantry */}
-                  <StartLights
-                    attemptsUsed={guesses.length}
-                    maxAttempts={7}
-                    isWon={status === "won"}
-                    isGameOver={status !== "in_progress"}
-                  />
-
-                  {/* AI Team Radio / Strategist Guidance */}
-                  <PitRadio
-                    category={category}
-                    targetEntity={targetEntity}
-                    attemptsCount={guesses.length}
-                  />
-
-                  {/* 6 Progressive Telemetry Hints Panel */}
-                  <HintPanel
-                    hints={hints}
-                    attemptsCount={guesses.length}
-                  />
-                </div>
-
-                {/* Right Flight Column: Timing Screen & Guess Matrix (7 cols) */}
-                <div className="lg:col-span-7 space-y-4">
-                  {/* Search & Guess Input Area */}
+                  {/* Tactical Command Input Area */}
                   <SearchBar
                     category={category}
                     guessedIds={guesses}
                     disabled={status !== "in_progress"}
                     onSelectGuess={handleGuess}
                     remainingGuesses={remainingGuesses}
-                  />
-
-                  {/* F1 Live Timing Tower */}
-                  <TimingTower
-                    category={category}
-                    comparisons={comparisons}
-                    maxLaps={7}
                   />
 
                   {/* Wordle Attribute Comparison Feedback Grid */}
@@ -519,10 +507,10 @@ export default function F1WordleApp() {
 
                       {gameMode === "practice" && (
                         <MotionButton
-                          variant="secondary"
+                          variant="primary"
                           size="sm"
-                          onClick={() => initRound(category, gameMode, difficulty)}
-                          className="text-zinc-300 hover:text-white"
+                          onClick={() => initRound(category, "practice", difficulty)}
+                          className="text-white font-bold"
                         >
                           <RotateCcw className="w-3.5 h-3.5" />
                           <span>NEW PRACTICE ROUND</span>
@@ -530,7 +518,33 @@ export default function F1WordleApp() {
                       )}
                     </div>
                   </div>
-                </div>
+                </section>
+
+                {/* WING 3: RIGHT FLANK — TIMING TOWER & SECTOR ANALYTICS */}
+                <aside className="col-span-1 lg:col-span-5 xl:col-span-4 2xl:col-span-5 space-y-4">
+                  {/* F1 Live Timing Tower */}
+                  <TimingTower
+                    category={category}
+                    comparisons={comparisons}
+                    maxLaps={7}
+                  />
+
+                  {/* 6 Progressive Telemetry Hints Panel */}
+                  <HintPanel
+                    hints={hints}
+                    attemptsCount={guesses.length}
+                  />
+
+                  {/* On screen sizes below XL where left wing is hidden, show Pit Radio here */}
+                  <div className="xl:hidden">
+                    <PitRadio
+                      category={category}
+                      targetEntity={targetEntity}
+                      attemptsCount={guesses.length}
+                    />
+                  </div>
+                </aside>
+
               </div>
             </main>
           </TabsContent>
